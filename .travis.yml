@@ -1,0 +1,25 @@
+language: go
+
+sudo: false
+
+# TODO use travis build matrix + GOOS for cross-compilation or goxc
+matrix:
+  include:
+  - go: 1.5
+
+install:
+  - go get github.com/tools/godep
+
+script:
+  - GOARCH=amd64 GOOS=linux godep go build tmplt.go
+
+deploy:
+  provider: releases
+
+  api_key:
+    secure: W2mjI9R3ZnB7QsYuJitwT/h+7jR/Pj6WSjKERLerRPN0z5nbCCJdTkw7r9gsGBblT2AMHx7qxws2S5AMS4MypJNmOj0ZW5TWiDkobAOENUbjGEjxii2yLuNxcsBE5Ets1s5dPB/RpvHh/PGTC5IX80ISVosRVTQ+ABexuLsFWcG/CpmV/Tb1BxWso3kP2UvupF3XwDJoM2a/hNQXvyzZoO7FVLD/YiWvRNPf9zqrDow3wRAg3YLHqIaHJ2V68rqXb+x/FQ4YpD21tBAAIJc1NSttOXQ3xEyhTMQP0Ba2z+FOvYBVxVJgrBZiV7B6F26GjLHBb104sLTprF6xVQKN6AcPLzgBMO6jZ2apr+On0nglMl4nRbE7TRdEzCZbEzHGxbxAhCdArObuVQN09+MNnUYtJDv/xzkwEpK1NbG/3sEL8zKhJrEYznNWCONKTHgXWp7o8pljOcV4A8nDVKVjul5/VMaZ5Swgs0BQ6QeU+EaprWP6hGuccGLUH+ZX8Wqnl7hV+rRzYIYEeR8d1df3pMUGmnWLJsbI+0K/OcAbqMCmEUBM15XX6+yaHrP1RZQTOKH8F2NR+oVl9EHEQZCt3J4DlSVzB86vkMvXgFuWXq6Q3uJSyUiOnRhGJdykHXNwdvIlkmidyVLIeKTdfCW+I4HoTHBi1/zvmm5sD1Idt2o=
+
+  file: tmplt
+
+  on:
+    tags: true
