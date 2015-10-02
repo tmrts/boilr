@@ -1,0 +1,5 @@
+Author: {{Project.Author}}
+E-mail: {{Project.Email}}
+Project Name: {{Project.Name}}
+Version: {{Project.Version}}
+Date: {{Project.Date}}

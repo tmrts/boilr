@@ -27,7 +27,7 @@ func TestRetrievesProjectTemplate(t *testing.T) {
 		Name:    "test-project-1",
 		Author:  "test-author",
 		Email:   "test@mail.com",
-		Date:    time.Now().Format("Mon Jan 2 15:04:05 -0700 2006"),
+		Date:    time.Now().Format("Mon Jan 2 2006 15:04:05"),
 		Version: "0.0.1",
 	}
 
@@ -36,7 +36,7 @@ func TestRetrievesProjectTemplate(t *testing.T) {
 		t.Fatalf("template.Execute(metadata) got error -> %v", err)
 	}
 
-	_, err = os.Open(filepath.Join(tmpDirPath, metadata.Name))
+	_, err = os.Open(filepath.Join(tmpDirPath, "test-template/"+metadata.Name))
 	if err != nil {
 		t.Errorf("template.Execute(metadata) directory %q should exist", metadata.Name)
 	}
