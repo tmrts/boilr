@@ -1,4 +1,4 @@
-// Package flog implements logging utilities for tmplt
+// Package tlog implements logging utilities for tmplt
 package tlog
 
 import "github.com/Sirupsen/logrus"

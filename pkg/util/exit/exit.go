@@ -12,8 +12,10 @@ const (
 	CodeError = 2
 )
 
-func Error(err error) {
-	tlog.Error(fmt.Sprint(err))
+func Error(errs ...error) {
+	for _, err := range errs {
+		tlog.Error(fmt.Sprint(err))
+	}
 
 	os.Exit(CodeError)
 }
