@@ -10,3 +10,12 @@ func FileExists(filename string) error {
 
 	return nil
 }
+
+func DirExists(dirname string) error {
+	_, err := os.Stat(dirname)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
