@@ -10,7 +10,8 @@ func main() {
 		Use: "main",
 	}
 
-	mainCmd.AddCommand(cmd.Build)
+	mainCmd.AddCommand(cmd.Use)
+	mainCmd.AddCommand(cmd.Save)
 
 	mainCmd.Execute()
 }

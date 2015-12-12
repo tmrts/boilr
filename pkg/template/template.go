@@ -34,6 +34,10 @@ func Get(path string) (Interface, error) {
 	md, err := func(fname string) (map[string]interface{}, error) {
 		f, err := os.Open(fname)
 		if err != nil {
+			if os.IsNotExist(err) {
+				return nil, nil
+			}
+
 			return nil, err
 		} else {
 			defer f.Close()
