@@ -1,16 +1,16 @@
-package cookie
+package tmplt
 
 import (
 	"path/filepath"
 
-	"github.com/tmrts/cookie/pkg/util/osutil"
+	"github.com/tmrts/tmplt/pkg/util/osutil"
 )
 
 var (
-	ConfigPath = ".cookierc"
+	ConfigPath = ".tmpltrc"
 
-	ConfigDirPath   = ".cookie/"
-	TemplateDirPath = ".cookie/templates/"
+	ConfigDirPath   = ".tmplt/"
+	TemplateDirPath = ".tmplt/templates/"
 )
 
 func TemplatePath(name string) (string, error) {

@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/spf13/cobra"
-	"github.com/tmrts/cookie/pkg/cmd"
+	"github.com/tmrts/tmplt/pkg/cmd"
 )
 
 func main() {

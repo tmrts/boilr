@@ -3,7 +3,7 @@ package stringutil_test
 import (
 	"testing"
 
-	"github.com/tmrts/cookie/pkg/util/stringutil"
+	"github.com/tmrts/tmplt/pkg/util/stringutil"
 )
 
 func TestReadsFromString(t *testing.T) {

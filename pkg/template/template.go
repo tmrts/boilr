@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/tmrts/cookie/pkg/util/stringutil"
+	"github.com/tmrts/tmplt/pkg/util/stringutil"
 )
 
 // TODO Use JSON Dictionary

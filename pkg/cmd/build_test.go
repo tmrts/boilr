@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/tmrts/cookie/pkg/cmd"
+	"github.com/tmrts/tmplt/pkg/cmd"
 )
 
 func TestBuildExecutesProjectTemplate(t *testing.T) {

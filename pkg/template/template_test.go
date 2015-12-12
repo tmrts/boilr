@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/tmrts/cookie/pkg/template"
+	"github.com/tmrts/tmplt/pkg/template"
 )
 
 func TestRetrievesProjectTemplate(t *testing.T) {

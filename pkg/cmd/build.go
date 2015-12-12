@@ -8,16 +8,16 @@ import (
 	"time"
 
 	cli "github.com/spf13/cobra"
-	"github.com/tmrts/cookie/pkg/cookie"
-	"github.com/tmrts/cookie/pkg/template"
-	"github.com/tmrts/cookie/pkg/util/osutil"
+	"github.com/tmrts/tmplt/pkg/template"
+	"github.com/tmrts/tmplt/pkg/tmplt"
+	"github.com/tmrts/tmplt/pkg/util/osutil"
 )
 
 var Use = &cli.Command{
 	Use:   "use",
 	Short: "Executes a project template",
 	Run: func(_ *cli.Command, args []string) {
-		tmplPath, err := cookie.TemplatePath(args[0])
+		tmplPath, err := tmplt.TemplatePath(args[0])
 		if err != nil {
 			panic(err)
 		}
@@ -48,7 +48,7 @@ var Save = &cli.Command{
 	Run: func(_ *cli.Command, args []string) {
 		templateName, sourceDir := args[0], args[1]
 
-		targetDir := filepath.Join(cookie.TemplateDirPath, templateName)
+		targetDir := filepath.Join(tmplt.TemplateDirPath, templateName)
 
 		switch err := osutil.FileExists(targetDir); {
 		case !os.IsNotExist(err):
