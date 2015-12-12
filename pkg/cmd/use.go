@@ -1,16 +1,12 @@
 package cmd
 
 import (
-	"fmt"
-	"os"
-	"os/exec"
-	"path/filepath"
 	"time"
 
 	cli "github.com/spf13/cobra"
+
 	"github.com/tmrts/tmplt/pkg/template"
 	"github.com/tmrts/tmplt/pkg/tmplt"
-	"github.com/tmrts/tmplt/pkg/util/osutil"
 )
 
 var Use = &cli.Command{
@@ -37,27 +33,6 @@ var Use = &cli.Command{
 
 		err = tmpl.Execute(args[1], metadata)
 		if err != nil {
-			panic(err)
-		}
-	},
-}
-
-var Save = &cli.Command{
-	Use:   "save",
-	Short: "Saves a project template to template registry",
-	Run: func(_ *cli.Command, args []string) {
-		templateName, sourceDir := args[0], args[1]
-
-		targetDir := filepath.Join(tmplt.TemplateDirPath, templateName)
-
-		switch err := osutil.FileExists(targetDir); {
-		case !os.IsNotExist(err):
-			// Template Already Exists Ask If Should be Replaced
-			panic(err)
-		}
-
-		if _, err := exec.Command("/usr/bin/cp", "-r", sourceDir, targetDir).Output(); err != nil {
-			fmt.Println(sourceDir, targetDir)
 			panic(err)
 		}
 	},
