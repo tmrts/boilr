@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 
 	cli "github.com/spf13/cobra"
+	"github.com/tmrts/tmplt/pkg/util/exit"
+	"github.com/tmrts/tmplt/pkg/util/validate"
 )
 
 var (
@@ -16,6 +18,10 @@ var Verify = &cli.Command{
 	Use:   "verify",
 	Short: "Verifies whether a template is valid or not",
 	Run: func(_ *cli.Command, args []string) {
+		MustValidateArgs(args, []validate.String{
+			validate.UnixPath,
+		})
+
 		templatePath := args[0]
 
 		info, err := os.Stat(templatePath)
@@ -24,13 +30,13 @@ var Verify = &cli.Command{
 		}
 
 		if !info.IsDir() {
-			panic(ErrTemplateInvalid)
+			exit.Error(ErrTemplateInvalid)
 		}
 
 		templateDirInfo, err := os.Stat(filepath.Join(templatePath, "template"))
 		if err != nil {
 			if os.IsNotExist(err) {
-				panic(ErrTemplateInvalid)
+				exit.Error(ErrTemplateInvalid)
 
 			}
 
@@ -38,7 +44,7 @@ var Verify = &cli.Command{
 		}
 
 		if !templateDirInfo.IsDir() {
-			panic(ErrTemplateInvalid)
+			exit.Error(ErrTemplateInvalid)
 		}
 	},
 }

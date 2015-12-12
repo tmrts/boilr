@@ -10,29 +10,34 @@ import (
 
 	"github.com/tmrts/tmplt/pkg/tmplt"
 	"github.com/tmrts/tmplt/pkg/util/exit"
-	"github.com/tmrts/tmplt/pkg/util/inpututil"
 	"github.com/tmrts/tmplt/pkg/util/osutil"
+	"github.com/tmrts/tmplt/pkg/util/validate"
 )
 
 var Save = &cli.Command{
-	Use:   "save",
+	Use:   "save <template-path> <template-name>",
 	Short: "Saves a project template to template registry",
-	Run: func(_ *cli.Command, args []string) {
-		templateName, sourceDir := args[0], args[1]
+	Run: func(c *cli.Command, args []string) {
+		MustValidateArgs(args, []validate.String{
+			validate.UnixPath,
+			validate.Alphanumeric,
+		})
 
-		targetDir := filepath.Join(tmplt.TemplateDirPath, templateName)
+		sourceDir, templateName := args[0], args[1]
+
+		targetDir := filepath.Join(tmplt.Configuration.TemplateDirPath, templateName)
 
 		switch err := osutil.FileExists(targetDir); {
 		case os.IsNotExist(err):
 			break
 		case err == nil:
-			// Template Already Exists Ask If Should be Replaced
-			shouldOverride, err := inpututil.ScanYesOrNo("Template already exists. Override?", false)
+			shouldOverwrite := GetBoolFlag(c, "force")
+
 			if err != nil {
 				exit.Error(fmt.Errorf("save: %v", err))
 			}
 
-			if !shouldOverride {
+			if !shouldOverwrite {
 				exit.OK("Exiting")
 			}
 		default:

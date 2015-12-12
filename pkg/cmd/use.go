@@ -5,14 +5,27 @@ import (
 
 	cli "github.com/spf13/cobra"
 
+	"github.com/tmrts/tmplt/pkg/cmd/util"
 	"github.com/tmrts/tmplt/pkg/template"
 	"github.com/tmrts/tmplt/pkg/tmplt"
+	"github.com/tmrts/tmplt/pkg/util/exit"
+	"github.com/tmrts/tmplt/pkg/util/validate"
 )
 
+func MustValidateArgs(args []string, validations []validate.String) {
+	if errs := util.ValidateArgs(args, validations); len(errs) > 0 {
+		exit.Error(errs...)
+	}
+}
+
 var Use = &cli.Command{
-	Use:   "use",
+	Use:   "use <template-name>",
 	Short: "Executes a project template",
 	Run: func(_ *cli.Command, args []string) {
+		MustValidateArgs(args, []validate.String{
+			validate.Alphanumeric,
+		})
+
 		tmplPath, err := tmplt.TemplatePath(args[0])
 		if err != nil {
 			panic(err)
