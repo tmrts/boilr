@@ -2,27 +2,18 @@ package template
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"text/template"
 
+	"github.com/tmrts/tmplt/pkg/prompt"
 	"github.com/tmrts/tmplt/pkg/util/stringutil"
 )
 
-// TODO Use JSON Dictionary
-type Metadata struct {
-	Name    string
-	Author  string
-	Email   string
-	Date    string
-	Version string
-}
-
 type Interface interface {
-	Execute(string, Metadata) error
+	Execute(string) error
 }
 
 func Get(path string) (Interface, error) {
@@ -31,7 +22,8 @@ func Get(path string) (Interface, error) {
 		return nil, err
 	}
 
-	md, err := func(fname string) (map[string]interface{}, error) {
+	// TODO make metadata optional
+	md, err := func(fname string) (map[string]string, error) {
 		f, err := os.Open(fname)
 		if err != nil {
 			if os.IsNotExist(err) {
@@ -48,27 +40,50 @@ func Get(path string) (Interface, error) {
 			return nil, err
 		}
 
-		var metadata map[string]interface{}
+		var metadata map[string]string
 		if err := json.Unmarshal(buf, &metadata); err != nil {
 			return nil, err
 		}
 
 		return metadata, nil
-	}(filepath.Join(absPath, "metadata.json"))
+	}(filepath.Join(filepath.Join(absPath, "template"), "metadata.json"))
 
-	return &dirTemplate{Path: absPath, Metadata: md}, err
+	return &dirTemplate{Path: absPath, Metadata: md, FuncMap: FuncMap}, err
 }
 
 type dirTemplate struct {
-	Path     string
-	Metadata map[string]interface{}
+	Path      string
+	Metadata  map[string]string
+	FuncMap   template.FuncMap
+	promptMap map[string]promptFunc
 }
 
-// Execute fills the template with the given metadata.
-func (d *dirTemplate) Execute(dirPrefix string, md Metadata) error {
-	FuncMap["Project"] = func() map[string]interface{} {
-		return d.Metadata
+type promptFunc func() string
+
+func (f promptFunc) String() string {
+	return f()
+}
+
+func (t *dirTemplate) AddPromptFunctions() {
+	t.promptMap = make(map[string]promptFunc)
+
+	for s, v := range t.Metadata {
+		t.promptMap[s] = prompt.New(s, v)
 	}
+
+	// TODO allow nested maps
+	t.FuncMap["project"] = func() map[string]promptFunc {
+		//return t.promptMap
+		// TODO temporary stub
+		return map[string]promptFunc{
+			"Author": prompt.New("author", "Johann Sebastian"),
+		}
+	}
+}
+
+// Execute fills the template with the project metadata.
+func (d *dirTemplate) Execute(dirPrefix string) error {
+	d.AddPromptFunctions()
 
 	// TODO(tmrts): create io.ReadWriter from string
 	// TODO(tmrts): refactor command execution
@@ -102,7 +117,6 @@ func (d *dirTemplate) Execute(dirPrefix string, md Metadata) error {
 
 		if info.IsDir() {
 			if _, err := exec.Command("/bin/mkdir", target).Output(); err != nil {
-				fmt.Println(target)
 				return err
 			}
 		} else {
