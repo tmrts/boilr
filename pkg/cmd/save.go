@@ -39,7 +39,7 @@ var Save = &cli.Command{
 			}
 
 			if !shouldOverwrite {
-				exit.OK("Exiting")
+				exit.OK("Template %v already exists use -f to overwrite", templateName)
 			}
 		}
 
@@ -48,6 +48,6 @@ var Save = &cli.Command{
 			exit.Error(err)
 		}
 
-		exit.OK("Successfully saved the template")
+		exit.OK("Successfully saved the template %v", templateName)
 	},
 }

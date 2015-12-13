@@ -9,7 +9,7 @@ import (
 	"github.com/tmrts/tmplt/pkg/cmd"
 )
 
-func TestBuildExecutesProjectTemplate(t *testing.T) {
+func TestUseExecutesProjectTemplate(t *testing.T) {
 	tmpDirPath, err := ioutil.TempDir("", "template-test")
 	if err != nil {
 		t.Fatalf("ioutil.TempDir() got error -> %v", err)
@@ -25,5 +25,5 @@ func TestBuildExecutesProjectTemplate(t *testing.T) {
 
 	args := []string{inputDir, outputDir}
 
-	cmd.Build.Run(cmd.Build, args)
+	cmd.Use.Run(cmd.Use, args)
 }

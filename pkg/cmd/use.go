@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	cli "github.com/spf13/cobra"
 
@@ -33,7 +34,12 @@ var Use = &cli.Command{
 		}
 
 		if err := tmpl.Execute(targetDir); err != nil {
+			// Delete if execute transaction fails
+			defer os.RemoveAll(targetDir)
+
 			exit.Fatal(fmt.Errorf("use: %s", err))
 		}
+
+		exit.OK("Successfully executed the project template %v on %v", tmplName, targetDir)
 	},
 }

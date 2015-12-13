@@ -14,6 +14,7 @@ var (
 	ErrUninitializedTmpltDir = errors.New("tmplt: .tmplt directory is not initialized")
 )
 
+// TODO remove?
 var Init = &cli.Command{
 	Use:   "init",
 	Short: "Initializes directories required by tmplt",
