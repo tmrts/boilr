@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+
+set -u
+
+[[ "$@" =~ --pre ]] && version=0.0.1 pre=1 ||
+                       version=0.0.1 pre=0
+
+# If stdin is a tty, we are "interactive".
+interactive=
+[ -t 0 ] && interactive=yes
+
+ask() {
+  # non-interactive shell: wait for a linefeed
+  #     interactive shell: continue after a single keypress
+  [ -n "$interactive" ] && read_n='-n 1' || read_n=
+
+  read -p "$1 ([y]/n) " $read_n -r
+  echo
+  [[ $REPLY =~ ^[Nn]$ ]]
+}
+
+symlink() {
+  echo "  - Creating symlink: bin/$1 -> bin/tmplt"
+  (cd "$HOME"/bin &&
+   rm -f tmplt &&
+   ln -sf $1 tmplt)
+  if [ $? -ne 0 ]; then
+    binary_error="Failed to create symlink"
+    return 1
+  fi
+}
+
+initialize() {
+  mkdir -p "$HOME"/.config/tmplt && mkdir -p "$HOME"/.config/tmplt/templates
+  if [ $? -ne 0 ]; then
+    binary_error="Failed to create .config/tmplt directory"
+    return
+  fi
+}
+
+check_binary() {
+  echo -n "  - Checking tmplt executable ... "
+  local output
+  output=$("$HOME"/bin/tmplt version 2>&1)
+  if [ $? -ne 0 ]; then
+    echo "Error: $output"
+    binary_error="Invalid binary"
+  elif [ "$version" != "$output" ]; then
+    echo "$output != $version"
+    binary_error="Invalid version"
+  else
+    echo "$output"
+    binary_error=""
+    return 0
+  fi
+  rm -f "$HOME"/bin/tmplt
+  return 1
+}
+
+download() {
+  echo "Downloading tmplt ..."
+
+  if [ -x "$HOME"/bin/tmplt ]; then
+    echo "  - Already exists"
+    check_binary && return
+  fi
+  if [ -x "$HOME"/bin/$1 ]; then
+    symlink $1 && check_binary && return
+  fi
+  if which_tmplt="$(which tmplt 2> /dev/null)"; then
+    echo "  - Found in \$PATH"
+    echo "  - Creating symlink: $which_tmplt -> bin/tmplt"
+    (cd "$HOME"/bin && rm -f tmplt && ln -sf "$which_tmplt" tmplt)
+    check_binary && return
+  fi
+
+  mkdir -p "$HOME"/bin && cd "$HOME"/bin
+  if [ $? -ne 0 ]; then
+    binary_error="Failed to create bin directory"
+    return
+  fi
+
+  local url=https://github.com/tmrts/tmplt/releases/download/$version/${1}.tgz
+  if which curl > /dev/null; then
+    curl -fL $url | tar -xz
+  elif which wget > /dev/null; then
+    wget -O - $url | tar -xz
+  else
+    binary_error="curl or wget not found"
+    return
+  fi
+
+  if [ ! -f $1 ]; then
+    binary_error="Failed to download ${1}"
+    return
+  fi
+
+  chmod +x $1 && symlink $1 && initialize && check_binary
+}
+
+# Try to download binary executable
+archi=$(uname -sm)
+binary_available=1
+binary_error=""
+case "$archi" in
+  Linux\ x86_64)  download tmplt-$version-linux_${binary_arch:-amd64}  ;;
+  Linux\ i*86)    download tmplt-$version-linux_${binary_arch:-386}    ;;
+  *)              binary_available=0 binary_error=1  ;;
+esac
+
+cat << EOF
+Completed installation
+
+For more information, see: https://github.com/tmrts/tmplt
+EOF
