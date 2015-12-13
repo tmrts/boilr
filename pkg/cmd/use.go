@@ -12,6 +12,16 @@ import (
 	"github.com/tmrts/tmplt/pkg/util/validate"
 )
 
+func TemplateInRegistry(name string) (bool, error) {
+	names, err := ListTemplates()
+	if err != nil {
+		return false, err
+	}
+
+	_, ok := names[name]
+	return ok, nil
+}
+
 var Use = &cli.Command{
 	Use:   "use <template-name> <target-dir>",
 	Short: "Executes a project template",
@@ -22,6 +32,12 @@ var Use = &cli.Command{
 		})
 
 		tmplName, targetDir := args[0], args[1]
+
+		if ok, err := TemplateInRegistry(tmplName); err != nil {
+			exit.Fatal(fmt.Errorf("use: %s", err))
+		} else if !ok {
+			exit.Fatal(fmt.Errorf("Template %q couldn't be found in the template registry", tmplName))
+		}
 
 		tmplPath, err := tmplt.TemplatePath(tmplName)
 		if err != nil {
