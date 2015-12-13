@@ -7,6 +7,8 @@ var Root = &cli.Command{
 }
 
 func Run() {
+	// TODO use command factories instead of global command variables
+
 	Init.PersistentFlags().BoolP("force", "f", false, "Recreate directories if they exist")
 	Root.AddCommand(Init)
 
@@ -15,7 +17,7 @@ func Run() {
 	Save.PersistentFlags().BoolP("force", "f", false, "Overwrite existing template with the same name")
 	Root.AddCommand(Save)
 
-	Root.AddCommand(Verify)
+	Root.AddCommand(Validate)
 
 	Root.AddCommand(Version)
 

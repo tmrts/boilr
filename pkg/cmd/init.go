@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"errors"
-	"os"
+	"fmt"
 
 	cli "github.com/spf13/cobra"
 	"github.com/tmrts/tmplt/pkg/tmplt"
@@ -19,7 +19,7 @@ var Init = &cli.Command{
 	Short: "Initializes directories required by tmplt",
 	Run: func(c *cli.Command, _ []string) {
 		// Check if .config/tmplt exists
-		if err := osutil.DirExists(tmplt.Configuration.TemplateDirPath); os.IsNotExist(err) {
+		if exists, err := osutil.DirExists(tmplt.Configuration.TemplateDirPath); exists {
 			if shouldRecreate := GetBoolFlag(c, "force"); !shouldRecreate {
 				exit.Error(ErrUninitializedTmpltDir)
 			}
@@ -28,7 +28,9 @@ var Init = &cli.Command{
 				exit.Error(err)
 			}
 		} else if err != nil {
-			exit.Error(err)
+			exit.Error(fmt.Errorf("init: %s", err))
 		}
+
+		exit.OK("Initialization complete")
 	},
 }

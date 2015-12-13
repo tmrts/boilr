@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 	"os/exec"
 	"path/filepath"
 
@@ -18,19 +17,21 @@ var Save = &cli.Command{
 	Use:   "save <template-path> <template-name>",
 	Short: "Saves a project template to template registry",
 	Run: func(c *cli.Command, args []string) {
-		MustValidateArgs(args, []validate.String{
-			validate.UnixPath,
-			validate.Alphanumeric,
+		MustValidateArgs(args, []validate.Argument{
+			{"template-path", validate.UnixPath},
+			{"template-name", validate.Alphanumeric},
 		})
 
-		sourceDir, templateName := args[0], args[1]
+		tmplDir, templateName := args[0], args[1]
+
+		MustValidateTemplate(tmplDir)
 
 		targetDir := filepath.Join(tmplt.Configuration.TemplateDirPath, templateName)
 
-		switch err := osutil.FileExists(targetDir); {
-		case os.IsNotExist(err):
-			break
-		case err == nil:
+		switch exists, err := osutil.DirExists(targetDir); {
+		case err != nil:
+			exit.Error(fmt.Errorf("save: %s", err))
+		case exists:
 			shouldOverwrite := GetBoolFlag(c, "force")
 
 			if err != nil {
@@ -40,13 +41,13 @@ var Save = &cli.Command{
 			if !shouldOverwrite {
 				exit.OK("Exiting")
 			}
-		default:
-			exit.Error(err)
 		}
 
-		if _, err := exec.Command("/usr/bin/cp", "-r", "--remove-destination", sourceDir, targetDir).Output(); err != nil {
+		if _, err := exec.Command("/usr/bin/cp", "-r", "--remove-destination", tmplDir, targetDir).Output(); err != nil {
 			// TODO create exec package
 			exit.Error(err)
 		}
+
+		exit.OK("Successfully saved the template")
 	},
 }
