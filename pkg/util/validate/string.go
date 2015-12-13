@@ -1,8 +1,21 @@
 package validate
 
-import "github.com/tmrts/tmplt/pkg/util/validate/pattern"
+import (
+	"reflect"
+	"runtime"
+	"strings"
+
+	"github.com/tmrts/tmplt/pkg/util/validate/pattern"
+)
 
 type String func(string) bool
+
+// TypeName returns the type expected to be validated by the validate.String function.
+func (s String) TypeName() string {
+	fullPath := runtime.FuncForPC(reflect.ValueOf(s).Pointer()).Name()
+
+	return strings.ToLower(fullPath[strings.LastIndex(fullPath, ".")+1:])
+}
 
 func Integer(n string) bool {
 	return pattern.Integer.MatchString(n)
