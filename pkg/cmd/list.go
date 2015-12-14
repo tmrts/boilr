@@ -34,7 +34,7 @@ func ListTemplates() (map[string]bool, error) {
 
 var List = &cli.Command{
 	Use:   "list <template-path> <template-name>",
-	Short: "Lists templates found in the template registry",
+	Short: "List project templates found in the local template registry",
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{})
 

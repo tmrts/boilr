@@ -94,7 +94,7 @@ func downloadZip(URL, targetDir string) error {
 // FIXME Half-Updates leave messy templates
 var Download = &cli.Command{
 	Use:   "download <template-repo> <template-name>",
-	Short: "Downloads a project template from an URL to template registry",
+	Short: "Download a project template from a github repository to template registry",
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{
 			{"template-repo", validate.UnixPath},

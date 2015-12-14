@@ -26,7 +26,7 @@ func TemplateInRegistry(name string) (bool, error) {
 // TODO add --use-cache flag to execute a template from previous answers to prompts
 var Use = &cli.Command{
 	Use:   "use <template-name> <target-dir>",
-	Short: "Executes a project template",
+	Short: "Execute a project template in the given directory",
 	Run: func(_ *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{
 			{"template-name", validate.UnixPath},

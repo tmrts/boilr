@@ -17,7 +17,7 @@ var (
 // TODO remove?
 var Init = &cli.Command{
 	Use:   "init",
-	Short: "Initializes directories required by tmplt",
+	Short: "Initialize directories required by tmplt (By default done by installation script)",
 	Run: func(c *cli.Command, _ []string) {
 		// Check if .config/tmplt exists
 		if exists, err := osutil.DirExists(tmplt.Configuration.TemplateDirPath); exists {
