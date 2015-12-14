@@ -4,11 +4,12 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"text/template"
 
 	"github.com/tmrts/tmplt/pkg/prompt"
+	"github.com/tmrts/tmplt/pkg/tmplt"
+	"github.com/tmrts/tmplt/pkg/util/exec"
 	"github.com/tmrts/tmplt/pkg/util/stringutil"
 )
 
@@ -22,8 +23,8 @@ func Get(path string) (Interface, error) {
 		return nil, err
 	}
 
-	// TODO make metadata optional
-	md, err := func(fname string) (map[string]string, error) {
+	// TODO make context optional
+	ctxt, err := func(fname string) (map[string]interface{}, error) {
 		f, err := os.Open(fname)
 		if err != nil {
 			if os.IsNotExist(err) {
@@ -40,61 +41,43 @@ func Get(path string) (Interface, error) {
 			return nil, err
 		}
 
-		var metadata map[string]string
+		var metadata map[string]interface{}
 		if err := json.Unmarshal(buf, &metadata); err != nil {
 			return nil, err
 		}
 
 		return metadata, nil
-	}(filepath.Join(filepath.Join(absPath, "template"), "metadata.json"))
+	}(filepath.Join(absPath, tmplt.ContextFileName))
 
-	return &dirTemplate{Path: absPath, Metadata: md, FuncMap: FuncMap}, err
+	return &dirTemplate{
+		Context: ctxt,
+		FuncMap: FuncMap,
+		Path:    filepath.Join(absPath, tmplt.TemplateDirName),
+	}, err
 }
 
 type dirTemplate struct {
-	Path      string
-	Metadata  map[string]string
-	FuncMap   template.FuncMap
-	promptMap map[string]promptFunc
-}
-
-type promptFunc func() string
-
-func (f promptFunc) String() string {
-	return f()
-}
-
-func (t *dirTemplate) AddPromptFunctions() {
-	t.promptMap = make(map[string]promptFunc)
-
-	for s, v := range t.Metadata {
-		t.promptMap[s] = prompt.New(s, v)
-	}
-
-	// TODO allow nested maps
-	t.FuncMap["project"] = func() map[string]promptFunc {
-		//return t.promptMap
-		// TODO temporary stub
-		return map[string]promptFunc{
-			"Author": prompt.New("author", "Johann Sebastian"),
-		}
-	}
+	Path    string
+	Context map[string]interface{}
+	FuncMap template.FuncMap
 }
 
 // Execute fills the template with the project metadata.
-func (d *dirTemplate) Execute(dirPrefix string) error {
-	d.AddPromptFunctions()
+func (t *dirTemplate) Execute(dirPrefix string) error {
+	for s, v := range t.Context {
+		t.FuncMap[s] = prompt.New(s, v)
+	}
 
-	// TODO(tmrts): create io.ReadWriter from string
-	// TODO(tmrts): refactor command execution
-	// TODO(tmrts): refactor name manipulation
-	return filepath.Walk(d.Path, func(filename string, info os.FileInfo, err error) error {
+	// TODO create io.ReadWriter from string
+	// TODO refactor command execution
+	// TODO refactor name manipulation
+	return filepath.Walk(t.Path, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
 
 		// Path relative to the root of the template directory
-		oldName, err := filepath.Rel(filepath.Dir(d.Path), filename)
+		oldName, err := filepath.Rel(t.Path, filename)
 		if err != nil {
 			return err
 		}
@@ -102,7 +85,7 @@ func (d *dirTemplate) Execute(dirPrefix string) error {
 		buf := stringutil.NewString("")
 
 		fnameTmpl := template.Must(template.
-			New("filename").
+			New("file name template").
 			Option(Options...).
 			Funcs(FuncMap).
 			Parse(oldName))
@@ -116,12 +99,18 @@ func (d *dirTemplate) Execute(dirPrefix string) error {
 		target := filepath.Join(dirPrefix, newName)
 
 		if info.IsDir() {
-			if _, err := exec.Command("/bin/mkdir", target).Output(); err != nil {
+			// TODO create a new pkg for dir operations
+			if _, err := exec.Cmd("/bin/mkdir", "-p", target); err != nil {
 				return err
 			}
 		} else {
 			fi, err := os.Lstat(filename)
 			if err != nil {
+				return err
+			}
+
+			// Delete target file if it exists
+			if err := os.Remove(target); err != nil && !os.IsNotExist(err) {
 				return err
 			}
 
@@ -133,7 +122,7 @@ func (d *dirTemplate) Execute(dirPrefix string) error {
 			}
 
 			contentsTmpl := template.Must(template.
-				New("filecontents").
+				New("file contents template").
 				Option(Options...).
 				Funcs(FuncMap).
 				ParseFiles(filename))

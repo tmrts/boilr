@@ -4,75 +4,173 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/tmrts/tmplt/pkg/util/tlog"
 )
 
-func Ask(msg string) (value string) {
-	fmt.Print(msg)
+const (
+	// TODO align brackets used in the prompt message
+	PromptFormatMessage       = "[?] Please choose a value for %#q [default: %#v]: "
+	PromptChoiceFormatMessage = "[?] Please select an option for %#q\n%v  Select from %v..%v [default: %#v]: "
+)
 
-	_, err := fmt.Scanf("%s", &value)
+func scanLine() (string, error) {
+	input := bufio.NewReader(os.Stdin)
+	line, err := input.ReadString('\n')
 	if err != nil {
-		tlog.Warn(err.Error())
-		return ""
+		return line, err
+	}
+
+	return strings.TrimSuffix(line, "\n"), nil
+}
+
+// TODO add GetLine method using a channel
+// TODO use interfaces to eliminate code duplication
+func newString(name string, defval interface{}) func() interface{} {
+	var cache interface{}
+	return func() interface{} {
+		if cache == nil {
+			cache = func() interface{} {
+				// TODO use colored prompts
+				fmt.Printf(PromptFormatMessage, name, defval)
+
+				line, err := scanLine()
+				if err != nil {
+					tlog.Warn(err.Error())
+					return line
+				}
+
+				if line == "" {
+					return defval
+				}
+
+				return line
+			}()
+		}
+
+		return cache
+	}
+}
+
+var (
+	booleanValues = map[string]bool{
+		"y":    true,
+		"yes":  true,
+		"yup":  true,
+		"true": true,
+
+		"n":     false,
+		"no":    false,
+		"nope":  false,
+		"false": false,
+	}
+)
+
+func newBool(name string, defval bool) func() interface{} {
+	var cache interface{}
+	return func() interface{} {
+		if cache == nil {
+			cache = func() interface{} {
+				fmt.Printf(PromptFormatMessage, name, defval)
+
+				choice, err := scanLine()
+				if err != nil {
+					tlog.Warn(err.Error())
+					return choice
+				}
+
+				if choice == "" {
+					return defval
+				}
+
+				val, ok := booleanValues[strings.ToLower(choice)]
+				if !ok {
+					tlog.Warn(fmt.Sprintf("Unrecognized choice %q, using the default", choice))
+
+					return defval
+				}
+
+				return val
+			}()
+		}
+
+		return cache
+	}
+}
+
+type Choice struct {
+	Default int
+	Choices []string
+}
+
+func formattedChoices(cs []string) (s string) {
+	for i, c := range cs {
+		s += fmt.Sprintf("  %v -  %q\n", i+1, c)
 	}
 
 	return
 }
 
-var (
-	booleanValues = map[string]bool{
-		"y":   true,
-		"yes": true,
-		"yup": true,
+func newSlice(name string, choices []string) func() interface{} {
+	var cache interface{}
+	return func() interface{} {
+		if cache == nil {
+			defindex := 0
+			defval := choices[defindex]
+			cache = func() interface{} {
+				s := formattedChoices(choices)
+				fmt.Printf(PromptChoiceFormatMessage, name, s, 1, len(choices), defindex+1)
 
-		"n":    false,
-		"no":   false,
-		"nope": false,
+				choice, err := scanLine()
+				if err != nil {
+					tlog.Warn(err.Error())
+					return choice
+				}
+
+				if choice == "" {
+					return defval
+				}
+
+				index, err := strconv.Atoi(choice)
+				if err != nil {
+					return err
+				}
+
+				if index > len(choices)+1 || index < 1 {
+					tlog.Warn(fmt.Sprintf("Unrecognized choice %v, using the default", index))
+
+					return defval
+				}
+
+				return choices[index-1]
+			}()
+		}
+
+		return cache
 	}
-)
-
-func Confirm(msg string) bool {
-	fmt.Print(msg)
-
-	var choice string
-	_, err := fmt.Scanf("%s", &choice)
-	if err != nil {
-		tlog.Warn(err.Error())
-		return false
-	}
-
-	val, ok := booleanValues[choice]
-	if !ok {
-		tlog.Warn(fmt.Sprintf("unrecognized choice %#q", choice))
-		return false
-	}
-
-	return val
 }
 
-const (
-	PromptFormatMessage = "? Please choose a value for %#q [default: %#q]: "
-)
-
-// TODO accept boolean, integer values in addition to string
-func New(msg, defval string) func() string {
-	return func() string {
-		// TODO use colored prompts
-		fmt.Printf(PromptFormatMessage, msg, defval)
-
-		input := bufio.NewReader(os.Stdin)
-		line, err := input.ReadString('\n')
-		if err != nil {
-			tlog.Warn(err.Error())
-			return line
+// New returns a prompt closure when executed asks for user input and returns result.
+func New(name string, defval interface{}) func() interface{} {
+	// TODO use reflect package
+	switch defval := defval.(type) {
+	case bool:
+		return newBool(name, defval)
+	case []interface{}:
+		if len(defval) == 0 {
+			tlog.Warn(fmt.Sprintf("empty list for %q choices", name))
+			return nil
 		}
 
-		if line == "\n" {
-			return defval
+		var s []string
+		for _, v := range defval {
+			s = append(s, v.(string))
 		}
 
-		return strings.TrimSuffix(line, "\n")
+		return newSlice(name, s)
 	}
+
+	return newString(name, defval)
 }
