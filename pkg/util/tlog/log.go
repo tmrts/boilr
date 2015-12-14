@@ -7,34 +7,42 @@ import (
 	"github.com/fatih/color"
 )
 
-func Debug(msg string) {
+// TODO default to ASCII if Unicode is not supported
+const (
+	DebugMark = "☹"
+	CheckMark = "✔"
+	InfoMark  = "i"
+	WarnMark  = "!"
+	ErrorMark = "✘"
+
+	// TODO use for prompts
+	QuestionMark = "?"
+)
+
+func coloredPrintMsg(icon string, msg string, iC color.Attribute, mC color.Attribute) {
 	fmt.Println(
-		color.New(color.BgYellow).SprintFunc()("DEBUG"),
-		color.New(color.FgYellow).SprintFunc()(msg))
+		color.New(mC).SprintFunc()("["+icon+"]"),
+		color.New(color.Bold, iC).SprintFunc()(msg))
+}
+
+func Debug(msg string) {
+	coloredPrintMsg(DebugMark, msg, color.FgYellow, color.FgYellow)
 }
 
 func Success(msg string) {
-	fmt.Println(
-		color.New(color.BgGreen).SprintFunc()("SUCCESS"),
-		color.New(color.FgGreen).SprintFunc()(msg))
+	coloredPrintMsg(CheckMark, msg, color.FgWhite, color.FgGreen)
 }
 
 func Info(msg string) {
-	fmt.Println(
-		color.New(color.BgBlue).SprintFunc()("INFO"),
-		color.New(color.FgBlue).SprintFunc()(msg))
+	coloredPrintMsg(InfoMark, msg, color.FgBlue, color.FgBlue)
 }
 
 func Warn(msg string) {
-	fmt.Println(
-		color.New(color.BgMagenta).SprintFunc()("WARN"),
-		color.New(color.FgMagenta).SprintFunc()(msg))
+	coloredPrintMsg(WarnMark, msg, color.FgMagenta, color.FgMagenta)
 }
 
 func Error(msg string) {
-	fmt.Println(
-		color.New(color.BgRed).SprintFunc()("ERROR"),
-		color.New(color.Bold, color.FgRed).SprintFunc()(msg))
+	coloredPrintMsg(ErrorMark, msg, color.FgRed, color.FgRed)
 }
 
 func Fatal(msg string) {
