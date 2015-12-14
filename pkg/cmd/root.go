@@ -7,8 +7,8 @@ var Root = &cli.Command{
 }
 
 func Run() {
+	// TODO trap c-c to rollback transactions
 	// TODO use command factories instead of global command variables
-
 	Init.PersistentFlags().BoolP("force", "f", false, "Recreate directories if they exist")
 	Root.AddCommand(Init)
 

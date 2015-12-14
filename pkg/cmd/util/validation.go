@@ -3,8 +3,11 @@ package util
 import (
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"os"
 	"path/filepath"
 
+	"github.com/tmrts/tmplt/pkg/template"
 	"github.com/tmrts/tmplt/pkg/util/osutil"
 	"github.com/tmrts/tmplt/pkg/util/validate"
 )
@@ -45,6 +48,23 @@ func ValidateArgs(args []string, validations []validate.Argument) error {
 	return nil
 }
 
+func testTemplate(path string) error {
+	tmpDir, err := ioutil.TempDir("", "tmplt-validation-test")
+	if err != nil {
+		return err
+	} else {
+		defer os.RemoveAll(tmpDir)
+	}
+
+	tmpl, err := template.Get(path)
+	if err != nil {
+		return err
+	}
+
+	// TODO add --use-defaults flag to stop asking for user input
+	return tmpl.Execute(tmpDir)
+}
+
 func ValidateTemplate(tmplPath string) (bool, error) {
 	if exists, err := osutil.DirExists(tmplPath); !exists {
 		if err != nil {
@@ -60,6 +80,10 @@ func ValidateTemplate(tmplPath string) (bool, error) {
 		}
 
 		return false, fmt.Errorf("template should contain %q directory", "template")
+	}
+
+	if err := testTemplate(tmplPath); err != nil {
+		return false, err
 	}
 
 	return true, nil

@@ -24,6 +24,6 @@ var Validate = &cli.Command{
 
 		MustValidateTemplate(templatePath)
 
-		exit.OK("Template is valid.")
+		exit.OK("Template is valid")
 	},
 }

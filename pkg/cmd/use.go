@@ -22,6 +22,8 @@ func TemplateInRegistry(name string) (bool, error) {
 	return ok, nil
 }
 
+// TODO add --use-defaults flag to execute a template without user prompts
+// TODO add --use-cache flag to execute a template from previous answers to prompts
 var Use = &cli.Command{
 	Use:   "use <template-name> <target-dir>",
 	Short: "Executes a project template",
@@ -50,12 +52,12 @@ var Use = &cli.Command{
 		}
 
 		if err := tmpl.Execute(targetDir); err != nil {
-			// Delete if execute transaction fails
+			// Deletes the target dir if execute transaction fails
 			defer os.RemoveAll(targetDir)
 
 			exit.Fatal(fmt.Errorf("use: %s", err))
 		}
 
-		exit.OK("Successfully executed the project template %v on %v", tmplName, targetDir)
+		exit.OK("Successfully executed the project template %v in %v", tmplName, targetDir)
 	},
 }
