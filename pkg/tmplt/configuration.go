@@ -17,6 +17,9 @@ const (
 
 	ConfigFileName = "config.json"
 	TemplateDir    = "templates"
+
+	ContextFileName = "project.json"
+	TemplateDirName = "template"
 )
 
 var Configuration = struct {
