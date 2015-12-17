@@ -15,6 +15,10 @@ It is under *heavy construction* at the moment.
 Download install script and run it to install `tmplt`.
 The `tmplt` binary will be installed to `~/bin/tmplt`.
 
+
+# Template Catalog
+Take a look at [[list of templates|List-of-Templates]] page for example templates in the wild.
+
 # Usage
 Use `tmplt help` to get the list of available commands.
 
@@ -23,11 +27,6 @@ You can report issues directly from the command-line. Use the command, `tmplt re
 A markdown file will be opened where the first line is the issue title and the rest 
 is the issue body. After creating the issue, save & exit the editor and you will be
 prompted for github credentials needed to create the issue.
-
-## Reporting Issues
-You can report issues directly from the command-line. Use the command, `tmplt report`.
-After entering your github credentials, a markdown file will be opened
-where the first line is the issue title and the rest is the issue body.
 
 ## Download Template
 In order to download a template from a github repository, use the following command:
@@ -92,13 +91,13 @@ template/
 
 `LICENSE` file:
 ```txt
-{{if License == "MIT"}}
+{{if eq License "MIT"}}
 // MIT License
 
-{{else if License == "GNU GPL v3.0"}}
+{{else if eq License "GNU GPL v3.0"}}
 // GNU GPL v3.0 License
 
-{{else if License == "Apache Software License 2.0"}}
+{{else if eq License "Apache Software License 2.0"}}
 // Apache License
 
 {{end}}

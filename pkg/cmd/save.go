@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 
 	cli "github.com/spf13/cobra"
@@ -41,9 +42,13 @@ var Save = &cli.Command{
 			if !shouldOverwrite {
 				exit.OK("Template %v already exists use -f to overwrite", templateName)
 			}
+
+			if err := os.RemoveAll(targetDir); err != nil {
+				exit.Error(fmt.Errorf("save: %v", err))
+			}
 		}
 
-		if _, err := exec.Cmd("cp", "-r", "--remove-destination", tmplDir, targetDir); err != nil {
+		if _, err := exec.Cmd("cp", "-r", tmplDir, targetDir); err != nil {
 			// TODO create exec package
 			exit.Error(err)
 		}

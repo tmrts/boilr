@@ -89,8 +89,7 @@ func downloadZip(URL, targetDir string) error {
 		}
 	}
 
-	_, err := util.ValidateTemplate(path)
-	if err != nil {
+	if _, err := util.ValidateTemplate(targetDir); err != nil {
 		return err
 	}
 
@@ -119,7 +118,7 @@ var Download = &cli.Command{
 			exit.Error(fmt.Errorf("download: %s", err))
 		case exists:
 			if shouldOverwrite := GetBoolFlag(c, "force"); !shouldOverwrite {
-				exit.OK("Template %v already exists use -u to update the template", templateName)
+				exit.OK("Template %v already exists use -f to overwrite the template", templateName)
 			}
 		case !exists:
 			if err := os.MkdirAll(targetDir, 0755); err != nil {

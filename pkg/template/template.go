@@ -71,7 +71,14 @@ func (t *dirTemplate) UseDefaultValues() {
 func (t *dirTemplate) BindPrompts() {
 	if t.ShouldUseDefaults {
 		for s, v := range t.Context {
-			t.FuncMap[s] = v
+			t.FuncMap[s] = func() interface{} {
+				switch v := v.(type) {
+				case []interface{}:
+					return v[0]
+				}
+
+				return v
+			}
 		}
 	} else {
 		for s, v := range t.Context {
