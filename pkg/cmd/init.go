@@ -24,12 +24,12 @@ var Init = &cli.Command{
 			if shouldRecreate := GetBoolFlag(c, "force"); !shouldRecreate {
 				exit.Error(ErrUninitializedTmpltDir)
 			}
-
-			if err := osutil.CreateDirs(tmplt.Configuration.TemplateDirPath); err != nil {
-				exit.Error(err)
-			}
 		} else if err != nil {
 			exit.Error(fmt.Errorf("init: %s", err))
+		}
+
+		if err := osutil.CreateDirs(tmplt.Configuration.TemplateDirPath); err != nil {
+			exit.Error(err)
 		}
 
 		exit.OK("Initialization complete")

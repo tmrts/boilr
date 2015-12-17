@@ -31,7 +31,7 @@ symlink() {
 }
 
 initialize() {
-  mkdir -p "$HOME"/.config/tmplt && mkdir -p "$HOME"/.config/tmplt/templates
+  mkdir -p "$HOME"/.config/tmplt/templates
   if [ $? -ne 0 ]; then
     binary_error="Failed to create .config/tmplt directory"
     return

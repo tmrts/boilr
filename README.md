@@ -12,8 +12,7 @@ Are you doing the same steps over and over again every time you start a new prog
 It is under *heavy construction* at the moment.
 
 # Installation
-Download install script and run `./install` to install `tmplt`.
-
+Download install script and run it to install `tmplt`.
 The `tmplt` binary will be installed to `~/bin/tmplt`.
 
 # Usage
