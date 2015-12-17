@@ -28,5 +28,7 @@ func Run() {
 
 	Root.AddCommand(Version)
 
+	Root.AddCommand(Report)
+
 	Root.Execute()
 }

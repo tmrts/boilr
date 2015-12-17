@@ -25,6 +25,11 @@ A markdown file will be opened where the first line is the issue title and the r
 is the issue body. After creating the issue, save & exit the editor and you will be
 prompted for github credentials needed to create the issue.
 
+## Reporting Issues
+You can report issues directly from the command-line. Use the command, `tmplt report`.
+After entering your github credentials, a markdown file will be opened
+where the first line is the issue title and the rest is the issue body.
+
 ## Download Template
 In order to download a template from a github repository, use the following command:
 

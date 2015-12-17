@@ -21,6 +21,9 @@ const (
 
 	ContextFileName = "project.json"
 	TemplateDirName = "template"
+
+	GithubOwner = "tmrts"
+	GithubRepo  = "tmplt"
 )
 
 var Configuration = struct {
