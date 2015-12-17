@@ -25,6 +25,12 @@ func Error(err error) {
 	os.Exit(CodeError)
 }
 
+func GoodEnough(fmtStr string, s ...interface{}) {
+	tlog.Debug(fmt.Sprintf(fmtStr, s...))
+
+	os.Exit(CodeOK)
+}
+
 func OK(fmtStr string, s ...interface{}) {
 	tlog.Success(fmt.Sprintf(fmtStr, s...))
 

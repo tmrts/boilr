@@ -25,6 +25,7 @@ func coloredPrintMsg(icon string, msg string, iC color.Attribute, mC color.Attri
 		color.New(color.Bold, iC).SprintFunc()(msg))
 }
 
+// TODO add log levels
 func Debug(msg string) {
 	coloredPrintMsg(DebugMark, msg, color.FgYellow, color.FgYellow)
 }

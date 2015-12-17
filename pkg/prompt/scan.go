@@ -152,7 +152,8 @@ func newSlice(name string, choices []string) func() interface{} {
 	}
 }
 
-// New returns a prompt closure when executed asks for user input and returns result.
+// New returns a prompt closure when executed asks for
+// user input and has a default value that returns result.
 func New(name string, defval interface{}) func() interface{} {
 	// TODO use reflect package
 	switch defval := defval.(type) {

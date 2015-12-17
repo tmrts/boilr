@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 
 	"github.com/tmrts/tmplt/pkg/util/exit"
+	"github.com/tmrts/tmplt/pkg/util/osutil"
 )
 
 const (
@@ -34,6 +35,7 @@ func TemplatePath(name string) (string, error) {
 func init() {
 	homeDir := os.Getenv("HOME")
 	if homeDir == "" {
+		// FIXME is this really necessary?
 		exit.Error(fmt.Errorf("environment variable ${HOME} should be set"))
 	}
 
@@ -42,6 +44,17 @@ func init() {
 
 	// Read .config/tmplt/config.json if exists
 	// TODO use defaults if config.json doesn't exist
+	hasConfig, err := osutil.FileExists(Configuration.FilePath)
+	if err != nil {
+		exit.Error(err)
+	}
+
+	if !hasConfig {
+		// TODO report the absence of config.json
+		//tlog.Debug("Couldn't find %s user configuration", ConfigFileName)
+		return
+	}
+
 	buf, err := ioutil.ReadFile(Configuration.FilePath)
 	if err != nil {
 		exit.Error(err)
