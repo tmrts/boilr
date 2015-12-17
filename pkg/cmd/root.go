@@ -19,7 +19,7 @@ func Run() {
 	Save.PersistentFlags().BoolP("force", "f", false, "Overwrite existing template with the same name")
 	Root.AddCommand(Save)
 
-	// Update Flag
+	Download.PersistentFlags().BoolP("force", "f", false, "Overwrite existing template with the same name")
 	Root.AddCommand(Download)
 
 	Root.AddCommand(Delete)

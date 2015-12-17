@@ -34,6 +34,20 @@ func ValidateArgCount(expectedArgNo, argNo int) error {
 	return nil
 }
 
+func ValidateVarArgs(args []string, v validate.Argument) error {
+	if len(args) == 0 {
+		return ErrNotEnoughArgs
+	}
+
+	for _, arg := range args {
+		if ok := v.Validate(arg); !ok {
+			return fmt.Errorf(InvalidArg, v.Name, arg, v.Validate.TypeName())
+		}
+	}
+
+	return nil
+}
+
 func ValidateArgs(args []string, validations []validate.Argument) error {
 	if err := ValidateArgCount(len(validations), len(args)); err != nil {
 		return err

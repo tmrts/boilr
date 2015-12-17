@@ -118,9 +118,7 @@ var Download = &cli.Command{
 		case err != nil:
 			exit.Error(fmt.Errorf("download: %s", err))
 		case exists:
-			shouldOverwrite := false //GetBoolFlag(c, "update")
-
-			if !shouldOverwrite {
+			if shouldOverwrite := GetBoolFlag(c, "force"); !shouldOverwrite {
 				exit.OK("Template %v already exists use -u to update the template", templateName)
 			}
 		case !exists:
@@ -137,6 +135,7 @@ var Download = &cli.Command{
 
 		zipURL := host.ZipURL(templateURL)
 
+		// TODO validate template as well
 		if err := downloadZip(zipURL, targetDir); err != nil {
 			// Delete if download transaction fails
 			defer os.RemoveAll(targetDir)

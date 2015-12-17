@@ -8,6 +8,12 @@ import (
 	"github.com/tmrts/tmplt/pkg/util/validate"
 )
 
+func MustValidateVarArgs(args []string, v validate.Argument) {
+	if err := util.ValidateVarArgs(args, v); err != nil {
+		exit.Error(err)
+	}
+}
+
 func MustValidateArgs(args []string, validations []validate.Argument) {
 	if err := util.ValidateArgs(args, validations); err != nil {
 		exit.Error(err)
