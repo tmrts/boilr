@@ -14,6 +14,7 @@ func MustValidateArgs(args []string, validations []validate.Argument) {
 	}
 }
 
+// TODO use defaults option while executing for validation
 func MustValidateTemplate(path string) {
 	isValid, err := util.ValidateTemplate(path)
 	if err != nil {

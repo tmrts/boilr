@@ -3,7 +3,6 @@ package osutil
 import (
 	"fmt"
 	"os"
-	"os/exec"
 )
 
 func FileExists(path string) (bool, error) {
@@ -42,7 +41,7 @@ func DirExists(path string) (bool, error) {
 
 func CreateDirs(dirPaths ...string) error {
 	for _, path := range dirPaths {
-		if _, err := exec.Command("/usr/bin/mkdir", "-p", path).Output(); err != nil {
+		if err := os.MkdirAll(path, 0744); err != nil {
 			return err
 		}
 	}

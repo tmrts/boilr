@@ -61,7 +61,8 @@ func testTemplate(path string) error {
 		return err
 	}
 
-	// TODO add --use-defaults flag to stop asking for user input
+	tmpl.UseDefaultValues()
+
 	return tmpl.Execute(tmpDir)
 }
 

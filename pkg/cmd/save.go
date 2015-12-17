@@ -2,12 +2,12 @@ package cmd
 
 import (
 	"fmt"
-	"os/exec"
 	"path/filepath"
 
 	cli "github.com/spf13/cobra"
 
 	"github.com/tmrts/tmplt/pkg/tmplt"
+	"github.com/tmrts/tmplt/pkg/util/exec"
 	"github.com/tmrts/tmplt/pkg/util/exit"
 	"github.com/tmrts/tmplt/pkg/util/osutil"
 	"github.com/tmrts/tmplt/pkg/util/validate"
@@ -43,7 +43,7 @@ var Save = &cli.Command{
 			}
 		}
 
-		if _, err := exec.Command("/usr/bin/cp", "-r", "--remove-destination", tmplDir, targetDir).Output(); err != nil {
+		if _, err := exec.Cmd("cp", "-r", "--remove-destination", tmplDir, targetDir); err != nil {
 			// TODO create exec package
 			exit.Error(err)
 		}

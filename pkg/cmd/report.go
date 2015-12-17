@@ -70,7 +70,7 @@ func getIssue() (*github.IssueRequest, error) {
 	f.Close()
 
 	// TODO allow gedit, vi, emacs
-	cmd := exec.Command("/usr/bin/vim", dir+"/issue.md")
+	cmd := exec.Command("vim", dir+"/issue.md")
 
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
@@ -96,6 +96,7 @@ func getIssue() (*github.IssueRequest, error) {
 		return nil, err
 	}
 
+	// TODO handle empty files
 	slices := strings.SplitAfterN(string(buf), "\n", 3)
 
 	title, body := slices[0], strings.Join(slices[1:], "\n")
@@ -107,18 +108,17 @@ func getIssue() (*github.IssueRequest, error) {
 }
 
 func CreateIssue() (string, error) {
-	t, err := readPassword()
-	if err != nil {
-		return "", err
-	}
-
 	req, err := getIssue()
 	if err != nil {
 		return "", err
 	}
 
-	client := github.NewClient(t.Client())
+	t, err := readPassword()
+	if err != nil {
+		return "", err
+	}
 
+	client := github.NewClient(t.Client())
 	issue, _, err := client.Issues.Create(tmplt.GithubOwner, tmplt.GithubRepo, req)
 	if err != nil {
 		return "", err

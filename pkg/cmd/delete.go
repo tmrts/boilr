@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"os/exec"
+	"os"
 	"path/filepath"
 
 	cli "github.com/spf13/cobra"
@@ -33,7 +33,7 @@ var Delete = &cli.Command{
 		}
 
 		// TODO Accept globs and multiple arguments
-		if _, err := exec.Command("/usr/bin/rm", "-rf", targetDir).Output(); err != nil {
+		if err := os.RemoveAll(targetDir); err != nil {
 			exit.Error(fmt.Errorf("delete: %v", err))
 		}
 

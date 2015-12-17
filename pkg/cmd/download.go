@@ -12,6 +12,7 @@ import (
 
 	cli "github.com/spf13/cobra"
 
+	"github.com/tmrts/tmplt/pkg/cmd/util"
 	"github.com/tmrts/tmplt/pkg/host"
 	"github.com/tmrts/tmplt/pkg/tmplt"
 	"github.com/tmrts/tmplt/pkg/util/exit"
@@ -86,6 +87,11 @@ func downloadZip(URL, targetDir string) error {
 		if err := extractFile(f, targetDir); err != nil {
 			return err
 		}
+	}
+
+	_, err := util.ValidateTemplate(path)
+	if err != nil {
+		return err
 	}
 
 	return nil

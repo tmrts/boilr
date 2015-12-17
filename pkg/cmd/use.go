@@ -22,12 +22,11 @@ func TemplateInRegistry(name string) (bool, error) {
 	return ok, nil
 }
 
-// TODO add --use-defaults flag to execute a template without user prompts
 // TODO add --use-cache flag to execute a template from previous answers to prompts
 var Use = &cli.Command{
 	Use:   "use <template-name> <target-dir>",
 	Short: "Execute a project template in the given directory",
-	Run: func(_ *cli.Command, args []string) {
+	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{
 			{"template-name", validate.UnixPath},
 			{"target-dir", validate.UnixPath},
@@ -49,6 +48,10 @@ var Use = &cli.Command{
 		tmpl, err := template.Get(tmplPath)
 		if err != nil {
 			exit.Fatal(fmt.Errorf("use: %s", err))
+		}
+
+		if shouldUseDefaults := GetBoolFlag(c, "use-defaults"); shouldUseDefaults {
+			tmpl.UseDefaultValues()
 		}
 
 		if err := tmpl.Execute(targetDir); err != nil {

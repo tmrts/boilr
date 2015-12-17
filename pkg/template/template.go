@@ -9,12 +9,12 @@ import (
 
 	"github.com/tmrts/tmplt/pkg/prompt"
 	"github.com/tmrts/tmplt/pkg/tmplt"
-	"github.com/tmrts/tmplt/pkg/util/exec"
 	"github.com/tmrts/tmplt/pkg/util/stringutil"
 )
 
 type Interface interface {
 	Execute(string) error
+	UseDefaultValues()
 }
 
 func Get(path string) (Interface, error) {
@@ -60,16 +60,31 @@ type dirTemplate struct {
 	Path    string
 	Context map[string]interface{}
 	FuncMap template.FuncMap
+
+	ShouldUseDefaults bool
+}
+
+func (t *dirTemplate) UseDefaultValues() {
+	t.ShouldUseDefaults = true
+}
+
+func (t *dirTemplate) BindPrompts() {
+	if t.ShouldUseDefaults {
+		for s, v := range t.Context {
+			t.FuncMap[s] = v
+		}
+	} else {
+		for s, v := range t.Context {
+			t.FuncMap[s] = prompt.New(s, v)
+		}
+	}
 }
 
 // Execute fills the template with the project metadata.
 func (t *dirTemplate) Execute(dirPrefix string) error {
-	for s, v := range t.Context {
-		t.FuncMap[s] = prompt.New(s, v)
-	}
+	t.BindPrompts()
 
 	// TODO create io.ReadWriter from string
-	// TODO refactor command execution
 	// TODO refactor name manipulation
 	return filepath.Walk(t.Path, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -84,6 +99,7 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 
 		buf := stringutil.NewString("")
 
+		// TODO translate errors into meaningful ones
 		fnameTmpl := template.Must(template.
 			New("file name template").
 			Option(Options...).
@@ -99,8 +115,7 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 		target := filepath.Join(dirPrefix, newName)
 
 		if info.IsDir() {
-			// TODO create a new pkg for dir operations
-			if _, err := exec.Cmd("/bin/mkdir", "-p", target); err != nil {
+			if err := os.MkdirAll(target, 0744); err != nil {
 				return err
 			}
 		} else {
