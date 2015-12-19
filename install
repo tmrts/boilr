@@ -103,6 +103,8 @@ archi=$(uname -sm)
 binary_available=1
 binary_error=""
 case "$archi" in
+  Darwin\ x86_64) download fzf-$version-darwin_${binary_arch:-amd64}   ;;
+  Darwin\ i*86)   download fzf-$version-darwin_${binary_arch:-386}     ;;
   Linux\ x86_64)  download tmplt-$version-linux_${binary_arch:-amd64}  ;;
   Linux\ i*86)    download tmplt-$version-linux_${binary_arch:-386}    ;;
   *)              binary_available=0 binary_error=1  ;;
