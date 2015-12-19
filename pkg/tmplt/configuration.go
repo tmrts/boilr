@@ -9,6 +9,7 @@ import (
 
 	"github.com/tmrts/tmplt/pkg/util/exit"
 	"github.com/tmrts/tmplt/pkg/util/osutil"
+	"github.com/tmrts/tmplt/pkg/util/tlog"
 )
 
 const (
@@ -19,8 +20,9 @@ const (
 	ConfigFileName = "config.json"
 	TemplateDir    = "templates"
 
-	ContextFileName = "project.json"
-	TemplateDirName = "template"
+	ContextFileName      = "project.json"
+	TemplateDirName      = "template"
+	TemplateMetadataName = "__metadata.json"
 
 	GithubOwner = "tmrts"
 	GithubRepo  = "tmplt"
@@ -44,6 +46,17 @@ func init() {
 
 	Configuration.FilePath = filepath.Join(homeDir, ConfigDirPath, ConfigFileName)
 	Configuration.TemplateDirPath = filepath.Join(homeDir, ConfigDirPath, TemplateDir)
+
+	IsTemplateDirInitialized, err := osutil.DirExists(Configuration.TemplateDirPath)
+	if err != nil {
+		exit.Error(err)
+	}
+
+	// TODO perform this in related commands only with ValidateInitialization
+	if !IsTemplateDirInitialized {
+		tlog.Warn("Template registry is not initialized. Please run `init` command to create it.")
+		return
+	}
 
 	// Read .config/tmplt/config.json if exists
 	// TODO use defaults if config.json doesn't exist

@@ -9,12 +9,18 @@ import (
 
 	"github.com/tmrts/tmplt/pkg/prompt"
 	"github.com/tmrts/tmplt/pkg/tmplt"
+	"github.com/tmrts/tmplt/pkg/util/osutil"
 	"github.com/tmrts/tmplt/pkg/util/stringutil"
 )
 
 type Interface interface {
 	Execute(string) error
 	UseDefaultValues()
+	Info() Metadata
+}
+
+func (t dirTemplate) Info() Metadata {
+	return t.Metadata
 }
 
 func Get(path string) (Interface, error) {
@@ -49,18 +55,44 @@ func Get(path string) (Interface, error) {
 		return metadata, nil
 	}(filepath.Join(absPath, tmplt.ContextFileName))
 
+	metadataExists, err := osutil.FileExists(filepath.Join(absPath, tmplt.TemplateMetadataName))
+	if err != nil {
+		return nil, err
+	}
+
+	md, err := func() (Metadata, error) {
+		if !metadataExists {
+			return Metadata{}, nil
+		}
+
+		b, err := ioutil.ReadFile(filepath.Join(absPath, tmplt.TemplateMetadataName))
+		if err != nil {
+			return Metadata{}, err
+		}
+
+		var m Metadata
+		if err := json.Unmarshal(b, &m); err != nil {
+			return Metadata{}, err
+		}
+
+		return m, nil
+	}()
+
 	return &dirTemplate{
-		Context: ctxt,
-		FuncMap: FuncMap,
-		Path:    filepath.Join(absPath, tmplt.TemplateDirName),
+		Context:  ctxt,
+		FuncMap:  FuncMap,
+		Path:     filepath.Join(absPath, tmplt.TemplateDirName),
+		Metadata: md,
 	}, err
 }
 
 type dirTemplate struct {
-	Path    string
-	Context map[string]interface{}
-	FuncMap template.FuncMap
+	Path     string
+	Context  map[string]interface{}
+	FuncMap  template.FuncMap
+	Metadata Metadata
 
+	alignment         string
 	ShouldUseDefaults bool
 }
 
@@ -73,6 +105,7 @@ func (t *dirTemplate) BindPrompts() {
 		for s, v := range t.Context {
 			t.FuncMap[s] = func() interface{} {
 				switch v := v.(type) {
+				// First is the default value if it's a slice
 				case []interface{}:
 					return v[0]
 				}
@@ -93,6 +126,7 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 
 	// TODO create io.ReadWriter from string
 	// TODO refactor name manipulation
+	// TODO trim leading or trailing whitespaces
 	return filepath.Walk(t.Path, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err

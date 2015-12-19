@@ -59,7 +59,7 @@ func downloadZip(URL, targetDir string) error {
 			defer rc.Close()
 		}
 
-		// split first token of f.Name since it's zip file name
+		// splits the first token of f.Name since it's zip file name
 		path := filepath.Join(dest, strings.SplitAfterN(f.Name, "/", 2)[1])
 
 		if f.FileInfo().IsDir() {
@@ -89,6 +89,7 @@ func downloadZip(URL, targetDir string) error {
 		}
 	}
 
+	// TODO Wrap this function in a validation wrapper from top to bottom
 	if _, err := util.ValidateTemplate(targetDir); err != nil {
 		return err
 	}
@@ -134,11 +135,14 @@ var Download = &cli.Command{
 
 		zipURL := host.ZipURL(templateURL)
 
-		// TODO validate template as well
 		if err := downloadZip(zipURL, targetDir); err != nil {
 			// Delete if download transaction fails
 			defer os.RemoveAll(targetDir)
 
+			exit.Error(fmt.Errorf("download: %s", err))
+		}
+
+		if err := serializeMetadata(templateName, templateURL, targetDir); err != nil {
 			exit.Error(fmt.Errorf("download: %s", err))
 		}
 

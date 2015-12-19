@@ -15,6 +15,7 @@ import (
 )
 
 var Save = &cli.Command{
+	// TODO rename template-name to template-tag
 	Use:   "save <template-path> <template-name>",
 	Short: "Save a project template to local template registry",
 	Run: func(c *cli.Command, args []string) {
@@ -51,6 +52,10 @@ var Save = &cli.Command{
 		if _, err := exec.Cmd("cp", "-r", tmplDir, targetDir); err != nil {
 			// TODO create exec package
 			exit.Error(err)
+		}
+
+		if err := serializeMetadata(templateName, "local:"+tmplDir, targetDir); err != nil {
+			exit.Error(fmt.Errorf("save: %s", err))
 		}
 
 		exit.OK("Successfully saved the template %v", templateName)
