@@ -3,7 +3,7 @@ package cmd
 import cli "github.com/spf13/cobra"
 
 var Root = &cli.Command{
-	Use: "tmplt",
+	Use: "boilr",
 }
 
 func Run() {

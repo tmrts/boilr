@@ -14,9 +14,9 @@ import (
 
 	"github.com/google/go-github/github"
 	cli "github.com/spf13/cobra"
-	"github.com/tmrts/tmplt/pkg/tmplt"
-	"github.com/tmrts/tmplt/pkg/util/exit"
-	"github.com/tmrts/tmplt/pkg/util/validate"
+	"github.com/tmrts/boilr/pkg/boilr"
+	"github.com/tmrts/boilr/pkg/util/exit"
+	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
 type Transport struct {
@@ -52,7 +52,7 @@ func readPassword() (Transport, error) {
 }
 
 func getIssue() (*github.IssueRequest, error) {
-	dir, err := ioutil.TempDir("", "tmplt-report")
+	dir, err := ioutil.TempDir("", "boilr-report")
 	if err != nil {
 		return nil, err
 	} else {
@@ -132,7 +132,7 @@ func CreateIssue() (string, error) {
 	}
 
 	client := github.NewClient(t.Client())
-	issue, _, err := client.Issues.Create(tmplt.GithubOwner, tmplt.GithubRepo, req)
+	issue, _, err := client.Issues.Create(boilr.GithubOwner, boilr.GithubRepo, req)
 	if err != nil {
 		return "", err
 	}

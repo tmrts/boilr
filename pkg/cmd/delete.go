@@ -7,10 +7,10 @@ import (
 
 	cli "github.com/spf13/cobra"
 
-	"github.com/tmrts/tmplt/pkg/tmplt"
-	"github.com/tmrts/tmplt/pkg/util/osutil"
-	"github.com/tmrts/tmplt/pkg/util/tlog"
-	"github.com/tmrts/tmplt/pkg/util/validate"
+	"github.com/tmrts/boilr/pkg/boilr"
+	"github.com/tmrts/boilr/pkg/util/osutil"
+	"github.com/tmrts/boilr/pkg/util/tlog"
+	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
 var Delete = &cli.Command{
@@ -20,7 +20,7 @@ var Delete = &cli.Command{
 		MustValidateVarArgs(args, validate.Argument{"template-path", validate.Alphanumeric})
 
 		for _, templateName := range args {
-			targetDir := filepath.Join(tmplt.Configuration.TemplateDirPath, templateName)
+			targetDir := filepath.Join(boilr.Configuration.TemplateDirPath, templateName)
 
 			switch exists, err := osutil.DirExists(targetDir); {
 			case err != nil:

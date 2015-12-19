@@ -4,8 +4,8 @@ import (
 	"errors"
 
 	cli "github.com/spf13/cobra"
-	"github.com/tmrts/tmplt/pkg/util/exit"
-	"github.com/tmrts/tmplt/pkg/util/validate"
+	"github.com/tmrts/boilr/pkg/util/exit"
+	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
 var (

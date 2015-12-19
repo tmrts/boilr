@@ -5,12 +5,12 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/tmrts/tmplt/pkg/template"
-	"github.com/tmrts/tmplt/pkg/tmplt"
+	"github.com/tmrts/boilr/pkg/boilr"
+	"github.com/tmrts/boilr/pkg/template"
 )
 
 func serializeMetadata(tag string, repo string, targetDir string) error {
-	fname := filepath.Join(targetDir, tmplt.TemplateMetadataName)
+	fname := filepath.Join(targetDir, boilr.TemplateMetadataName)
 
 	f, err := os.Create(fname)
 	if err != nil {

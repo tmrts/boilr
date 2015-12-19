@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/tmrts/tmplt/pkg/util/tlog"
+	"github.com/tmrts/boilr/pkg/util/tlog"
 )
 
 const (

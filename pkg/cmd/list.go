@@ -7,14 +7,14 @@ import (
 	"github.com/olekukonko/tablewriter"
 	cli "github.com/spf13/cobra"
 
-	"github.com/tmrts/tmplt/pkg/template"
-	"github.com/tmrts/tmplt/pkg/tmplt"
-	"github.com/tmrts/tmplt/pkg/util/exit"
-	"github.com/tmrts/tmplt/pkg/util/validate"
+	"github.com/tmrts/boilr/pkg/boilr"
+	"github.com/tmrts/boilr/pkg/template"
+	"github.com/tmrts/boilr/pkg/util/exit"
+	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
 func ListTemplates() (map[string]bool, error) {
-	d, err := os.Open(tmplt.Configuration.TemplateDirPath)
+	d, err := os.Open(boilr.Configuration.TemplateDirPath)
 	if err != nil {
 		return nil, err
 	} else {
@@ -47,7 +47,7 @@ var List = &cli.Command{
 
 		var data [][]string
 		for name, _ := range templateNames {
-			tmplPath, err := tmplt.TemplatePath(name)
+			tmplPath, err := boilr.TemplatePath(name)
 			if err != nil {
 				exit.Fatal(fmt.Errorf("list: %s", err))
 			}

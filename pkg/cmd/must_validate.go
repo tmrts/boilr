@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/tmrts/tmplt/pkg/cmd/util"
-	"github.com/tmrts/tmplt/pkg/util/exit"
-	"github.com/tmrts/tmplt/pkg/util/validate"
+	"github.com/tmrts/boilr/pkg/cmd/util"
+	"github.com/tmrts/boilr/pkg/util/exit"
+	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
 func MustValidateVarArgs(args []string, v validate.Argument) {

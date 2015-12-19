@@ -12,16 +12,16 @@ import (
 
 	cli "github.com/spf13/cobra"
 
-	"github.com/tmrts/tmplt/pkg/cmd/util"
-	"github.com/tmrts/tmplt/pkg/host"
-	"github.com/tmrts/tmplt/pkg/tmplt"
-	"github.com/tmrts/tmplt/pkg/util/exit"
-	"github.com/tmrts/tmplt/pkg/util/osutil"
-	"github.com/tmrts/tmplt/pkg/util/validate"
+	"github.com/tmrts/boilr/pkg/boilr"
+	"github.com/tmrts/boilr/pkg/cmd/util"
+	"github.com/tmrts/boilr/pkg/host"
+	"github.com/tmrts/boilr/pkg/util/exit"
+	"github.com/tmrts/boilr/pkg/util/osutil"
+	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
 func downloadZip(URL, targetDir string) error {
-	f, err := ioutil.TempFile("", "tmplt-download")
+	f, err := ioutil.TempFile("", "boilr-download")
 	if err != nil {
 		return err
 	} else {
@@ -109,7 +109,7 @@ var Download = &cli.Command{
 
 		templateURL, templateName := args[0], args[1]
 
-		targetDir, err := tmplt.TemplatePath(templateName)
+		targetDir, err := boilr.TemplatePath(templateName)
 		if err != nil {
 			exit.Error(fmt.Errorf("download: %s", err))
 		}

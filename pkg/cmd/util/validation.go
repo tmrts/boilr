@@ -7,9 +7,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/tmrts/tmplt/pkg/template"
-	"github.com/tmrts/tmplt/pkg/util/osutil"
-	"github.com/tmrts/tmplt/pkg/util/validate"
+	"github.com/tmrts/boilr/pkg/template"
+	"github.com/tmrts/boilr/pkg/util/osutil"
+	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
 var (
@@ -63,7 +63,7 @@ func ValidateArgs(args []string, validations []validate.Argument) error {
 }
 
 func testTemplate(path string) error {
-	tmpDir, err := ioutil.TempDir("", "tmplt-validation-test")
+	tmpDir, err := ioutil.TempDir("", "boilr-validation-test")
 	if err != nil {
 		return err
 	} else {

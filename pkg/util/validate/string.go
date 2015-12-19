@@ -5,7 +5,7 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/tmrts/tmplt/pkg/util/validate/pattern"
+	"github.com/tmrts/boilr/pkg/util/validate/pattern"
 )
 
 type String func(string) bool

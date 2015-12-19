@@ -20,10 +20,10 @@ ask() {
 }
 
 symlink() {
-  echo "  - Creating symlink: bin/$1 -> bin/tmplt"
+  echo "  - Creating symlink: bin/$1 -> bin/boilr"
   (cd "$HOME"/bin &&
-   rm -f tmplt &&
-   ln -sf $1 tmplt)
+   rm -f boilr &&
+   ln -sf $1 boilr)
   if [ $? -ne 0 ]; then
     binary_error="Failed to create symlink"
     return 1
@@ -31,17 +31,17 @@ symlink() {
 }
 
 initialize() {
-  mkdir -p "$HOME"/.config/tmplt/templates
+  mkdir -p "$HOME"/.config/boilr/templates
   if [ $? -ne 0 ]; then
-    binary_error="Failed to create .config/tmplt directory"
+    binary_error="Failed to create .config/boilr directory"
     return
   fi
 }
 
 check_binary() {
-  echo -n "  - Checking tmplt executable ... "
+  echo -n "  - Checking boilr executable ... "
   local output
-  output=$("$HOME"/bin/tmplt version 2>&1)
+  output=$("$HOME"/bin/boilr version 2>&1)
   if [ $? -ne 0 ]; then
     echo "Error: $output"
     binary_error="Invalid binary"
@@ -53,24 +53,24 @@ check_binary() {
     binary_error=""
     return 0
   fi
-  rm -f "$HOME"/bin/tmplt
+  rm -f "$HOME"/bin/boilr
   return 1
 }
 
 download() {
-  echo "Downloading tmplt ..."
+  echo "Downloading boilr ..."
 
-  if [ -x "$HOME"/bin/tmplt ]; then
+  if [ -x "$HOME"/bin/boilr ]; then
     echo "  - Already exists"
     check_binary && return
   fi
   if [ -x "$HOME"/bin/$1 ]; then
     symlink $1 && check_binary && return
   fi
-  if which_tmplt="$(which tmplt 2> /dev/null)"; then
+  if which_boilr="$(which boilr 2> /dev/null)"; then
     echo "  - Found in \$PATH"
-    echo "  - Creating symlink: $which_tmplt -> bin/tmplt"
-    (cd "$HOME"/bin && rm -f tmplt && ln -sf "$which_tmplt" tmplt)
+    echo "  - Creating symlink: $which_boilr -> bin/boilr"
+    (cd "$HOME"/bin && rm -f boilr && ln -sf "$which_boilr" boilr)
     check_binary && return
   fi
 
@@ -80,7 +80,7 @@ download() {
     return
   fi
 
-  local url=https://github.com/tmrts/tmplt/releases/download/$version/${1}.tgz
+  local url=https://github.com/tmrts/boilr/releases/download/$version/${1}.tgz
   if which curl > /dev/null; then
     curl -fL $url | tar -xz
   elif which wget > /dev/null; then
@@ -105,13 +105,13 @@ binary_error=""
 case "$archi" in
   Darwin\ x86_64) download fzf-$version-darwin_${binary_arch:-amd64}   ;;
   Darwin\ i*86)   download fzf-$version-darwin_${binary_arch:-386}     ;;
-  Linux\ x86_64)  download tmplt-$version-linux_${binary_arch:-amd64}  ;;
-  Linux\ i*86)    download tmplt-$version-linux_${binary_arch:-386}    ;;
+  Linux\ x86_64)  download boilr-$version-linux_${binary_arch:-amd64}  ;;
+  Linux\ i*86)    download boilr-$version-linux_${binary_arch:-386}    ;;
   *)              binary_available=0 binary_error=1  ;;
 esac
 
 cat << EOF
 Completed installation
 
-For more information, see: https://github.com/tmrts/tmplt
+For more information, see: https://github.com/tmrts/boilr
 EOF

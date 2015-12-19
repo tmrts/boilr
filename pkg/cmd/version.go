@@ -5,17 +5,17 @@ import (
 
 	cli "github.com/spf13/cobra"
 
-	"github.com/tmrts/tmplt/pkg/tmplt"
-	"github.com/tmrts/tmplt/pkg/util/tlog"
-	"github.com/tmrts/tmplt/pkg/util/validate"
+	"github.com/tmrts/boilr/pkg/boilr"
+	"github.com/tmrts/boilr/pkg/util/tlog"
+	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
 var Version = &cli.Command{
 	Use:   "version",
-	Short: "Show the tmplt version information",
+	Short: "Show the boilr version information",
 	Run: func(_ *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{})
 
-		tlog.Info(fmt.Sprint("Current version is ", tmplt.Version))
+		tlog.Info(fmt.Sprint("Current version is ", boilr.Version))
 	},
 }

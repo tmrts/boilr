@@ -6,10 +6,10 @@ import (
 
 	cli "github.com/spf13/cobra"
 
-	"github.com/tmrts/tmplt/pkg/template"
-	"github.com/tmrts/tmplt/pkg/tmplt"
-	"github.com/tmrts/tmplt/pkg/util/exit"
-	"github.com/tmrts/tmplt/pkg/util/validate"
+	"github.com/tmrts/boilr/pkg/boilr"
+	"github.com/tmrts/boilr/pkg/template"
+	"github.com/tmrts/boilr/pkg/util/exit"
+	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
 func TemplateInRegistry(name string) (bool, error) {
@@ -40,7 +40,7 @@ var Use = &cli.Command{
 			exit.Fatal(fmt.Errorf("Template %q couldn't be found in the template registry", tmplName))
 		}
 
-		tmplPath, err := tmplt.TemplatePath(tmplName)
+		tmplPath, err := boilr.TemplatePath(tmplName)
 		if err != nil {
 			exit.Fatal(fmt.Errorf("use: %s", err))
 		}

@@ -1,4 +1,4 @@
-package tmplt
+package boilr
 
 import (
 	"encoding/json"
@@ -7,15 +7,15 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/tmrts/tmplt/pkg/util/exit"
-	"github.com/tmrts/tmplt/pkg/util/osutil"
-	"github.com/tmrts/tmplt/pkg/util/tlog"
+	"github.com/tmrts/boilr/pkg/util/exit"
+	"github.com/tmrts/boilr/pkg/util/osutil"
+	"github.com/tmrts/boilr/pkg/util/tlog"
 )
 
 const (
-	AppName       = "tmplt"
+	AppName       = "boilr"
 	Version       = "0.0.1"
-	ConfigDirPath = ".config/tmplt"
+	ConfigDirPath = ".config/boilr"
 
 	ConfigFileName = "config.json"
 	TemplateDir    = "templates"
@@ -25,7 +25,7 @@ const (
 	TemplateMetadataName = "__metadata.json"
 
 	GithubOwner = "tmrts"
-	GithubRepo  = "tmplt"
+	GithubRepo  = "boilr"
 )
 
 var Configuration = struct {
@@ -58,7 +58,7 @@ func init() {
 		return
 	}
 
-	// Read .config/tmplt/config.json if exists
+	// Read .config/boilr/config.json if exists
 	// TODO use defaults if config.json doesn't exist
 	hasConfig, err := osutil.FileExists(Configuration.FilePath)
 	if err != nil {

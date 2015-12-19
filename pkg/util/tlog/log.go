@@ -1,4 +1,4 @@
-// Package tlog implements logging utilities for tmplt
+// Package tlog implements logging utilities for boilr
 package tlog
 
 import (

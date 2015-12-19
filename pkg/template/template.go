@@ -7,10 +7,10 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/tmrts/tmplt/pkg/prompt"
-	"github.com/tmrts/tmplt/pkg/tmplt"
-	"github.com/tmrts/tmplt/pkg/util/osutil"
-	"github.com/tmrts/tmplt/pkg/util/stringutil"
+	"github.com/tmrts/boilr/pkg/boilr"
+	"github.com/tmrts/boilr/pkg/prompt"
+	"github.com/tmrts/boilr/pkg/util/osutil"
+	"github.com/tmrts/boilr/pkg/util/stringutil"
 )
 
 type Interface interface {
@@ -53,9 +53,9 @@ func Get(path string) (Interface, error) {
 		}
 
 		return metadata, nil
-	}(filepath.Join(absPath, tmplt.ContextFileName))
+	}(filepath.Join(absPath, boilr.ContextFileName))
 
-	metadataExists, err := osutil.FileExists(filepath.Join(absPath, tmplt.TemplateMetadataName))
+	metadataExists, err := osutil.FileExists(filepath.Join(absPath, boilr.TemplateMetadataName))
 	if err != nil {
 		return nil, err
 	}
@@ -65,7 +65,7 @@ func Get(path string) (Interface, error) {
 			return Metadata{}, nil
 		}
 
-		b, err := ioutil.ReadFile(filepath.Join(absPath, tmplt.TemplateMetadataName))
+		b, err := ioutil.ReadFile(filepath.Join(absPath, boilr.TemplateMetadataName))
 		if err != nil {
 			return Metadata{}, err
 		}
@@ -81,7 +81,7 @@ func Get(path string) (Interface, error) {
 	return &dirTemplate{
 		Context:  ctxt,
 		FuncMap:  FuncMap,
-		Path:     filepath.Join(absPath, tmplt.TemplateDirName),
+		Path:     filepath.Join(absPath, boilr.TemplateDirName),
 		Metadata: md,
 	}, err
 }
