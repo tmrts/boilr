@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
 	"golang.org/x/crypto/ssh/terminal"
@@ -58,7 +59,9 @@ func getIssue() (*github.IssueRequest, error) {
 		defer os.RemoveAll(dir)
 	}
 
-	f, err := os.Create(dir + "/issue.md")
+	fname := filepath.Join(dir, "issue.markdown")
+
+	f, err := os.Create(fname)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +73,7 @@ func getIssue() (*github.IssueRequest, error) {
 	f.Close()
 
 	// TODO allow gedit, vi, emacs
-	cmd := exec.Command("vim", dir+"/issue.md")
+	cmd := exec.Command("vim", fname)
 
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
@@ -84,7 +87,7 @@ func getIssue() (*github.IssueRequest, error) {
 		return nil, err
 	}
 
-	issueFile, err := os.Open(dir + "/issue.md")
+	issueFile, err := os.Open(fname)
 	if err != nil {
 		return nil, err
 	} else {
@@ -96,10 +99,20 @@ func getIssue() (*github.IssueRequest, error) {
 		return nil, err
 	}
 
-	// TODO handle empty files
-	slices := strings.SplitAfterN(string(buf), "\n", 3)
+	slices := strings.SplitAfterN(string(buf), "\n", 2)
 
-	title, body := slices[0], strings.Join(slices[1:], "\n")
+	// TODO Abort if any field is empty
+	title, body := slices[0], slices[1]
+
+	title = strings.TrimPrefix(title, "\n")
+	title = strings.TrimSuffix(title, "\n")
+
+	body = strings.TrimPrefix(body, "\n")
+	body = strings.TrimSuffix(body, "\n")
+
+	if title == "" || body == "" {
+		return nil, fmt.Errorf("issue field is empty, report aborting")
+	}
 
 	return &github.IssueRequest{
 		Title: &title,
@@ -135,7 +148,7 @@ var Report = &cli.Command{
 
 		url, err := CreateIssue()
 		if err != nil {
-			exit.Error(fmt.Errorf("Failed to create an issue, %v", err))
+			exit.Error(fmt.Errorf("Failed to create an issue: %v", err))
 		}
 
 		exit.OK("Successfully created an issue %v", url)
