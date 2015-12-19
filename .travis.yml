@@ -1,14 +1,29 @@
 language: go
-
 sudo: false
-
 matrix:
   include:
   - go: 1.5
+    env: VERSION=0.1.0
 
-script:
-  - GOARCH=amd64 GOOS=linux go build boilr.go && mv boilr boilr_linux_64 && tar czvf boilr-0.1.0-linux_amd64.tgz boilr_linux_64
-  - GOARCH=amd64 GOOS=darwin go build boilr.go && mv boilr boilr_darwin_64 && tar czvf boilr-0.1.0-darwin_amd64.tgz boilr_darwin_64
+before_deploy:
+- GOARCH=amd64 GOOS=linux go build boilr.go  && tar czvf boilr-$VERSION-linux_amd64.tgz boilr
+- GOARCH=386   GOOS=linux go build boilr.go  && tar czvf boilr-$VERSION-linux_386.tgz boilr
 
-  - GOARCH=386 GOOS=linux go build boilr.go && mv boilr boilr_linux_32 && tar czvf boilr-0.1.0-linux_386.tgz boilr_linux_32
-  - GOARCH=386 GOOS=darwin go build boilr.go && mv boilr boilr_darwin_32 && tar czvf boilr-0.1.0-darwin_386.tgz boilr_darwin_32
+- GOARCH=amd64 GOOS=darwin go build boilr.go && tar czvf boilr-$VERSION-darwin_amd64.tgz boilr
+- GOARCH=386   GOOS=darwin go build boilr.go && tar czvf boilr-$VERSION-darwin_386.tgz boilr
+
+deploy:
+  provider: releases
+  api_key:
+    secure: QWOLnQfX23rtlkKNfTPdsjt7WIr3OSKX1G/PILKkq8csFfLy3MQ83JiUboLnutoRxK/Aam6tGoJp9ZGC7Y0maxhV+Th17CwM2xHJiMyB0nAsDOgwfU9l+TYM4SrKcowjt2t0PAf8D+dHFX0Ai2786wLkijqgpQggz+/oF8Ycscp9xaMj/VexSKHBaKyPUlkO+BQM5A63Zj9Ry4/ioLwgcxnNAaCoP1tQ557vVahgi5p78vhSewM9toStv0NRshEdQN+nT1JAEIuWmDbGXcTloh88G1CC5/4q4YyyGnGjfXf0+Afz0kqdLN3BJHxCfnj51S3IVJs6ZAdzO7VHajp+ulQ9HPZC5ZTSgRSnmxC7Y4foAG13G5pcHj0mypduLPFJ+KIcmOJ9cWnWLWWMtJIvi9OQ+3jIagJ8OYJF5aVwzlLGvicHeYybVAqA6RDOJlDU9GoO0ERdu4G6JL+rIdCvjyjrqN2mfCV0vyXNtUaP27yGavY5zspLlZ0DxYYdsGdcW1HezW88zfOO+3EybjwqEY/72yQ3W4sW9zmdi9oBXLEzc1dyUAch8igpAtLoa3+b7VWhUBs56mkxFMuKxWZhSsNoDAfJqipMuSIJGoJeG5hK2ABPy2VBbKAaNfIVTQs9UC8L62G4+L9FujZ1eDCSiMtI1NeiXacUo0RY4wkPj4k=
+  file: 
+    - install
+    - boilr-$VERSION-darwin_386.tgz
+    - boilr-$VERSION-darwin_amd64.tgz
+    - boilr-$VERSION-linux_386.tgz
+    - boilr-$VERSION-linux_amd64.tgz
+  skip_cleanup: true
+  on:
+    repo: tmrts/boilr
+    branch: master
+    tags: true

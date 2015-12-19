@@ -14,7 +14,7 @@ import (
 
 const (
 	AppName       = "boilr"
-	Version       = "0.0.1"
+	Version       = "0.1.0"
 	ConfigDirPath = ".config/boilr"
 
 	ConfigFileName = "config.json"
