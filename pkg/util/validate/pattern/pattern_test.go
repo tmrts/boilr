@@ -17,6 +17,7 @@ func TestUnixPathPattern(t *testing.T) {
 		{"/tmp-dir", true},
 		{"/tmp-dir/new_dir", true},
 		{"/TMP/dir", true},
+		{"rel/dir", true},
 	}
 
 	for _, test := range tests {

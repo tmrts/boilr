@@ -49,3 +49,5 @@ func Error(msg string) {
 func Fatal(msg string) {
 	Error(msg)
 }
+
+// TODO use dependency injection wrapper for fmt.Print usage in the code base

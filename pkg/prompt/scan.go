@@ -13,7 +13,7 @@ import (
 const (
 	// TODO align brackets used in the prompt message
 	PromptFormatMessage       = "[?] Please choose a value for %#q [default: %#v]: "
-	PromptChoiceFormatMessage = "[?] Please select an option for %#q\n%v  Select from %v..%v [default: %#v]: "
+	PromptChoiceFormatMessage = "[?] Please choose an option for %#q\n%v    Select from %v..%v [default: %#v]: "
 )
 
 func scanLine() (string, error) {
@@ -107,7 +107,7 @@ type Choice struct {
 
 func formattedChoices(cs []string) (s string) {
 	for i, c := range cs {
-		s += fmt.Sprintf("  %v -  %q\n", i+1, c)
+		s += fmt.Sprintf("    %v -  %q\n", i+1, c)
 	}
 
 	return
@@ -156,6 +156,7 @@ func newSlice(name string, choices []string) func() interface{} {
 // user input and has a default value that returns result.
 func New(name string, defval interface{}) func() interface{} {
 	// TODO use reflect package
+	// TODO add a prompt as such "How many Items will you enter", "Enter each" use in "{{range Items}}"
 	switch defval := defval.(type) {
 	case bool:
 		return newBool(name, defval)

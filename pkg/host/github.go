@@ -10,5 +10,6 @@ func ZipURL(url string) string {
 		return url
 	}
 
+	// BUG filepath.Join trims slashes use url.Join
 	return "https://codeload.github.com/" + url + "/zip/master"
 }
