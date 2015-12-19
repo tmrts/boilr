@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/olekukonko/tablewriter"
 	cli "github.com/spf13/cobra"
 
+	"github.com/tmrts/tmplt/pkg/template"
 	"github.com/tmrts/tmplt/pkg/tmplt"
 	"github.com/tmrts/tmplt/pkg/util/exit"
 	"github.com/tmrts/tmplt/pkg/util/validate"
@@ -43,8 +45,33 @@ var List = &cli.Command{
 			exit.Error(fmt.Errorf("list: %s", err))
 		}
 
+		var data [][]string
 		for name, _ := range templateNames {
-			fmt.Println(name)
+			tmplPath, err := tmplt.TemplatePath(name)
+			if err != nil {
+				exit.Fatal(fmt.Errorf("list: %s", err))
+			}
+
+			tmpl, err := template.Get(tmplPath)
+			if err != nil {
+				exit.Fatal(fmt.Errorf("list: %s", err))
+			}
+
+			data = append(data, tmpl.Info().String())
 		}
+
+		// TODO Wrap in a util function
+		table := tablewriter.NewWriter(os.Stdout)
+		table.SetHeader([]string{"Tag", "Repository", "Created"})
+
+		for _, datum := range data {
+			table.Append(datum)
+		}
+
+		if len(data) == 0 {
+			table.Append([]string{"", "", ""})
+		}
+
+		table.Render()
 	},
 }
