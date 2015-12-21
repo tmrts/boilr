@@ -19,21 +19,21 @@ import (
 	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
-type Transport struct {
+type transport struct {
 	Username string
 	Password string
 }
 
-func (t Transport) RoundTrip(req *http.Request) (*http.Response, error) {
+func (t transport) RoundTrip(req *http.Request) (*http.Response, error) {
 	req.SetBasicAuth(t.Username, t.Password)
 	return http.DefaultTransport.RoundTrip(req)
 }
 
-func (t *Transport) Client() *http.Client {
+func (t *transport) Client() *http.Client {
 	return &http.Client{Transport: t}
 }
 
-func readPassword() (Transport, error) {
+func readPassword() (transport, error) {
 	var name string
 	fmt.Printf("Username for github: ")
 	fmt.Scanf("%s", &name)
@@ -41,11 +41,11 @@ func readPassword() (Transport, error) {
 	fmt.Printf("Password for %s: ", name)
 	pass, err := terminal.ReadPassword(int(os.Stdin.Fd()))
 	if err != nil {
-		return Transport{}, err
+		return transport{}, err
 	}
 	fmt.Println()
 
-	return Transport{
+	return transport{
 		Username: name,
 		Password: string(pass),
 	}, nil
@@ -55,9 +55,8 @@ func getIssue() (*github.IssueRequest, error) {
 	dir, err := ioutil.TempDir("", "boilr-report")
 	if err != nil {
 		return nil, err
-	} else {
-		defer os.RemoveAll(dir)
 	}
+	defer os.RemoveAll(dir)
 
 	fname := filepath.Join(dir, "issue.markdown")
 
@@ -90,9 +89,8 @@ func getIssue() (*github.IssueRequest, error) {
 	issueFile, err := os.Open(fname)
 	if err != nil {
 		return nil, err
-	} else {
-		defer issueFile.Close()
 	}
+	defer issueFile.Close()
 
 	buf, err := ioutil.ReadAll(issueFile)
 	if err != nil {
@@ -120,7 +118,7 @@ func getIssue() (*github.IssueRequest, error) {
 	}, nil
 }
 
-func CreateIssue() (string, error) {
+func createIssue() (string, error) {
 	req, err := getIssue()
 	if err != nil {
 		return "", err
@@ -140,13 +138,14 @@ func CreateIssue() (string, error) {
 	return *issue.HTMLURL, nil
 }
 
+// Report contains the cli-command for creating github issues.
 var Report = &cli.Command{
 	Use:   "report",
 	Short: "Creates an issue in the github repository",
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{})
 
-		url, err := CreateIssue()
+		url, err := createIssue()
 		if err != nil {
 			exit.Error(fmt.Errorf("Failed to create an issue: %v", err))
 		}

@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	// Indicates that the local template registry is not initialized for boilr.
+	// ErrUninitializedboilrDir indicates that the local template registry is not initialized for boilr.
 	ErrUninitializedboilrDir = errors.New("boilr: .boilr directory is not initialized")
 )
 

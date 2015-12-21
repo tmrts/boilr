@@ -9,33 +9,33 @@ import (
 
 // TODO default to ASCII if Unicode is not supported
 const (
-	// Character indicating debug message.
+	// DebugMark character indicates debug message.
 	DebugMark = "☹"
 
-	// Character indicating success message.
+	// CheckMark character indicates success message.
 	CheckMark = "✔"
 
-	// Character indicating information message.
+	// InfoMark character indicates information message.
 	InfoMark = "i"
 
-	// Character indicating warning message.
+	// WarnMark character indicates warning message.
 	WarnMark = "!"
 
-	// Character indicating error message.
+	// ErrorMark character indicates error message.
 	ErrorMark = "✘"
 
+	// QuestionMark character indicates prompt message.
 	// TODO use for prompts
-	// Character indicating prompt message.
 	QuestionMark = "?"
 )
 
+// TODO add log levels
 func coloredPrintMsg(icon string, msg string, iC color.Attribute, mC color.Attribute) {
 	fmt.Println(
 		color.New(mC).SprintFunc()("["+icon+"]"),
 		color.New(color.Bold, iC).SprintFunc()(msg))
 }
 
-// TODO add log levels
 // Debug logs the given message as a debug message.
 func Debug(msg string) {
 	coloredPrintMsg(DebugMark, msg, color.FgYellow, color.FgYellow)

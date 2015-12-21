@@ -9,9 +9,11 @@ var Root = &cli.Command{
 
 // Run executes the cli-command root.
 func Run() {
-	// TODO add loading bars or progress bars to commands that take time
 	// TODO trap c-c to rollback transactions
 	// TODO use command factories instead of global command variables
+	// TODO add describe command that shows template metadata information
+	// TODO add create command that creates a minimal template template
+	// TODO rename template-name to template-tag
 	Init.PersistentFlags().BoolP("force", "f", false, "Recreate directories if they exist")
 	Root.AddCommand(Init)
 

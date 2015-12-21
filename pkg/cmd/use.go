@@ -12,6 +12,7 @@ import (
 	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
+// TemplateInRegistry checks whether the given name exists in the template registry.
 func TemplateInRegistry(name string) (bool, error) {
 	names, err := ListTemplates()
 	if err != nil {

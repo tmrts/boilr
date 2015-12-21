@@ -8,13 +8,13 @@ import (
 )
 
 const (
-	// Indicates successful execution.
+	// CodeOK indicates successful execution.
 	CodeOK = 0
 
-	// Indicates erroneous execution.
+	// CodeError indicates erroneous execution.
 	CodeError = 1
 
-	// Indicates erroneous use by user.
+	// CodeFatal indicates erroneous use by user.
 	CodeFatal = 2
 )
 

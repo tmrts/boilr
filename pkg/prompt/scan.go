@@ -10,12 +10,12 @@ import (
 	"github.com/tmrts/boilr/pkg/util/tlog"
 )
 
+// TODO align brackets used in the prompt message
 const (
-	// TODO align brackets used in the prompt message
-	// Format message for value prompts
+	// PromptFormatMessage is a format message for value prompts.
 	PromptFormatMessage = "[?] Please choose a value for %#q [default: %#v]: "
 
-	// Format message for choice prompts
+	// PromptChoiceFormatMessage is a format message for choice prompts.
 	PromptChoiceFormatMessage = "[?] Please choose an option for %#q\n%v    Select from %v..%v [default: %#v]: "
 )
 

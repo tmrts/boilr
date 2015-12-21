@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	// Function map containing the functions exposed to templating engine.
+	// FuncMap contains the functions exposed to templating engine.
 	FuncMap = template.FuncMap{
 		// TODO confirmation prompt
 		// TODO value prompt
@@ -30,14 +30,14 @@ var (
 		"repeat": strings.Repeat,
 	}
 
-	// Options for the template execution.
+	// Options contain the default options for the template execution.
 	Options = []string{
 		// TODO ignore a field if no value is found instead of writing <no value>
 		"missingkey=invalid",
 	}
 )
 
-// Returns the current time in the given format.
+// CurrentTimeInFmt returns the current time in the given format.
 // See time.Time.Format for more details on the format string.
 func CurrentTimeInFmt(fmt string) string {
 	t := time.Now()

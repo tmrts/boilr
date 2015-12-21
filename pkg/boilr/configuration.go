@@ -13,34 +13,34 @@ import (
 )
 
 const (
-	// Name of the application
+	// AppName of the application
 	AppName = "boilr"
 
 	// Version of the application
 	Version = "0.1.0"
 
-	// Configuration Directory of the application
+	// ConfigDirPath is the configuration directory of the application
 	ConfigDirPath = ".config/boilr"
 
-	// Configuration File Name of the application
+	// ConfigFileName is the configuration file name of the application
 	ConfigFileName = "config.json"
 
-	// Directory that contains the template registry
+	// TemplateDir is the directory that contains the template registry
 	TemplateDir = "templates"
 
-	// Name of the file that contains the context values for the template
+	// ContextFileName is the name of the file that contains the context values for the template
 	ContextFileName = "project.json"
 
-	// Name of the directory that contains the template files in a boilr template
+	// TemplateDirName is the name of the directory that contains the template files in a boilr template
 	TemplateDirName = "template"
 
-	// Name of the file that contains the metadata about the template saved in registry
+	// TemplateMetadataName is the name of the file that contains the metadata about the template saved in registry
 	TemplateMetadataName = "__metadata.json"
 
-	// Owner of the github repository
+	// GithubOwner is the owner of the github repository
 	GithubOwner = "tmrts"
 
-	// Name of the github repository
+	// GithubRepo is the name of the github repository
 	GithubRepo = "boilr"
 )
 

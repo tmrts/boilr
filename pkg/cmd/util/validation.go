@@ -13,15 +13,15 @@ import (
 )
 
 var (
-	// Indicates that the given number of arguments exceed the expected number of arguments.
+	// ErrUnexpectedArgs indicates that the given number of arguments exceed the expected number of arguments.
 	ErrUnexpectedArgs = errors.New("unexpected arguments")
 
-	// Indicates that the given number of arguments does not match the expected number of arguments.
+	// ErrNotEnoughArgs indicates that the given number of arguments does not match the expected number of arguments.
 	ErrNotEnoughArgs = errors.New("not enough arguments")
 )
 
 const (
-	// Error message format string for filling in the details of an invalid arg.
+	// InvalidArg error message format string for filling in the details of an invalid arg.
 	InvalidArg = "invalid argument for %q: %q, should be a valid %v"
 )
 
@@ -53,7 +53,7 @@ func ValidateVarArgs(args []string, v validate.Argument) error {
 	return nil
 }
 
-// ValidateVarArgs validates arguments with the given validate.Argument functions.
+// ValidateArgs validates arguments with the given validate.Argument functions.
 // Two arguments must contain the same number of elements.
 func ValidateArgs(args []string, validations []validate.Argument) error {
 	if err := ValidateArgCount(len(validations), len(args)); err != nil {
@@ -73,9 +73,8 @@ func testTemplate(path string) error {
 	tmpDir, err := ioutil.TempDir("", "boilr-validation-test")
 	if err != nil {
 		return err
-	} else {
-		defer os.RemoveAll(tmpDir)
 	}
+	defer os.RemoveAll(tmpDir)
 
 	tmpl, err := template.Get(path)
 	if err != nil {
