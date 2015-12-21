@@ -15,11 +15,24 @@ const (
 )
 
 var (
+	// Regular expression for alpha strings.
+	Alpha = regexp.MustCompile(alpha)
+
+	// Regular expression for alphanumeric strings.
 	Alphanumeric = regexp.MustCompile(alphanumeric)
-	Alpha        = regexp.MustCompile(alpha)
-	Email        = regexp.MustCompile(email)
-	Integer      = regexp.MustCompile(integer)
-	Numeric      = regexp.MustCompile(numeric)
-	UnixPath     = regexp.MustCompile(unixPath)
-	URL          = regexp.MustCompile(secureURL)
+
+	// Regular expression for e-mail strings.
+	Email = regexp.MustCompile(email)
+
+	// Regular expression for integer strings.
+	Integer = regexp.MustCompile(integer)
+
+	// Regular expression for numeric strings.
+	Numeric = regexp.MustCompile(numeric)
+
+	// Regular expression for unix path strings.
+	UnixPath = regexp.MustCompile(unixPath)
+
+	// Regular expression for URL strings.
+	URL = regexp.MustCompile(secureURL)
 )

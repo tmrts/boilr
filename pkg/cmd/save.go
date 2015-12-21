@@ -14,6 +14,7 @@ import (
 	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
+// Save contains the cli-command for saving templates to template registry.
 var Save = &cli.Command{
 	// TODO rename template-name to template-tag
 	Use:   "save <template-path> <template-name>",

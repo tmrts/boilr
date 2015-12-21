@@ -9,9 +9,11 @@ import (
 )
 
 var (
+	// Indicates that the template is invalid.
 	ErrTemplateInvalid = errors.New("validate: given template is invalid")
 )
 
+// Validate contains the cli-command for validating templates.
 var Validate = &cli.Command{
 	Use:   "validate",
 	Short: "Validates whether a template is valid or not",

@@ -24,17 +24,15 @@ func downloadZip(URL, targetDir string) error {
 	f, err := ioutil.TempFile("", "boilr-download")
 	if err != nil {
 		return err
-	} else {
-		defer f.Close()
-		defer os.RemoveAll(f.Name())
 	}
+	defer f.Close()
+	defer os.RemoveAll(f.Name())
 
 	resp, err := http.Get(URL)
 	if err != nil {
 		return err
-	} else {
-		defer resp.Body.Close()
 	}
+	defer resp.Body.Close()
 
 	if _, err := io.Copy(f, resp.Body); err != nil {
 		return err
@@ -47,17 +45,15 @@ func downloadZip(URL, targetDir string) error {
 	r, err := zip.OpenReader(f.Name())
 	if err != nil {
 		return err
-	} else {
-		defer r.Close()
 	}
+	defer r.Close()
 
 	extractFile := func(f *zip.File, dest string) error {
 		rc, err := f.Open()
 		if err != nil {
 			return err
-		} else {
-			defer rc.Close()
 		}
+		defer rc.Close()
 
 		// splits the first token of f.Name since it's zip file name
 		path := filepath.Join(dest, strings.SplitAfterN(f.Name, "/", 2)[1])
@@ -71,9 +67,8 @@ func downloadZip(URL, targetDir string) error {
 			f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
 			if err != nil {
 				return err
-			} else {
-				defer f.Close()
 			}
+			defer f.Close()
 
 			if _, err := io.Copy(f, rc); err != nil {
 				return err
@@ -97,10 +92,11 @@ func downloadZip(URL, targetDir string) error {
 	return nil
 }
 
-// FIXME Half-Updates leave messy templates
+// Download contains the cli-command for downloading templates from github.
 var Download = &cli.Command{
 	Use:   "download <template-repo> <template-name>",
 	Short: "Download a project template from a github repository to template registry",
+	// FIXME Half-Updates leave messy templates
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{
 			{"template-repo", validate.UnixPath},

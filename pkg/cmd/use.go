@@ -23,6 +23,7 @@ func TemplateInRegistry(name string) (bool, error) {
 }
 
 // TODO add --use-cache flag to execute a template from previous answers to prompts
+// Use contains the cli-command for using templates located in the local template registry.
 var Use = &cli.Command{
 	Use:   "use <template-name> <target-dir>",
 	Short: "Execute a project template in the given directory",

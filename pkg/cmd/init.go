@@ -11,10 +11,13 @@ import (
 )
 
 var (
+	// Indicates that the local template registry is not initialized for boilr.
 	ErrUninitializedboilrDir = errors.New("boilr: .boilr directory is not initialized")
 )
 
-// TODO remove?
+// TODO is it necessary?
+// Init contains the cli-command for initializing the local template
+// registry in case it's not initialized.
 var Init = &cli.Command{
 	Use:   "init",
 	Short: "Initialize directories required by boilr (By default done by installation script)",

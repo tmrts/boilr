@@ -13,8 +13,11 @@ import (
 )
 
 var (
+	// Indicates that the given number of arguments exceed the expected number of arguments.
 	ErrUnexpectedArgs = errors.New("unexpected arguments")
-	ErrNotEnoughArgs  = errors.New("not enough arguments")
+
+	// Indicates that the given number of arguments does not match the expected number of arguments.
+	ErrNotEnoughArgs = errors.New("not enough arguments")
 )
 
 const (
@@ -22,6 +25,7 @@ const (
 	InvalidArg = "invalid argument for %q: %q, should be a valid %v"
 )
 
+// ValidateArgCount validates the number of arguments and returns the corresponding error if there are any.
 func ValidateArgCount(expectedArgNo, argNo int) error {
 	switch {
 	case expectedArgNo < argNo:
@@ -34,6 +38,7 @@ func ValidateArgCount(expectedArgNo, argNo int) error {
 	return nil
 }
 
+// ValidateVarArgs validates variadic arguments with the given validate.Argument function.
 func ValidateVarArgs(args []string, v validate.Argument) error {
 	if len(args) == 0 {
 		return ErrNotEnoughArgs
@@ -48,6 +53,8 @@ func ValidateVarArgs(args []string, v validate.Argument) error {
 	return nil
 }
 
+// ValidateVarArgs validates arguments with the given validate.Argument functions.
+// Two arguments must contain the same number of elements.
 func ValidateArgs(args []string, validations []validate.Argument) error {
 	if err := ValidateArgCount(len(validations), len(args)); err != nil {
 		return err
@@ -80,6 +87,7 @@ func testTemplate(path string) error {
 	return tmpl.Execute(tmpDir)
 }
 
+// ValidateTemplate validates the template structure given the template path.
 func ValidateTemplate(tmplPath string) (bool, error) {
 	if exists, err := osutil.DirExists(tmplPath); !exists {
 		if err != nil {

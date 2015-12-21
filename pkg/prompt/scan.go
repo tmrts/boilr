@@ -12,7 +12,10 @@ import (
 
 const (
 	// TODO align brackets used in the prompt message
-	PromptFormatMessage       = "[?] Please choose a value for %#q [default: %#v]: "
+	// Format message for value prompts
+	PromptFormatMessage = "[?] Please choose a value for %#q [default: %#v]: "
+
+	// Format message for choice prompts
 	PromptChoiceFormatMessage = "[?] Please choose an option for %#q\n%v    Select from %v..%v [default: %#v]: "
 )
 
@@ -100,8 +103,12 @@ func newBool(name string, defval bool) func() interface{} {
 	}
 }
 
+// Choice contains the values for a choice
 type Choice struct {
+	// Default choice
 	Default int
+
+	// List of choices
 	Choices []string
 }
 

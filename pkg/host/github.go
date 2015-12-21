@@ -2,6 +2,7 @@ package host
 
 import "strings"
 
+// ZipURL returns the URL of the zip archive given a github repository URL.
 func ZipURL(url string) string {
 	url = strings.TrimSuffix(url, "/")
 	url = strings.TrimPrefix(url, "/")

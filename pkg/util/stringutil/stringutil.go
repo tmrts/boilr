@@ -2,11 +2,13 @@ package stringutil
 
 import "io"
 
+// String wraps string with io.ReadWriter
 type String interface {
 	io.ReadWriter
 	String() string
 }
 
+// NewString creates a String
 func NewString(contents string) String {
 	s := str(contents)
 	return &s

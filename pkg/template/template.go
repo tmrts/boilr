@@ -13,9 +13,15 @@ import (
 	"github.com/tmrts/boilr/pkg/util/stringutil"
 )
 
+// Interface is contains the behavior of boilr templates.
 type Interface interface {
+	// Executes the template on the given target directory path.
 	Execute(string) error
+
+	// If used, the template will execute using default values.
 	UseDefaultValues()
+
+	// Returns the metadata of the template.
 	Info() Metadata
 }
 
@@ -23,6 +29,7 @@ func (t dirTemplate) Info() Metadata {
 	return t.Metadata
 }
 
+// Get retrieves the template from a path.
 func Get(path string) (Interface, error) {
 	absPath, err := filepath.Abs(path)
 	if err != nil {
@@ -38,9 +45,8 @@ func Get(path string) (Interface, error) {
 			}
 
 			return nil, err
-		} else {
-			defer f.Close()
 		}
+		defer f.Close()
 
 		buf, err := ioutil.ReadAll(f)
 		if err != nil {
@@ -173,9 +179,8 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 			f, err := os.OpenFile(target, os.O_CREATE|os.O_WRONLY, fi.Mode())
 			if err != nil {
 				return err
-			} else {
-				defer f.Close()
 			}
+			defer f.Close()
 
 			contentsTmpl := template.Must(template.
 				New("file contents template").

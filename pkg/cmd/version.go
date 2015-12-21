@@ -10,6 +10,7 @@ import (
 	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
+// Version contains the cli-command for printing the current version of the tool.
 var Version = &cli.Command{
 	Use:   "version",
 	Short: "Show the boilr version information",

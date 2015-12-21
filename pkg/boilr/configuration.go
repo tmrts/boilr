@@ -13,26 +13,46 @@ import (
 )
 
 const (
-	AppName       = "boilr"
-	Version       = "0.1.0"
+	// Name of the application
+	AppName = "boilr"
+
+	// Version of the application
+	Version = "0.1.0"
+
+	// Configuration Directory of the application
 	ConfigDirPath = ".config/boilr"
 
+	// Configuration File Name of the application
 	ConfigFileName = "config.json"
-	TemplateDir    = "templates"
 
-	ContextFileName      = "project.json"
-	TemplateDirName      = "template"
+	// Directory that contains the template registry
+	TemplateDir = "templates"
+
+	// Name of the file that contains the context values for the template
+	ContextFileName = "project.json"
+
+	// Name of the directory that contains the template files in a boilr template
+	TemplateDirName = "template"
+
+	// Name of the file that contains the metadata about the template saved in registry
 	TemplateMetadataName = "__metadata.json"
 
+	// Owner of the github repository
 	GithubOwner = "tmrts"
-	GithubRepo  = "boilr"
+
+	// Name of the github repository
+	GithubRepo = "boilr"
 )
 
+// Configuration contains the values for needed for boilr to operate.
+// These values can be overridden by the inclusion of a boilr.json
+// file in the configuration directory.
 var Configuration = struct {
 	FilePath        string
 	TemplateDirPath string
 }{}
 
+// TemplatePath returns the absolute path of a template given the name of the template.
 func TemplatePath(name string) (string, error) {
 	return filepath.Join(Configuration.TemplateDirPath, name), nil
 }

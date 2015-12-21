@@ -2,10 +2,12 @@ package cmd
 
 import cli "github.com/spf13/cobra"
 
+// Root contains the root cli-command containing all the other commands.
 var Root = &cli.Command{
 	Use: "boilr",
 }
 
+// Run executes the cli-command root.
 func Run() {
 	// TODO add loading bars or progress bars to commands that take time
 	// TODO trap c-c to rollback transactions

@@ -13,6 +13,7 @@ import (
 	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
+// Delete contains the cli-command for deleting templates.
 var Delete = &cli.Command{
 	Use:   "delete <template-name>",
 	Short: "Delete a project template from the template registry",

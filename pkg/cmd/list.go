@@ -4,22 +4,22 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/olekukonko/tablewriter"
 	cli "github.com/spf13/cobra"
 
+	"github.com/olekukonko/tablewriter"
 	"github.com/tmrts/boilr/pkg/boilr"
 	"github.com/tmrts/boilr/pkg/template"
 	"github.com/tmrts/boilr/pkg/util/exit"
 	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
+// ListTemplates returns a list of templates saved in the local template registry.
 func ListTemplates() (map[string]bool, error) {
 	d, err := os.Open(boilr.Configuration.TemplateDirPath)
 	if err != nil {
 		return nil, err
-	} else {
-		defer d.Close()
 	}
+	defer d.Close()
 
 	names, err := d.Readdirnames(-1)
 	if err != nil {
@@ -34,6 +34,7 @@ func ListTemplates() (map[string]bool, error) {
 	return nameSet, nil
 }
 
+// List contains the cli-command for printing a list of saved templates.
 var List = &cli.Command{
 	Use:   "list <template-path> <template-name>",
 	Short: "List project templates found in the local template registry",
@@ -46,7 +47,7 @@ var List = &cli.Command{
 		}
 
 		var data [][]string
-		for name, _ := range templateNames {
+		for name := range templateNames {
 			tmplPath, err := boilr.TemplatePath(name)
 			if err != nil {
 				exit.Fatal(fmt.Errorf("list: %s", err))

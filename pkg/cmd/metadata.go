@@ -15,9 +15,8 @@ func serializeMetadata(tag string, repo string, targetDir string) error {
 	f, err := os.Create(fname)
 	if err != nil {
 		return err
-	} else {
-		defer f.Close()
 	}
+	defer f.Close()
 
 	enc := json.NewEncoder(f)
 

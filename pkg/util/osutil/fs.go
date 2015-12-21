@@ -5,6 +5,7 @@ import (
 	"os"
 )
 
+// FileExists checks whether the given path exists and belongs to a file.
 func FileExists(path string) (bool, error) {
 	info, err := os.Stat(path)
 	if err != nil {
@@ -16,12 +17,13 @@ func FileExists(path string) (bool, error) {
 	}
 
 	if info.IsDir() {
-		return false, fmt.Errorf("%v: is a directory, expected file")
+		return false, fmt.Errorf("%v: is a directory, expected file", path)
 	}
 
 	return true, nil
 }
 
+// DirExists checks whether the given path exists and belongs to a directory.
 func DirExists(path string) (bool, error) {
 	info, err := os.Stat(path)
 	if err != nil {
@@ -33,12 +35,13 @@ func DirExists(path string) (bool, error) {
 	}
 
 	if !info.IsDir() {
-		return false, fmt.Errorf("%v: is a file, expected directory")
+		return false, fmt.Errorf("%v: is a file, expected directory", path)
 	}
 
 	return true, nil
 }
 
+// CreateDirs creates directories from the given directory path arguments.
 func CreateDirs(dirPaths ...string) error {
 	for _, path := range dirPaths {
 		if err := os.MkdirAll(path, 0744); err != nil {
