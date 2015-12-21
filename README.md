@@ -1,5 +1,7 @@
 # boilr
 
+[![Join the chat at https://gitter.im/tmrts/boilr](https://badges.gitter.im/tmrts/boilr.svg)](https://gitter.im/tmrts/boilr?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Travis Widget]][Travis] ![License Widget] ![Release Widget]
 
 [Travis Widget]: https://img.shields.io/travis/tmrts/boilr.svg?style=flat-square
