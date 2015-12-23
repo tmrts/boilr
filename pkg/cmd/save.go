@@ -55,7 +55,12 @@ var Save = &cli.Command{
 			exit.Error(err)
 		}
 
-		if err := serializeMetadata(templateName, "local:"+tmplDir, targetDir); err != nil {
+		absTemplateDir, err := filepath.Abs(tmplDir)
+		if err != nil {
+			exit.Error(err)
+		}
+
+		if err := serializeMetadata(templateName, "local:"+absTemplateDir, targetDir); err != nil {
 			exit.Error(fmt.Errorf("save: %s", err))
 		}
 
