@@ -1,21 +1,21 @@
-# boilr [![Travis Widget]][Travis] [![License Widget]][License] [![Release Widget]][Release] [![Report Widget]][Report] [![Gitter Widget]][Gitter]
+<p align="center">
+  <img src="/logo.png" height="400">
+</p>
+# Boilr [![Travis Widget]][Travis] [![Release Widget]][Release] [![Report Widget]][Report] [![License Widget]][License] [![Gitter Widget]][Gitter]
 
 [Travis Widget]: https://img.shields.io/travis/tmrts/boilr.svg?style=flat-square
 [Travis]: http://travis-ci.org/tmrts/boilr
-[License Widget]: https://img.shields.io/github/license/tmrts/boilr.svg?style=flat-square
+[License Widget]: https://img.shields.io/badge/license-Apache%20License%202.0-E91E63.svg?style=flat-square
 [License]: https://github.com/tmrts/boilr/blob/master/LICENSE
-[Release Widget]: https://img.shields.io/github/release/tmrts/boilr.svg?style=flat-square
+[Release Widget]: https://img.shields.io/badge/release-v0.1.0-blue.svg?style=flat-square
 [Release]: https://github.com/tmrts/boilr/releases
 [Gitter Widget]: https://img.shields.io/badge/chat-on%20gitter-00BCD4.svg?style=flat-square
 [Gitter]: https://gitter.im/tmrts/boilr
-[Report Widget]: https://img.shields.io/badge/report%20card-A%2B-FF5722.svg?style=flat-square
+[Report Widget]: https://img.shields.io/badge/report%20card-A%2B-F44336.svg?style=flat-square
 [Report]: http://goreportcard.com/report/tmrts/boilr
 [Documentation Widget]: https://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square
 [Documentation]: https://godoc.org/github.com/tmrts/boilr
 
-<img src="/logo.png" height="400" align="middle"/>
-<br />
-<br />
 Are you doing the same steps over and over again every time you start a new programming project?
 
 `boilr` is a powerful language-agnostic command-line boilerplate template tool here to help you.
