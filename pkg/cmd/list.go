@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"sort"
 
 	cli "github.com/spf13/cobra"
 
@@ -46,8 +47,15 @@ var List = &cli.Command{
 			exit.Error(fmt.Errorf("list: %s", err))
 		}
 
-		var data [][]string
+		// For keeping the names in order
+		names := []string{}
 		for name := range templateNames {
+			names = append(names, name)
+		}
+		sort.Strings(names)
+
+		var data [][]string
+		for _, name := range names {
 			tmplPath, err := boilr.TemplatePath(name)
 			if err != nil {
 				exit.Fatal(fmt.Errorf("list: %s", err))
