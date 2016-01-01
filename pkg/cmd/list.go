@@ -6,10 +6,10 @@ import (
 
 	cli "github.com/spf13/cobra"
 
-	"github.com/olekukonko/tablewriter"
 	"github.com/tmrts/boilr/pkg/boilr"
 	"github.com/tmrts/boilr/pkg/template"
 	"github.com/tmrts/boilr/pkg/util/exit"
+	"github.com/tmrts/boilr/pkg/util/tabular"
 	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
@@ -61,18 +61,6 @@ var List = &cli.Command{
 			data = append(data, tmpl.Info().String())
 		}
 
-		// TODO Wrap in a util function
-		table := tablewriter.NewWriter(os.Stdout)
-		table.SetHeader([]string{"Tag", "Repository", "Created"})
-
-		for _, datum := range data {
-			table.Append(datum)
-		}
-
-		if len(data) == 0 {
-			table.Append([]string{"", "", ""})
-		}
-
-		table.Render()
+		tabular.Print([]string{"Tag", "Repository", "Created"}, data)
 	},
 }
