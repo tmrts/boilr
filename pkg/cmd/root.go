@@ -17,24 +17,26 @@ func Run() {
 	Init.PersistentFlags().BoolP("force", "f", false, "Recreate directories if they exist")
 	Root.AddCommand(Init)
 
-	Use.PersistentFlags().BoolP("use-defaults", "f", false, "Uses default values in project.json instead of prompting the user")
-	Root.AddCommand(Use)
-
-	Save.PersistentFlags().BoolP("force", "f", false, "Overwrite existing template with the same name")
-	Root.AddCommand(Save)
+	Root.AddCommand(Delete)
 
 	Download.PersistentFlags().BoolP("force", "f", false, "Overwrite existing template with the same name")
 	Root.AddCommand(Download)
 
-	Root.AddCommand(Delete)
-
 	Root.AddCommand(List)
+
+	Root.AddCommand(Rename)
+
+	Root.AddCommand(Report)
+
+	Save.PersistentFlags().BoolP("force", "f", false, "Overwrite existing template with the same name")
+	Root.AddCommand(Save)
+
+	Use.PersistentFlags().BoolP("use-defaults", "f", false, "Uses default values in project.json instead of prompting the user")
+	Root.AddCommand(Use)
 
 	Root.AddCommand(Validate)
 
 	Root.AddCommand(Version)
-
-	Root.AddCommand(Report)
 
 	Root.Execute()
 }
