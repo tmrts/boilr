@@ -3,6 +3,7 @@ package tlog
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/fatih/color"
 )
@@ -48,7 +49,7 @@ func Success(msg string) {
 
 // Info logs the given message as a info message.
 func Info(msg string) {
-	coloredPrintMsg(InfoMark, msg, color.FgBlue, color.FgBlue)
+	coloredPrintMsg(InfoMark, msg, color.FgWhite, color.FgBlue)
 }
 
 // Warn logs the given message as a warn message.
@@ -64,6 +65,15 @@ func Error(msg string) {
 // Fatal logs the given message as a fatal message.
 func Fatal(msg string) {
 	Error(msg)
+}
+
+// Prompt outputs the given message as a question along with a default value.
+func Prompt(msg string, defval interface{}) {
+	fmt.Print(strings.Join([]string{
+		color.New(color.FgBlue).SprintFunc()("[" + QuestionMark + "]"),
+		color.New(color.Bold, color.FgWhite).SprintFunc()(msg),
+		color.New(color.FgBlue).SprintFunc()(fmt.Sprintf("[default: %#v]: ", defval)),
+	}, " "))
 }
 
 // TODO use dependency injection wrapper for fmt.Print usage in the code base

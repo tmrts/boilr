@@ -2,6 +2,7 @@ package template
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -11,6 +12,7 @@ import (
 	"github.com/tmrts/boilr/pkg/prompt"
 	"github.com/tmrts/boilr/pkg/util/osutil"
 	"github.com/tmrts/boilr/pkg/util/stringutil"
+	"github.com/tmrts/boilr/pkg/util/tlog"
 )
 
 // Interface is contains the behavior of boilr templates.
@@ -193,6 +195,10 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 			if err := contentsTmpl.ExecuteTemplate(f, fileTemplateName, nil); err != nil {
 				return err
 			}
+		}
+
+		if !t.ShouldUseDefaults {
+			tlog.Success(fmt.Sprintf("Created %s", target))
 		}
 
 		return nil

@@ -13,10 +13,10 @@ import (
 // TODO align brackets used in the prompt message
 const (
 	// PromptFormatMessage is a format message for value prompts.
-	PromptFormatMessage = "[?] Please choose a value for %#q [default: %#v]: "
+	PromptFormatMessage = "Please choose a value for %q"
 
 	// PromptChoiceFormatMessage is a format message for choice prompts.
-	PromptChoiceFormatMessage = "[?] Please choose an option for %#q\n%v    Select from %v..%v [default: %#v]: "
+	PromptChoiceFormatMessage = "Please choose an option for %q\n%v    Select from %v..%v"
 )
 
 func scanLine() (string, error) {
@@ -37,7 +37,8 @@ func newString(name string, defval interface{}) func() interface{} {
 		if cache == nil {
 			cache = func() interface{} {
 				// TODO use colored prompts
-				fmt.Printf(PromptFormatMessage, name, defval)
+				//fmt.Printf(PromptFormatMessage, name, defval)
+				tlog.Prompt(fmt.Sprintf(PromptFormatMessage, name), defval)
 
 				line, err := scanLine()
 				if err != nil {
@@ -76,7 +77,7 @@ func newBool(name string, defval bool) func() interface{} {
 	return func() interface{} {
 		if cache == nil {
 			cache = func() interface{} {
-				fmt.Printf(PromptFormatMessage, name, defval)
+				tlog.Prompt(fmt.Sprintf(PromptFormatMessage, name), defval)
 
 				choice, err := scanLine()
 				if err != nil {
@@ -128,7 +129,7 @@ func newSlice(name string, choices []string) func() interface{} {
 			defval := choices[defindex]
 			cache = func() interface{} {
 				s := formattedChoices(choices)
-				fmt.Printf(PromptChoiceFormatMessage, name, s, 1, len(choices), defindex+1)
+				tlog.Prompt(fmt.Sprintf(PromptChoiceFormatMessage, name, s, 1, len(choices)), defindex+1)
 
 				choice, err := scanLine()
 				if err != nil {
@@ -169,7 +170,7 @@ func New(name string, defval interface{}) func() interface{} {
 		return newBool(name, defval)
 	case []interface{}:
 		if len(defval) == 0 {
-			tlog.Warn(fmt.Sprintf("empty list for %q choices", name))
+			tlog.Warn(fmt.Sprintf("empty list of choices for %q", name))
 			return nil
 		}
 
