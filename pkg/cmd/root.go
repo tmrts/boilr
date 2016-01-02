@@ -47,6 +47,7 @@ func Run() {
 
 	Root.AddCommand(Template)
 
+	Version.PersistentFlags().BoolP("dont-prettify", "", false, "Only print the version without fancy formatting")
 	Root.AddCommand(Version)
 
 	Root.Execute()

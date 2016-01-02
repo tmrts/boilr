@@ -14,9 +14,14 @@ import (
 var Version = &cli.Command{
 	Use:   "version",
 	Short: "Show the boilr version information",
-	Run: func(_ *cli.Command, args []string) {
+	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{})
 
-		tlog.Info(fmt.Sprint("Current version is ", boilr.Version))
+		shouldntPrettify := GetBoolFlag(c, "dont-prettify")
+		if shouldntPrettify {
+			fmt.Println(boilr.Version)
+		} else {
+			tlog.Info(fmt.Sprint("Current version is ", boilr.Version))
+		}
 	},
 }

@@ -71,6 +71,14 @@ var List = &cli.Command{
 			data = append(data, tmpl.Info().String())
 		}
 
-		tabular.Print([]string{"Tag", "Repository", "Created"}, data)
+		shouldntPrettify := GetBoolFlag(c, "dont-prettify")
+		if shouldntPrettify {
+			for _, name := range names {
+				fmt.Print(name, " ")
+			}
+			fmt.Println()
+		} else {
+			tabular.Print([]string{"Tag", "Repository", "Created"}, data)
+		}
 	},
 }
