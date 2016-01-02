@@ -20,6 +20,8 @@ var Delete = &cli.Command{
 	Run: func(c *cli.Command, args []string) {
 		MustValidateVarArgs(args, validate.Argument{"template-path", validate.Alphanumeric})
 
+		MustValidateTemplateDir()
+
 		for _, templateName := range args {
 			targetDir := filepath.Join(boilr.Configuration.TemplateDirPath, templateName)
 

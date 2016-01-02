@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/tmrts/boilr/pkg/boilr"
 	"github.com/tmrts/boilr/pkg/cmd/util"
 	"github.com/tmrts/boilr/pkg/util/exit"
 	"github.com/tmrts/boilr/pkg/util/validate"
@@ -35,5 +36,17 @@ func MustValidateTemplate(path string) {
 	// FIXME redundant
 	if !isValid {
 		exit.Fatal(fmt.Errorf("validate: %s", ErrTemplateInvalid))
+	}
+}
+
+// MustValidateTemplateDir ensures that template directory is initialized.
+func MustValidateTemplateDir() {
+	isInitialized, err := boilr.IsTemplateDirInitialized()
+	if err != nil {
+		exit.Error(err)
+	}
+
+	if !isInitialized {
+		exit.Error(fmt.Errorf("Template registry is not initialized. Please run `init` command to initialize it."))
 	}
 }

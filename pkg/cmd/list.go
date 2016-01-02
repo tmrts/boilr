@@ -42,6 +42,8 @@ var List = &cli.Command{
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{})
 
+		MustValidateTemplateDir()
+
 		templateNames, err := ListTemplates()
 		if err != nil {
 			exit.Error(fmt.Errorf("list: %s", err))

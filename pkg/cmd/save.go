@@ -25,6 +25,8 @@ var Save = &cli.Command{
 			{"template-tag", validate.Alphanumeric},
 		})
 
+		MustValidateTemplateDir()
+
 		tmplDir, templateName := args[0], args[1]
 
 		MustValidateTemplate(tmplDir)

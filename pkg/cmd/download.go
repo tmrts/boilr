@@ -103,6 +103,8 @@ var Download = &cli.Command{
 			{"template-tag", validate.Alphanumeric},
 		})
 
+		MustValidateTemplateDir()
+
 		templateURL, templateName := args[0], args[1]
 
 		targetDir, err := boilr.TemplatePath(templateName)

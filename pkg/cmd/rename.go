@@ -30,6 +30,8 @@ var Rename = &cli.Command{
 			{"new-template-tag", validate.UnixPath},
 		})
 
+		MustValidateTemplateDir()
+
 		tmplName, newTmplName := args[0], args[1]
 
 		if ok, err := TemplateInRegistry(tmplName); err != nil {

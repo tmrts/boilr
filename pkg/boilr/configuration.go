@@ -9,7 +9,6 @@ import (
 
 	"github.com/tmrts/boilr/pkg/util/exit"
 	"github.com/tmrts/boilr/pkg/util/osutil"
-	"github.com/tmrts/boilr/pkg/util/tlog"
 )
 
 const (
@@ -57,6 +56,10 @@ func TemplatePath(name string) (string, error) {
 	return filepath.Join(Configuration.TemplateDirPath, name), nil
 }
 
+func IsTemplateDirInitialized() (bool, error) {
+	return osutil.DirExists(Configuration.TemplateDirPath)
+}
+
 func init() {
 	homeDir := os.Getenv("HOME")
 	if homeDir == "" {
@@ -66,17 +69,6 @@ func init() {
 
 	Configuration.FilePath = filepath.Join(homeDir, ConfigDirPath, ConfigFileName)
 	Configuration.TemplateDirPath = filepath.Join(homeDir, ConfigDirPath, TemplateDir)
-
-	IsTemplateDirInitialized, err := osutil.DirExists(Configuration.TemplateDirPath)
-	if err != nil {
-		exit.Error(err)
-	}
-
-	// TODO perform this in related commands only with ValidateInitialization
-	if !IsTemplateDirInitialized {
-		tlog.Warn("Template registry is not initialized. Please run `init` command to create it.")
-		return
-	}
 
 	// Read .config/boilr/config.json if exists
 	// TODO use defaults if config.json doesn't exist

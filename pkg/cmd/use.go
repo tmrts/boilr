@@ -34,6 +34,8 @@ var Use = &cli.Command{
 			{"target-dir", validate.UnixPath},
 		})
 
+		MustValidateTemplateDir()
+
 		tmplName, targetDir := args[0], args[1]
 
 		if ok, err := TemplateInRegistry(tmplName); err != nil {
