@@ -1,5 +1,0 @@
-This file is created by {{Author}}.
-
-The file version is {{List}}.
-
-{{if Verbose}} I live in {{env "HOME"}}.{{end}}
