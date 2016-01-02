@@ -195,10 +195,10 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 			if err := contentsTmpl.ExecuteTemplate(f, fileTemplateName, nil); err != nil {
 				return err
 			}
-		}
 
-		if !t.ShouldUseDefaults {
-			tlog.Success(fmt.Sprintf("Created %s", target))
+			if !t.ShouldUseDefaults {
+				tlog.Success(fmt.Sprintf("Created %s", target))
+			}
 		}
 
 		return nil

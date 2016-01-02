@@ -71,8 +71,7 @@ func getIssue() (*github.IssueRequest, error) {
 	}
 	f.Close()
 
-	// TODO allow gedit, vi, emacs
-	cmd := exec.Command("vim", fname)
+	cmd := exec.Command("vi", fname)
 
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout

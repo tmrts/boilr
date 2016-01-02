@@ -16,7 +16,6 @@ import (
 
 // Save contains the cli-command for saving templates to template registry.
 var Save = &cli.Command{
-	// TODO rename template-tag to template-tag
 	Use:   "save <template-path> <template-tag>",
 	Short: "Save a project template to local template registry",
 	Run: func(c *cli.Command, args []string) {
@@ -53,7 +52,6 @@ var Save = &cli.Command{
 		}
 
 		if _, err := exec.Cmd("cp", "-r", tmplDir, targetDir); err != nil {
-			// TODO create exec package
 			exit.Error(err)
 		}
 

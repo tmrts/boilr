@@ -34,7 +34,7 @@ func Error(err error) {
 
 // GoodEnough terminates execution successfully, but indicates that something is missing.
 func GoodEnough(fmtStr string, s ...interface{}) {
-	tlog.Debug(fmt.Sprintf(fmtStr, s...))
+	tlog.Info(fmt.Sprintf(fmtStr, s...))
 
 	os.Exit(CodeOK)
 }

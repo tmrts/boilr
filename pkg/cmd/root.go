@@ -13,7 +13,6 @@ func Run() {
 	// TODO use command factories instead of global command variables
 	// TODO add describe command that shows template metadata information
 	// TODO add create command that creates a minimal template template
-	// TODO rename template-tag to template-tag
 
 	Template := &cli.Command{
 		Use:   "template",

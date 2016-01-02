@@ -10,7 +10,6 @@ import (
 	"github.com/tmrts/boilr/pkg/util/tlog"
 )
 
-// TODO align brackets used in the prompt message
 const (
 	// PromptFormatMessage is a format message for value prompts.
 	PromptFormatMessage = "Please choose a value for %q"
@@ -36,8 +35,6 @@ func newString(name string, defval interface{}) func() interface{} {
 	return func() interface{} {
 		if cache == nil {
 			cache = func() interface{} {
-				// TODO use colored prompts
-				//fmt.Printf(PromptFormatMessage, name, defval)
 				tlog.Prompt(fmt.Sprintf(PromptFormatMessage, name), defval)
 
 				line, err := scanLine()

@@ -26,7 +26,6 @@ const (
 	ErrorMark = "✘"
 
 	// QuestionMark character indicates prompt message.
-	// TODO use for prompts
 	QuestionMark = "?"
 )
 

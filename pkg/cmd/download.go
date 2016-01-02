@@ -144,6 +144,6 @@ var Download = &cli.Command{
 			exit.Error(fmt.Errorf("download: %s", err))
 		}
 
-		exit.OK("Successfully downloaded the template %v", templateName)
+		exit.OK("Successfully downloaded the template %#v", templateName)
 	},
 }

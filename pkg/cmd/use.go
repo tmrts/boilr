@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 
 	cli "github.com/spf13/cobra"
 
@@ -36,7 +37,11 @@ var Use = &cli.Command{
 
 		MustValidateTemplateDir()
 
-		tmplName, targetDir := args[0], args[1]
+		tmplName := args[0]
+		targetDir, err := filepath.Abs(args[1])
+		if err != nil {
+			exit.Fatal(fmt.Errorf("use: %s", err))
+		}
 
 		if ok, err := TemplateInRegistry(tmplName); err != nil {
 			exit.Fatal(fmt.Errorf("use: %s", err))
