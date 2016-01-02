@@ -22,12 +22,12 @@ func renameTemplate(oldPath, newPath string) error {
 // Rename contains the cli-command for renaming templates in the template registry.
 var Rename = &cli.Command{
 	Hidden: true,
-	Use:    "rename <old-template-name> <new-template-name>",
+	Use:    "rename <old-template-tag> <new-template-tag>",
 	Short:  "Rename a project template",
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{
-			{"old-template-name", validate.UnixPath},
-			{"new-template-name", validate.UnixPath},
+			{"old-template-tag", validate.UnixPath},
+			{"new-template-tag", validate.UnixPath},
 		})
 
 		tmplName, newTmplName := args[0], args[1]

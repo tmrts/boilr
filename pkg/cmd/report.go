@@ -141,7 +141,7 @@ func createIssue() (string, error) {
 // Report contains the cli-command for creating github issues.
 var Report = &cli.Command{
 	Use:   "report",
-	Short: "Creates an issue in the github repository",
+	Short: "Create an issue in the github repository",
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{})
 

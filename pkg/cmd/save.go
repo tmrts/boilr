@@ -16,13 +16,13 @@ import (
 
 // Save contains the cli-command for saving templates to template registry.
 var Save = &cli.Command{
-	// TODO rename template-name to template-tag
-	Use:   "save <template-path> <template-name>",
+	// TODO rename template-tag to template-tag
+	Use:   "save <template-path> <template-tag>",
 	Short: "Save a project template to local template registry",
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{
 			{"template-path", validate.UnixPath},
-			{"template-name", validate.Alphanumeric},
+			{"template-tag", validate.Alphanumeric},
 		})
 
 		tmplDir, templateName := args[0], args[1]

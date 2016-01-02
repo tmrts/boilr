@@ -94,13 +94,13 @@ func downloadZip(URL, targetDir string) error {
 
 // Download contains the cli-command for downloading templates from github.
 var Download = &cli.Command{
-	Use:   "download <template-repo> <template-name>",
+	Use:   "download <template-repo> <template-tag>",
 	Short: "Download a project template from a github repository to template registry",
 	// FIXME Half-Updates leave messy templates
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{
 			{"template-repo", validate.UnixPath},
-			{"template-name", validate.Alphanumeric},
+			{"template-tag", validate.Alphanumeric},
 		})
 
 		templateURL, templateName := args[0], args[1]

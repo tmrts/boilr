@@ -15,7 +15,7 @@ import (
 
 // Delete contains the cli-command for deleting templates.
 var Delete = &cli.Command{
-	Use:   "delete <template-name>",
+	Use:   "delete <template-tag>",
 	Short: "Delete a project template from the template registry",
 	Run: func(c *cli.Command, args []string) {
 		MustValidateVarArgs(args, validate.Argument{"template-path", validate.Alphanumeric})

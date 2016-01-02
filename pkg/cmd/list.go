@@ -37,7 +37,7 @@ func ListTemplates() (map[string]bool, error) {
 
 // List contains the cli-command for printing a list of saved templates.
 var List = &cli.Command{
-	Use:   "list <template-path> <template-name>",
+	Use:   "list <template-path> <template-tag>",
 	Short: "List project templates found in the local template registry",
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{})
