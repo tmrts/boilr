@@ -30,10 +30,20 @@ symlink() {
   fi
 }
 
-initialize() {
-  mkdir -p "$HOME"/.config/boilr/templates
+configure() {
+  # Auto-completion
+  if [ -z "$auto_completion" ]; then
+    ask "Do you want to enable auto-completion for boilr commmands?"
+    auto_completion=$?
+  fi
+
+  if [ $auto_completion -eq ]; then
+    sudo $HOME/bin/boilr configure-bash-completion
+  fi
+
+  $HOME/bin/boilr init
   if [ $? -ne 0 ]; then
-    binary_error="Failed to create .config/boilr directory"
+    binary_error="Failed to complete boilr initialization"
     return
   fi
 }
@@ -96,7 +106,7 @@ download() {
   fi
 
   chmod +x $1 && symlink $1 && check_binary
-  initialize
+  configure
 }
 
 # Try to download binary executable

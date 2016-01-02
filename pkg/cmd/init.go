@@ -15,7 +15,6 @@ var (
 	ErrUninitializedboilrDir = errors.New("boilr: .boilr directory is not initialized")
 )
 
-// TODO is it necessary?
 // Init contains the cli-command for initializing the local template
 // registry in case it's not initialized.
 var Init = &cli.Command{

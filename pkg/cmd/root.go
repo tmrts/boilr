@@ -17,11 +17,14 @@ func Run() {
 	Init.PersistentFlags().BoolP("force", "f", false, "Recreate directories if they exist")
 	Root.AddCommand(Init)
 
+	Root.AddCommand(ConfigureBashCompletion)
+
 	Root.AddCommand(Delete)
 
 	Download.PersistentFlags().BoolP("force", "f", false, "Overwrite existing template with the same name")
 	Root.AddCommand(Download)
 
+	List.PersistentFlags().BoolP("dont-prettify", "", false, "Print only the template names without fancy formatting")
 	Root.AddCommand(List)
 
 	Root.AddCommand(Rename)
