@@ -48,6 +48,7 @@ const (
 // file in the configuration directory.
 var Configuration = struct {
 	FilePath        string
+	ConfigDirPath   string
 	TemplateDirPath string
 }{}
 
@@ -68,6 +69,7 @@ func init() {
 	}
 
 	Configuration.FilePath = filepath.Join(homeDir, ConfigDirPath, ConfigFileName)
+	Configuration.ConfigDirPath = filepath.Join(homeDir, ConfigDirPath)
 	Configuration.TemplateDirPath = filepath.Join(homeDir, ConfigDirPath, TemplateDir)
 
 	// Read .config/boilr/config.json if exists

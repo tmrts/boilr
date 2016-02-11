@@ -31,20 +31,20 @@ symlink() {
 }
 
 configure() {
-  # Auto-completion
+  $HOME/bin/boilr init
+  if [ $? -ne 0 ]; then
+    binary_error="Failed to complete boilr initialization"
+    return
+  fi
+
+  # Auto-completion prompt
   if [ -z "$auto_completion" ]; then
     ask "Do you want to enable auto-completion for boilr commmands?"
     auto_completion=$?
   fi
 
   if [ $auto_completion -eq 1 ]; then
-    sudo $HOME/bin/boilr configure-bash-completion
-  fi
-
-  $HOME/bin/boilr init
-  if [ $? -ne 0 ]; then
-    binary_error="Failed to complete boilr initialization"
-    return
+    $HOME/bin/boilr configure-bash-completion
   fi
 }
 
@@ -123,6 +123,8 @@ esac
 
 cat << EOF
 Completed installation
+
+Boilr executable is installed to ~/bin/boilr
 
 For more information, see: https://github.com/tmrts/boilr
 EOF

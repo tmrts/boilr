@@ -1,29 +1,45 @@
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 
 	cli "github.com/spf13/cobra"
 	"github.com/tmrts/boilr/pkg/boilr"
 	"github.com/tmrts/boilr/pkg/util/exit"
 )
 
-func configureBashCompletion() error {
-	var bash_completion_dir string
-	if bash_completion_dir = os.Getenv("BASH_COMPLETION_COMPAT_DIR"); bash_completion_dir == "" {
-		bash_completion_dir = "/etc/bash_completion.d"
-	}
+const bashrcText = `
+# Enables shell command completion for boilr
+source $HOME/bin/boilr
+`
 
-	bash_completion_file := filepath.Join(bash_completion_dir, boilr.AppName+".bash")
+func configureBashCompletion() error {
+	bash_completion_file := filepath.Join(boilr.Configuration.ConfigDirPath, "completion.bash")
 
 	if err := Root.GenBashCompletionFile(bash_completion_file); err != nil {
-		if strings.Contains(err.Error(), "permission") {
-			return fmt.Errorf("couldn't configure bash completion for %s: permission denied", boilr.AppName)
-		}
+		return err
+	}
 
+	if err := Root.GenBashCompletionFile(bash_completion_file); err != nil {
+		return err
+	}
+
+	bashrcPath := filepath.Join(os.Getenv("HOME"), ".bashrc")
+	if bashrcPath == "" {
+		return errors.New("environment variable ${HOME} should be set")
+	}
+
+	f, err := os.OpenFile(bashrcPath, os.O_APPEND|os.O_WRONLY, 0600)
+	if err != nil {
+		return err
+	}
+
+	defer f.Close()
+
+	if _, err = f.WriteString(bashrcText); err != nil {
 		return err
 	}
 
