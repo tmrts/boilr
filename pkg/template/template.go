@@ -109,8 +109,8 @@ func (t *dirTemplate) UseDefaultValues() {
 }
 
 func (t *dirTemplate) BindPrompts() {
-	if t.ShouldUseDefaults {
-		for s, v := range t.Context {
+	for s, v := range t.Context {
+		if t.ShouldUseDefaults {
 			t.FuncMap[s] = func() interface{} {
 				switch v := v.(type) {
 				// First is the default value if it's a slice
@@ -120,9 +120,7 @@ func (t *dirTemplate) BindPrompts() {
 
 				return v
 			}
-		}
-	} else {
-		for s, v := range t.Context {
+		} else {
 			t.FuncMap[s] = prompt.New(s, v)
 		}
 	}
