@@ -6,11 +6,11 @@ matrix:
     env: VERSION=0.2.0
 
 before_deploy:
-- GOARCH=amd64 GOOS=linux go build boilr.go  && tar czvf boilr-$VERSION-linux_amd64.tgz boilr
-- GOARCH=386   GOOS=linux go build boilr.go  && tar czvf boilr-$VERSION-linux_386.tgz boilr
+- GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go build boilr.go  && tar czvf boilr-$VERSION-linux_amd64.tgz boilr
+- GOARCH=386   GOOS=linux CGO_ENABLED=0 go build boilr.go  && tar czvf boilr-$VERSION-linux_386.tgz boilr
 
-- GOARCH=amd64 GOOS=darwin go build boilr.go && tar czvf boilr-$VERSION-darwin_amd64.tgz boilr
-- GOARCH=386   GOOS=darwin go build boilr.go && tar czvf boilr-$VERSION-darwin_386.tgz boilr
+- GOARCH=amd64 GOOS=darwin CGO_ENABLED=0 go build boilr.go && tar czvf boilr-$VERSION-darwin_amd64.tgz boilr
+- GOARCH=386   GOOS=darwin CGO_ENABLED=0 go build boilr.go && tar czvf boilr-$VERSION-darwin_386.tgz boilr
 
 deploy:
   provider: releases
