@@ -10,49 +10,36 @@ import (
 	"github.com/tmrts/boilr/pkg/util/tlog"
 )
 
-const (
-	// PromptFormatMessage is a format message for value prompts.
-	PromptFormatMessage = "Please choose a value for %q"
+type templateFunc func() interface{}
 
-	// PromptChoiceFormatMessage is a format message for choice prompts.
-	PromptChoiceFormatMessage = "Please choose an option for %q\n%v    Select from %v..%v"
-)
-
-func scanLine() (string, error) {
-	input := bufio.NewReader(os.Stdin)
-	line, err := input.ReadString('\n')
-	if err != nil {
-		return line, err
-	}
-
-	return strings.TrimSuffix(line, "\n"), nil
+type Interface interface {
+	// PromptMessage returns a proper prompt message for the given field with the given default value.
+	PromptMessage(string) string
+	EvaluateChoice(string) (interface{}, error)
 }
 
-// TODO add GetLine method using a channel
-// TODO use interfaces to eliminate code duplication
-func newString(name string, defval interface{}) func() interface{} {
-	var cache interface{}
-	return func() interface{} {
-		if cache == nil {
-			cache = func() interface{} {
-				tlog.Prompt(fmt.Sprintf(PromptFormatMessage, name), defval)
+type Chain struct {
+	Prompts []Interface
+}
 
-				line, err := scanLine()
-				if err != nil {
-					tlog.Warn(err.Error())
-					return line
-				}
+type strPrompt string
 
-				if line == "" {
-					return defval
-				}
+func (p strPrompt) PromptMessage(name string) string {
+	return fmt.Sprintf("Please choose a value for %q", name)
+}
 
-				return line
-			}()
-		}
-
-		return cache
+func (p strPrompt) EvaluateChoice(c string) (interface{}, error) {
+	if c != "" {
+		return c, nil
 	}
+
+	return string(p), nil
+}
+
+type boolPrompt bool
+
+func (p boolPrompt) PromptMessage(name string) string {
+	return fmt.Sprintf("Please choose a value for %q", name)
 }
 
 var (
@@ -69,115 +56,100 @@ var (
 	}
 )
 
-func newBool(name string, defval bool) func() interface{} {
-	var cache interface{}
-	return func() interface{} {
-		if cache == nil {
-			cache = func() interface{} {
-				tlog.Prompt(fmt.Sprintf(PromptFormatMessage, name), defval)
+func (p boolPrompt) EvaluateChoice(c string) (interface{}, error) {
+	if val, ok := booleanValues[c]; ok {
+		return val, nil
+	}
 
-				choice, err := scanLine()
-				if err != nil {
-					tlog.Warn(err.Error())
-					return choice
-				}
+	return bool(p), nil
+}
 
-				if choice == "" {
-					return defval
-				}
+// TODO: add proper format messages for multiple choices
+type multipleChoicePrompt []string
 
-				val, ok := booleanValues[strings.ToLower(choice)]
-				if !ok {
-					tlog.Warn(fmt.Sprintf("Unrecognized choice %q, using the default", choice))
+func (p multipleChoicePrompt) PromptMessage(name string) string {
+	return fmt.Sprintf("Please choose an index for %q", name)
+}
 
-					return defval
-				}
+func (p multipleChoicePrompt) EvaluateChoice(c string) (interface{}, error) {
+	if c != "" {
+		index, err := strconv.Atoi(c)
+		if err != nil {
+			tlog.Warn(fmt.Sprintf("Unrecognized choice %v, using the default choice", index))
 
-				return val
-			}()
+			return p[0], nil
 		}
 
-		return cache
-	}
-}
+		fmt.Println(len(p))
+		if index > len(p) || index < 1 {
+			tlog.Warn(fmt.Sprintf("Unrecognized choice %v, using the default choice", index))
 
-// Choice contains the values for a choice
-type Choice struct {
-	// Default choice
-	Default int
-
-	// List of choices
-	Choices []string
-}
-
-func formattedChoices(cs []string) (s string) {
-	for i, c := range cs {
-		s += fmt.Sprintf("    %v -  %q\n", i+1, c)
-	}
-
-	return
-}
-
-func newSlice(name string, choices []string) func() interface{} {
-	var cache interface{}
-	return func() interface{} {
-		if cache == nil {
-			defindex := 0
-			defval := choices[defindex]
-			cache = func() interface{} {
-				s := formattedChoices(choices)
-				tlog.Prompt(fmt.Sprintf(PromptChoiceFormatMessage, name, s, 1, len(choices)), defindex+1)
-
-				choice, err := scanLine()
-				if err != nil {
-					tlog.Warn(err.Error())
-					return choice
-				}
-
-				if choice == "" {
-					return defval
-				}
-
-				index, err := strconv.Atoi(choice)
-				if err != nil {
-					return err
-				}
-
-				if index > len(choices)+1 || index < 1 {
-					tlog.Warn(fmt.Sprintf("Unrecognized choice %v, using the default", index))
-
-					return defval
-				}
-
-				return choices[index-1]
-			}()
+			return p[0], nil
 		}
 
-		return cache
+		return p[index-1], nil
 	}
+
+	return p[0], nil
 }
 
-// New returns a prompt closure when executed asks for
-// user input and has a default value that returns result.
-func New(name string, defval interface{}) func() interface{} {
-	// TODO use reflect package
-	// TODO add a prompt as such "How many Items will you enter", "Enter each" use in "{{range Items}}"
+// TODO add deep pretty printer
+// TODO handle TOML
+func Func(defval interface{}) Interface {
 	switch defval := defval.(type) {
 	case bool:
-		return newBool(name, defval)
+		return boolPrompt(defval)
 	case []interface{}:
 		if len(defval) == 0 {
-			tlog.Warn(fmt.Sprintf("empty list of choices for %q", name))
+			tlog.Warn(fmt.Sprintf("empty list of choices"))
 			return nil
 		}
 
 		var s []string
 		for _, v := range defval {
-			s = append(s, v.(string))
+			s = append(s, fmt.Sprint(v))
 		}
 
-		return newSlice(name, s)
+		return multipleChoicePrompt(s)
 	}
 
-	return newString(name, defval)
+	return strPrompt(fmt.Sprint(defval))
+}
+
+func scanLine() (string, error) {
+	input := bufio.NewReader(os.Stdin)
+	line, err := input.ReadString('\n')
+	if err != nil {
+		return line, err
+	}
+
+	return strings.TrimSuffix(line, "\n"), nil
+}
+
+// New returns a prompt closure when executed asks for
+// user input once and caches it for further invocations
+// and has a default value that returns result.
+func New(fieldName string, defval interface{}) func() interface{} {
+	prompt := Func(defval)
+
+	var cachedValue interface{}
+	return func() interface{} {
+		if cachedValue == nil {
+			msg := prompt.PromptMessage(fieldName)
+
+			tlog.Prompt(msg, defval)
+
+			choice, err := scanLine()
+			if err != nil {
+				tlog.Warn(err.Error())
+			}
+
+			cachedValue, err = prompt.EvaluateChoice(choice)
+			if err != nil {
+				tlog.Warn(err.Error())
+			}
+		}
+
+		return cachedValue
+	}
 }
