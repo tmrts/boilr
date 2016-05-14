@@ -110,6 +110,36 @@ func (t *dirTemplate) UseDefaultValues() {
 
 func (t *dirTemplate) BindPrompts() {
 	for s, v := range t.Context {
+		if m, ok := v.(map[string]interface{}); ok {
+			advancedMode := prompt.New(s, false)
+
+			for k, v2 := range m {
+				if t.ShouldUseDefaults {
+					t.FuncMap[k] = func() interface{} {
+						switch v2 := v2.(type) {
+						// First is the default value if it's a slice
+						case []interface{}:
+							return v2[0]
+						}
+
+						return v2
+					}
+				} else {
+					v, p := v2, prompt.New(k, v2)
+
+					t.FuncMap[k] = func() interface{} {
+						if val := advancedMode().(bool); val {
+							return p()
+						}
+
+						return v
+					}
+				}
+			}
+
+			continue
+		}
+
 		if t.ShouldUseDefaults {
 			t.FuncMap[s] = func() interface{} {
 				switch v := v.(type) {
