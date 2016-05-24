@@ -1,7 +1,9 @@
 package template
 
 import (
+	"fmt"
 	"os"
+	"strconv"
 	"strings"
 	"text/template"
 	"time"
@@ -14,12 +16,20 @@ var (
 		// TODO value prompt
 		// TODO encoding utilities (e.g. toBinary)
 		// TODO GET, POST utilities
-		// TODO Hostname(Also accesible through $HOSTNAME), IP addr, etc.
+		// TODO Hostname(Also accesible through $HOSTNAME), interface IP addr, etc.
 		// TODO add validate for custom regex and expose validate package
 		"env":      os.Getenv,
 		"time":     CurrentTimeInFmt,
 		"hostname": func() string { return os.Getenv("HOSTNAME") },
 
+		"toBinary": func(s string) string {
+			n, err := strconv.Atoi(s)
+			if err != nil {
+				return s
+			}
+
+			return fmt.Sprintf("%b", n)
+		},
 		// String utilities
 		"toLower": strings.ToLower,
 		"toUpper": strings.ToUpper,
