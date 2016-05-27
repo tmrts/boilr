@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 
@@ -29,7 +31,7 @@ func TemplateInRegistry(name string) (bool, error) {
 var Use = &cli.Command{
 	Use:   "use <template-tag> <target-dir>",
 	Short: "Execute a project template in the given directory",
-	Run: func(c *cli.Command, args []string) {
+	Run: func(cmd *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{
 			{"template-tag", validate.UnixPath},
 			{"target-dir", validate.UnixPath},
@@ -43,9 +45,12 @@ var Use = &cli.Command{
 			exit.Fatal(fmt.Errorf("use: %s", err))
 		}
 
-		if ok, err := TemplateInRegistry(tmplName); err != nil {
+		templateFound, err := TemplateInRegistry(tmplName)
+		if err != nil {
 			exit.Fatal(fmt.Errorf("use: %s", err))
-		} else if !ok {
+		}
+
+		if !templateFound {
 			exit.Fatal(fmt.Errorf("Template %q couldn't be found in the template registry", tmplName))
 		}
 
@@ -59,14 +64,75 @@ var Use = &cli.Command{
 			exit.Fatal(fmt.Errorf("use: %s", err))
 		}
 
-		if shouldUseDefaults := GetBoolFlag(c, "use-defaults"); shouldUseDefaults {
+		if shouldUseDefaults := GetBoolFlag(cmd, "use-defaults"); shouldUseDefaults {
 			tmpl.UseDefaultValues()
 		}
 
-		if err := tmpl.Execute(targetDir); err != nil {
-			// Deletes the target dir if execute transaction fails
-			defer os.RemoveAll(targetDir)
+		tmpDir, err := ioutil.TempDir("", "boilr-use-template")
+		if err != nil {
+			exit.Fatal(fmt.Errorf("use: %s", err))
+		}
+		defer os.RemoveAll(tmpDir)
 
+		if err := os.Mkdir(targetDir, 0744); err != nil {
+			if os.IsNotExist(err) {
+				exit.Fatal(fmt.Errorf("use: directory %q doesn't exist", filepath.Dir(targetDir)))
+			}
+
+			if !os.IsExist(err) {
+				exit.Fatal(fmt.Errorf("use: %s", err))
+			}
+		}
+
+		if err := tmpl.Execute(tmpDir); err != nil {
+			exit.Fatal(fmt.Errorf("use: %s", err))
+		}
+
+		// Complete the template execution transaction by copying the temporary dir to
+		// the target directory.
+		if err := filepath.Walk(tmpDir, func(fname string, info os.FileInfo, err error) error {
+			if err != nil {
+				return err
+			}
+
+			relPath, err := filepath.Rel(tmpDir, fname)
+			if err != nil {
+				return err
+			}
+
+			mirrorPath := filepath.Join(targetDir, relPath)
+
+			if info.IsDir() {
+				if err := os.Mkdir(mirrorPath, 0744); err != nil {
+					if !os.IsExist(err) {
+						return err
+					}
+				}
+			} else {
+				fi, err := os.Lstat(fname)
+				if err != nil {
+					return err
+				}
+
+				tmpf, err := os.Open(fname)
+				if err != nil {
+					return err
+				}
+				defer tmpf.Close()
+
+				f, err := os.OpenFile(mirrorPath, os.O_CREATE|os.O_WRONLY, fi.Mode())
+				if err != nil {
+					return err
+				}
+				defer f.Close()
+
+				if _, err := io.Copy(f, tmpf); err != nil {
+					return err
+				}
+			}
+
+			return nil
+		}); err != nil {
 			exit.Fatal(fmt.Errorf("use: %s", err))
 		}
 
