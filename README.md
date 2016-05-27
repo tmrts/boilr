@@ -25,9 +25,9 @@ Are you doing the same steps over and over again every time you start a new prog
 For more details, see [Introduction](https://github.com/tmrts/boilr/wiki/Introduction) page.
 
 # Features
-- Blazingly Fast
 - No dependencies (NodeJS, Python Interpreter etc.)
 - Full power of [golang templates](https://golang.org/pkg/text/template/) (Easy to learn & powerful)
+- Dead simple boilerplate template creation
 
 # Usage
 Use `boilr help` to get the list of available commands.
