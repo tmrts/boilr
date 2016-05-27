@@ -11,11 +11,6 @@ import (
 	"github.com/tmrts/boilr/pkg/util/exit"
 )
 
-const bashrcText = `
-# Enables shell command completion for boilr
-source $HOME/bin/boilr
-`
-
 func configureBashCompletion() error {
 	bash_completion_file := filepath.Join(boilr.Configuration.ConfigDirPath, "completion.bash")
 
@@ -38,6 +33,13 @@ func configureBashCompletion() error {
 	}
 
 	defer f.Close()
+
+	bashrcText := `
+# Enables shell command completion for boilr
+source %s
+`
+
+	bashrcText = fmt.Sprintf(bashrcText, filepath.Join("$HOME", boilr.ConfigDirPath, "completion.bash"))
 
 	if _, err = f.WriteString(bashrcText); err != nil {
 		return err
