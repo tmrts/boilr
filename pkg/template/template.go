@@ -162,7 +162,6 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 
 	// TODO create io.ReadWriter from string
 	// TODO refactor name manipulation
-	// TODO trim leading or trailing whitespaces
 	return filepath.Walk(t.Path, func(filename string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
