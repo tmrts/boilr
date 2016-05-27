@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"regexp"
 	"text/template"
 
 	"github.com/tmrts/boilr/pkg/boilr"
@@ -160,6 +161,12 @@ func (t *dirTemplate) BindPrompts() {
 func (t *dirTemplate) Execute(dirPrefix string) error {
 	t.BindPrompts()
 
+	isOnlyWhitespace := func(buf []byte) bool {
+		wsre := regexp.MustCompile(`\S`)
+
+		return !wsre.Match(buf)
+	}
+
 	// TODO create io.ReadWriter from string
 	// TODO refactor name manipulation
 	return filepath.Walk(t.Path, func(filename string, info os.FileInfo, err error) error {
@@ -210,6 +217,19 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 				return err
 			}
 			defer f.Close()
+
+			defer func(fname string) {
+				contents, err := ioutil.ReadFile(fname)
+				if err != nil {
+					tlog.Debug(fmt.Sprintf("couldn't read the contents of file %q, got error %q", fname, err))
+					return
+				}
+
+				if isOnlyWhitespace(contents) {
+					os.Remove(fname)
+					return
+				}
+			}(f.Name())
 
 			contentsTmpl := template.Must(template.
 				New("file contents template").
