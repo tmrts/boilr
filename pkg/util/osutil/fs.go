@@ -2,7 +2,9 @@ package osutil
 
 import (
 	"fmt"
+	"io"
 	"os"
+	"path/filepath"
 )
 
 // FileExists checks whether the given path exists and belongs to a file.
@@ -50,4 +52,62 @@ func CreateDirs(dirPaths ...string) error {
 	}
 
 	return nil
+}
+
+// CopyRecursively copies a given directory to the destination.
+// Creates the directory if the destination doesn't exist.
+func CopyRecursively(srcPath, dstPath string) error {
+	if err := os.Mkdir(dstPath, 0744); err != nil {
+		if os.IsNotExist(err) {
+			return fmt.Errorf("directory %q doesn't exist", filepath.Dir(dstPath))
+		}
+
+		if !os.IsExist(err) {
+			return err
+		}
+	}
+
+	return filepath.Walk(srcPath, func(fname string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		relPath, err := filepath.Rel(srcPath, fname)
+		if err != nil {
+			return err
+		}
+
+		mirrorPath := filepath.Join(dstPath, relPath)
+
+		if info.IsDir() {
+			if err := os.Mkdir(mirrorPath, 0744); err != nil {
+				if !os.IsExist(err) {
+					return err
+				}
+			}
+		} else {
+			fi, err := os.Lstat(fname)
+			if err != nil {
+				return err
+			}
+
+			srcf, err := os.Open(fname)
+			if err != nil {
+				return err
+			}
+			defer srcf.Close()
+
+			dstf, err := os.OpenFile(mirrorPath, os.O_CREATE|os.O_WRONLY, fi.Mode())
+			if err != nil {
+				return err
+			}
+			defer dstf.Close()
+
+			if _, err := io.Copy(dstf, srcf); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
 }
