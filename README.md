@@ -1,35 +1,36 @@
-<p align="center">
-  <img src="/logo.png" height="400">
+<h1 align=center>
+Boilr
+<br>
+<img src="/logo.png" height="360">
+<br>
+<a href="http://travis-ci.org/tmrts/boilr"><img alt="Build Status" src="https://img.shields.io/travis/tmrts/boilr.svg?style=flat-square" /></a>
+<a href="https://github.com/tmrts/boilr/blob/master/LICENSE" ><img alt="License" src="https://img.shields.io/badge/license-Apache%20License%202.0-E91E63.svg?style=flat-square"/></a>
+<a href="https://github.com/tmrts/boilr/releases" ><img alt="Release Version" src="https://img.shields.io/badge/release-v0.2.0-blue.svg?style=flat-square"/></a>
+<a href="http://goreportcard.com/report/tmrts/boilr" ><img alt="Code Quality" src="https://img.shields.io/badge/report%20card-A%2B-F44336.svg?style=flat-square"/></a>
+<a href="https://godoc.org/github.com/tmrts/boilr" ><img alt="Documentation" src="https://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square"/></a>
+<a href="https://gitter.im/tmrts/boilr" ><img alt="Chat Room" src="https://img.shields.io/badge/chat-on%20gitter-00BCD4.svg?style=flat-square"/></a>
+</h1>
+
+<p align=center>
+<em>Are you doing the <b>same steps over and over again</b> every time you start a new programming project?</em>
+<br><br>
+<em>Boilr is here to help you <b>create projects from boilerplate templates</b>.</em>
 </p>
-# Boilr [![Travis Widget]][Travis] [![Release Widget]][Release] [![Report Widget]][Report] [![License Widget]][License] [![Gitter Widget]][Gitter]
-
-[Travis Widget]: https://img.shields.io/travis/tmrts/boilr.svg?style=flat-square
-[Travis]: http://travis-ci.org/tmrts/boilr
-[License Widget]: https://img.shields.io/badge/license-Apache%20License%202.0-E91E63.svg?style=flat-square
-[License]: https://github.com/tmrts/boilr/blob/master/LICENSE
-[Release Widget]: https://img.shields.io/badge/release-v0.2.0-blue.svg?style=flat-square
-[Release]: https://github.com/tmrts/boilr/releases
-[Gitter Widget]: https://img.shields.io/badge/chat-on%20gitter-00BCD4.svg?style=flat-square
-[Gitter]: https://gitter.im/tmrts/boilr
-[Report Widget]: https://img.shields.io/badge/report%20card-A%2B-F44336.svg?style=flat-square
-[Report]: http://goreportcard.com/report/tmrts/boilr
-[Documentation Widget]: https://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square
-[Documentation]: https://godoc.org/github.com/tmrts/boilr
-
-Are you doing the same steps over and over again every time you start a new programming project?
-
-`boilr` is a powerful language-agnostic command-line boilerplate template tool here to help you.
 
 ![Usage Demonstration](usage.gif)
 
 For more details, see [Introduction](https://github.com/tmrts/boilr/wiki/Introduction) page.
 
 # Features
-- No dependencies (NodeJS, Python Interpreter etc.)
-- Full power of [golang templates](https://golang.org/pkg/text/template/) (Easy to learn & powerful)
-- Dead simple boilerplate template creation
+* **No dependencies (NodeJS, Python Interpreter etc.)** - Boilr is a single statically linked binary.
+Grab the one that fits your architecture, and you're all set to save time by using templates!
+* **Full Power of [Golang Templates](https://golang.org/pkg/text/template/)** - Golang has powerful templating
+constructs which are very easy to learn and powerful.
+* **Dead-Simple Template Creation** - Creating boilerplate templates are very easy, check out 
+the [license template](https://github.com/tmrts/boilr-license) to see a simple, but very useful template for
+adding licenses to new projects with a single command.
 
-# Usage
+# Getting Started with Boilr
 Use `boilr help` to get the list of available commands.
 
 ## Download a Template
@@ -53,14 +54,38 @@ boilr template save ~/boilr-license license
 The saved template will be saved to local `boilr` registry.
 
 ## Use a Template
-In order to use a template from template registry use the following command:
+For a Boilr template with the given directory structure:
+
+```tree
+.
+├── project.json
+├── README.md
+└── template
+    └── LICENSE
+```
+
+And the following `project.json` context file:
+
+```json
+{
+    "Author": "Tamer Tas",
+    "Year": "2015",
+    "License": [
+        "Apache Software License 2.0",
+        "MIT",
+        "GNU GPL v3.0"
+    ]
+}
+```
+
+When using the template with the following command:
 
 ```bash 
 boilr template use <template-tag> <target-dir>
 boilr template use license ~/Workspace/example-project/
 ```
 
-You will be prompted for values when using a template.
+The user will be prompted as follows:
 
 ```bash
 [?] Please choose an option for "License"
@@ -76,23 +101,26 @@ You will be prompted for values when using a template.
 
 For more information please take a look at [Usage](https://github.com/tmrts/boilr/wiki/Usage) and [Creating Templates](https://github.com/tmrts/boilr/wiki/Creating-Templates) pages in the wiki.
 
-## Reporting Issues
+# List of Templates
+Take a look at the [Templates](https://github.com/tmrts/boilr/wiki/Templates) page for an index of project templates, examples, and more information.
+
+# Installation
+Binaries are built automatically by Travis for every release and are binaries available for Linux & OSX. 
+You can download them directly or run the installation script. 
+
+Please see [Installation](https://github.com/tmrts/boilr/wiki/Installation) page for more information.
+
+# Contributing
+If you'd like to contribute, share your opinions or learn more, please feel free to open an issue.
+
+Also, edits to the [Wiki](https://github.com/boilr/wiki) are much obliged.
+
+At this stage, user feedback is of **utmost importance**, every contribution is welcome however small it may be.
+
+# Need Help? Found a bug?
 You can report issues **directly from the command-line** by using the command, `boilr report`.
 
 A markdown file will be opened where the first line is the issue title and the rest 
 is the issue body. 
 
-After creating the issue, save & exit the editor and you will be
-prompted for github credentials needed to create the issue.
-
-# Template Catalog
-Take a look at [Templates](https://github.com/tmrts/boilr/wiki/Templates) page for a list of project templates, examples, and more information.
-
-# Contributing
-If you'd like to contribute, share your opinions or learn more, please feel free to open an issue.
-
-At this stage, user feedback is of **utmost importance**, every contribution is welcome however small it may be.
-
-# How Do I Get It?
-There are binaries available for Linux & OSX. You can download them directly,
-or run the installation script. Please see [Installation](https://github.com/tmrts/boilr/wiki/Installation) page for more information.
+After you're done editing the issue, save & exit the editor and your issue will be created.
