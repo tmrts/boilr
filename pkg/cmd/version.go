@@ -17,6 +17,8 @@ var Version = &cli.Command{
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{})
 
+		tlog.SetLogLevel(GetStringFlag(c, "log-level"))
+
 		shouldntPrettify := GetBoolFlag(c, "dont-prettify")
 		if shouldntPrettify {
 			fmt.Println(boilr.Version)

@@ -29,6 +29,26 @@ const (
 	QuestionMark = "?"
 )
 
+const (
+    Debug = 32
+    Fatal = 16
+    Error = 8
+    Warn = 4
+    Info = 2
+    Success = 1
+)
+
+var LogLevel int32
+
+func SetLogLevel(LogLevelString string) {
+    switch ToLower(LogLevelString) {
+    case "debug":
+        LogLevel |= (Success & Info & Warn & Error & Fatal & Debug)
+    default:
+        panic("Unrecognised log-level")
+    }
+}
+
 // TODO add log levels
 func coloredPrintMsg(icon string, msg string, iC color.Attribute, mC color.Attribute) {
 	fmt.Println(

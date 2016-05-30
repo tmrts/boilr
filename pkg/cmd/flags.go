@@ -7,3 +7,7 @@ import cli "github.com/spf13/cobra"
 func GetBoolFlag(c *cli.Command, name string) bool {
 	return c.PersistentFlags().Lookup(name).Value.String() == "true"
 }
+
+func GetStringFlag(c *cli.Command, name string) string {
+	return c.PersistentFlags().Lookup(name).Value.String()
+}

@@ -14,6 +14,8 @@ func Run() {
 	// TODO add describe command that shows template metadata information
 	// TODO add create command that creates a minimal template template
 
+	Root.PersistentFlags().StringP("log-level", "l", "error", "log-level for output")
+
 	Template := &cli.Command{
 		Use:   "template",
 		Short: "Run a template command",
