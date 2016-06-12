@@ -2,6 +2,7 @@ package host
 
 import (
 	"path/filepath"
+	"regexp"
 	"strings"
 )
 
@@ -11,7 +12,8 @@ func ZipURL(url string) string {
 
 	url = strings.TrimSuffix(strings.TrimPrefix(url, "/"), "/")
 
-	if strings.HasSuffix(url, "zip/master") {
+	zipRegex, _ := regexp.Compile(`zip/(\S+)$`)
+	if zipRegex.MatchString(url) {
 		return url
 	}
 
