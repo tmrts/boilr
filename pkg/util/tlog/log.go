@@ -30,20 +30,20 @@ const (
 )
 
 const (
-    Debug = 32
-    Fatal = 16
-    Error = 8
-    Warn = 4
-    Info = 2
-    Success = 1
+    LevelDebug = 32
+    LevelFatal = 16
+    LevelError = 8
+    LevelWarn = 4
+    LevelInfo = 2
+    LevelSuccess = 1
 )
 
 var LogLevel int32
 
 func SetLogLevel(LogLevelString string) {
-    switch ToLower(LogLevelString) {
+    switch strings.ToLower(LogLevelString) {
     case "debug":
-        LogLevel |= (Success & Info & Warn & Error & Fatal & Debug)
+        LogLevel |= (LevelSuccess & LevelInfo & LevelWarn & LevelError & LevelFatal & LevelDebug)
     default:
         panic("Unrecognised log-level")
     }
