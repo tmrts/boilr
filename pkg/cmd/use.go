@@ -12,6 +12,7 @@ import (
 	"github.com/tmrts/boilr/pkg/boilr"
 	"github.com/tmrts/boilr/pkg/template"
 	"github.com/tmrts/boilr/pkg/util/exit"
+	"github.com/tmrts/boilr/pkg/util/tlog"
 	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
@@ -32,6 +33,8 @@ var Use = &cli.Command{
 	Use:   "use <template-tag> <target-dir>",
 	Short: "Execute a project template in the given directory",
 	Run: func(cmd *cli.Command, args []string) {
+		tlog.SetLogLevel(GetStringFlag(cmd, "log-level"))
+
 		MustValidateArgs(args, []validate.Argument{
 			{"template-tag", validate.UnixPath},
 			{"target-dir", validate.UnixPath},

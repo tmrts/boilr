@@ -38,14 +38,18 @@ const (
     LevelSuccess = 1
 )
 
-var LogLevel int32
+var LogLevel uint16
 
 func SetLogLevel(LogLevelString string) {
     switch strings.ToLower(LogLevelString) {
     case "debug":
-        LogLevel |= (LevelSuccess & LevelInfo & LevelWarn & LevelError & LevelFatal & LevelDebug)
-    default:
-        panic("Unrecognised log-level")
+		LogLevel |= (LevelSuccess | LevelError | LevelFatal | LevelWarn | LevelInfo | LevelDebug)
+	case "info":
+        LogLevel |= (LevelSuccess | LevelError | LevelFatal | LevelWarn | LevelInfo)
+	case "warn":
+        LogLevel |= (LevelSuccess | LevelError | LevelFatal | LevelWarn)
+	default:
+        LogLevel |= (LevelSuccess | LevelError | LevelFatal)
     }
 }
 
@@ -58,6 +62,10 @@ func coloredPrintMsg(icon string, msg string, iC color.Attribute, mC color.Attri
 
 // Debug logs the given message as a debug message.
 func Debug(msg string) {
+	if 0 == LogLevel & LevelDebug {
+		return
+	}
+
 	coloredPrintMsg(DebugMark, msg, color.FgYellow, color.FgYellow)
 }
 
@@ -68,11 +76,19 @@ func Success(msg string) {
 
 // Info logs the given message as a info message.
 func Info(msg string) {
+	if 0 == LogLevel & LevelInfo {
+		return
+	}
+
 	coloredPrintMsg(InfoMark, msg, color.FgWhite, color.FgBlue)
 }
 
 // Warn logs the given message as a warn message.
 func Warn(msg string) {
+	if 0 == LogLevel & LevelWarn {
+		return
+	}
+
 	coloredPrintMsg(WarnMark, msg, color.FgMagenta, color.FgMagenta)
 }
 

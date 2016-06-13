@@ -1,6 +1,6 @@
 package main
 
-import "./pkg/cmd"
+import "github.com/tmrts/boilr/pkg/cmd"
 
 func main() {
 	cmd.Run()

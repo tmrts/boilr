@@ -15,9 +15,9 @@ var Version = &cli.Command{
 	Use:   "version",
 	Short: "Show the boilr version information",
 	Run: func(c *cli.Command, args []string) {
-		MustValidateArgs(args, []validate.Argument{})
-
 		tlog.SetLogLevel(GetStringFlag(c, "log-level"))
+
+		MustValidateArgs(args, []validate.Argument{})
 
 		shouldntPrettify := GetBoolFlag(c, "dont-prettify")
 		if shouldntPrettify {

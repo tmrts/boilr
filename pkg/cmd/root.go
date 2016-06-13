@@ -14,8 +14,6 @@ func Run() {
 	// TODO add describe command that shows template metadata information
 	// TODO add create command that creates a minimal template template
 
-    Root.PersistentFlags().StringP("log-level", "l", "error", "log-level for output")
-    
 	Template := &cli.Command{
 		Use:   "template",
 		Short: "Run a template command",
@@ -24,6 +22,7 @@ func Run() {
 	Template.AddCommand(Delete)
 
 	Download.PersistentFlags().BoolP("force", "f", false, "Overwrite existing template with the same name")
+	Download.PersistentFlags().StringP("log-level", "l", "error", "log-level for output")
 	Template.AddCommand(Download)
 
 	List.PersistentFlags().BoolP("dont-prettify", "", false, "Print only the template names without fancy formatting")
@@ -35,6 +34,7 @@ func Run() {
 	Template.AddCommand(Save)
 
 	Use.PersistentFlags().BoolP("use-defaults", "f", false, "Uses default values in project.json instead of prompting the user")
+	Use.PersistentFlags().StringP("log-level", "l", "error", "log-level for output")
 	Template.AddCommand(Use)
 
 	Template.AddCommand(Validate)
