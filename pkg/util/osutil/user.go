@@ -9,5 +9,5 @@ func GetUserHomeDir() (string, error) {
 		return "", err
 	}
 
-	return usr.HomeDir, err
+	return usr.HomeDir, nil
 }

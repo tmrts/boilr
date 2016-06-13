@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"sort"
+	"strings"
 
 	cli "github.com/spf13/cobra"
 
@@ -39,7 +40,7 @@ func ListTemplates() (map[string]bool, error) {
 var List = &cli.Command{
 	Use:   "list <template-path> <template-tag>",
 	Short: "List project templates found in the local template registry",
-	Run: func(c *cli.Command, args []string) {
+	Run: func(cmd *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{})
 
 		MustValidateTemplateDir()
@@ -71,12 +72,8 @@ var List = &cli.Command{
 			data = append(data, tmpl.Info().String())
 		}
 
-		shouldntPrettify := GetBoolFlag(c, "dont-prettify")
-		if shouldntPrettify {
-			for _, name := range names {
-				fmt.Print(name, " ")
-			}
-			fmt.Println()
+		if GetBoolFlag(cmd, "dont-prettify") {
+			fmt.Println(strings.Join(names, " "))
 		} else {
 			tabular.Print([]string{"Tag", "Repository", "Created"}, data)
 		}

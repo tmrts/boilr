@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -9,33 +8,35 @@ import (
 	cli "github.com/spf13/cobra"
 	"github.com/tmrts/boilr/pkg/boilr"
 	"github.com/tmrts/boilr/pkg/util/exit"
+	"github.com/tmrts/boilr/pkg/util/osutil"
 )
 
 func configureBashCompletion() error {
-	bash_completion_file := filepath.Join(boilr.Configuration.ConfigDirPath, "completion.bash")
+	bashCompletionFilePath := filepath.Join(boilr.Configuration.ConfigDirPath, "completion.bash")
 
-	if err := Root.GenBashCompletionFile(bash_completion_file); err != nil {
+	if err := Root.GenBashCompletionFile(bashCompletionFilePath); err != nil {
 		return err
 	}
 
-	if err := Root.GenBashCompletionFile(bash_completion_file); err != nil {
+	if err := Root.GenBashCompletionFile(bashCompletionFilePath); err != nil {
 		return err
 	}
 
-	bashrcPath := filepath.Join(os.Getenv("HOME"), ".bashrc")
-	if bashrcPath == "" {
-		return errors.New("environment variable ${HOME} should be set")
+	homeDir, err := osutil.GetUserHomeDir()
+	if err != nil {
+		return err
 	}
+
+	bashrcPath := filepath.Join(homeDir, ".bashrc")
 
 	f, err := os.OpenFile(bashrcPath, os.O_APPEND|os.O_WRONLY, 0600)
 	if err != nil {
 		return err
 	}
-
 	defer f.Close()
 
 	bashrcText := `
-# Enables shell command completion for boilr
+# Enables command-line completion for boilr
 source %s
 `
 

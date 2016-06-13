@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -12,6 +11,7 @@ import (
 	"github.com/tmrts/boilr/pkg/boilr"
 	"github.com/tmrts/boilr/pkg/template"
 	"github.com/tmrts/boilr/pkg/util/exit"
+	"github.com/tmrts/boilr/pkg/util/osutil"
 	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
@@ -68,72 +68,34 @@ var Use = &cli.Command{
 			tmpl.UseDefaultValues()
 		}
 
-		tmpDir, err := ioutil.TempDir("", "boilr-use-template")
-		if err != nil {
-			exit.Fatal(fmt.Errorf("use: %s", err))
-		}
-		defer os.RemoveAll(tmpDir)
+		executeTemplate := func() error {
+			parentDir := filepath.Dir(targetDir)
 
-		if err := os.Mkdir(targetDir, 0744); err != nil {
-			if os.IsNotExist(err) {
-				exit.Fatal(fmt.Errorf("use: directory %q doesn't exist", filepath.Dir(targetDir)))
-			}
-
-			if !os.IsExist(err) {
-				exit.Fatal(fmt.Errorf("use: %s", err))
-			}
-		}
-
-		if err := tmpl.Execute(tmpDir); err != nil {
-			exit.Fatal(fmt.Errorf("use: %s", err))
-		}
-
-		// Complete the template execution transaction by copying the temporary dir to
-		// the target directory.
-		if err := filepath.Walk(tmpDir, func(fname string, info os.FileInfo, err error) error {
+			exists, err := osutil.DirExists(parentDir)
 			if err != nil {
 				return err
 			}
 
-			relPath, err := filepath.Rel(tmpDir, fname)
+			if !exists {
+				return fmt.Errorf("use: parent directory %q doesn't exist", parentDir)
+			}
+
+			tmpDir, err := ioutil.TempDir("", "boilr-use-template")
 			if err != nil {
 				return err
 			}
+			defer os.RemoveAll(tmpDir)
 
-			mirrorPath := filepath.Join(targetDir, relPath)
-
-			if info.IsDir() {
-				if err := os.Mkdir(mirrorPath, 0744); err != nil {
-					if !os.IsExist(err) {
-						return err
-					}
-				}
-			} else {
-				fi, err := os.Lstat(fname)
-				if err != nil {
-					return err
-				}
-
-				tmpf, err := os.Open(fname)
-				if err != nil {
-					return err
-				}
-				defer tmpf.Close()
-
-				f, err := os.OpenFile(mirrorPath, os.O_CREATE|os.O_WRONLY, fi.Mode())
-				if err != nil {
-					return err
-				}
-				defer f.Close()
-
-				if _, err := io.Copy(f, tmpf); err != nil {
-					return err
-				}
+			if err := tmpl.Execute(tmpDir); err != nil {
+				return err
 			}
 
-			return nil
-		}); err != nil {
-			exit.Fatal(fmt.Errorf("use: %s", err))
+			// Complete the template execution transaction by copying the temporary dir to the target directory.
+			return osutil.CopyRecursively(tmpDir, targetDir)
+		}
+
+		if err := executeTemplate(); err != nil {
+			exit.Fatal(fmt.Errorf("use: %v", err))
 		}
 
 		exit.OK("Successfully executed the project template %v in %v", tmplName, targetDir)
