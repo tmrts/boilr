@@ -1,6 +1,5 @@
 package host
 
-import "strings"
 import (
 	"path/filepath"
 	"regexp"
