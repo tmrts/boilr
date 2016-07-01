@@ -46,7 +46,7 @@ func DirExists(path string) (bool, error) {
 // CreateDirs creates directories from the given directory path arguments.
 func CreateDirs(dirPaths ...string) error {
 	for _, path := range dirPaths {
-		if err := os.MkdirAll(path, 0744); err != nil {
+		if err := os.MkdirAll(path, 0755); err != nil {
 			return err
 		}
 	}
@@ -57,7 +57,7 @@ func CreateDirs(dirPaths ...string) error {
 // CopyRecursively copies a given directory to the destination.
 // Creates the directory if the destination doesn't exist.
 func CopyRecursively(srcPath, dstPath string) error {
-	if err := os.Mkdir(dstPath, 0744); err != nil {
+	if err := os.Mkdir(dstPath, 0755); err != nil {
 		if os.IsNotExist(err) {
 			return fmt.Errorf("directory %q doesn't exist", filepath.Dir(dstPath))
 		}
@@ -80,7 +80,7 @@ func CopyRecursively(srcPath, dstPath string) error {
 		mirrorPath := filepath.Join(dstPath, relPath)
 
 		if info.IsDir() {
-			if err := os.Mkdir(mirrorPath, 0744); err != nil {
+			if err := os.Mkdir(mirrorPath, info.Mode()); err != nil {
 				if !os.IsExist(err) {
 					return err
 				}
