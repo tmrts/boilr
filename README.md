@@ -113,7 +113,7 @@ Please see [Installation](https://github.com/tmrts/boilr/wiki/Installation) page
 # Contributing
 If you'd like to contribute, share your opinions or learn more, please feel free to open an issue.
 
-Also, edits to the [Wiki](https://github.com/boilr/wiki) are much obliged.
+Also, edits to the [Wiki](https://github.com/tmrts/boilr/wiki) are much obliged.
 
 At this stage, user feedback is of **utmost importance**, every contribution is welcome however small it may be.
 
