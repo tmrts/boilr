@@ -37,3 +37,9 @@ func UnixPath(path string) bool {
 func Alphanumeric(s string) bool {
 	return pattern.Alphanumeric.MatchString(s)
 }
+
+// AlphanumericExt validates whether a string is an alphanumeric string, but a
+// small set of extra characters allowed
+func AlphanumericExt(s string) bool {
+	return pattern.AlphanumericExt.MatchString(s)
+}
