@@ -48,6 +48,28 @@ func TestAlphanumericPattern(t *testing.T) {
 	}
 }
 
+func TestAlphanumericExtPattern(t *testing.T) {
+	tests := []struct {
+		String string
+		Valid  bool
+	}{
+		{" ", false},
+		{"/", false},
+		{"root", true},
+		{"tmp-dir", true},
+		{"tmp-dir_now", true},
+		{"TMPDIR", true},
+		{"L33T", true},
+		{"L@@T", false},
+	}
+
+	for _, test := range tests {
+		if ok := pattern.AlphanumericExt.MatchString(test.String); ok != test.Valid {
+			t.Errorf("pattern.AlphanumericExt.MatchString(%q) expected to be %v", test.String, test.Valid)
+		}
+	}
+}
+
 func TestIntegerPattern(t *testing.T) {
 	tests := []struct {
 		String string

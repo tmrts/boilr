@@ -103,7 +103,7 @@ var Download = &cli.Command{
 
 		MustValidateArgs(args, []validate.Argument{
 			{"template-repo", validate.UnixPath},
-			{"template-tag", validate.Alphanumeric},
+			{"template-tag", validate.AlphanumericExt},
 		})
 
 		MustValidateTemplateDir()

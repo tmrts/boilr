@@ -21,7 +21,7 @@ var Save = &cli.Command{
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{
 			{"template-path", validate.UnixPath},
-			{"template-tag", validate.Alphanumeric},
+			{"template-tag", validate.AlphanumericExt},
 		})
 
 		MustValidateTemplateDir()
