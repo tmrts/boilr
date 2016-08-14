@@ -82,7 +82,7 @@ When using the template with the following command:
 
 ```bash 
 boilr template use <template-tag> <target-dir>
-boilr template use license ~/Workspace/example-project/
+boilr template use license /workspace/tmrts/example-project/
 ```
 
 The user will be prompted as follows:
@@ -95,8 +95,8 @@ The user will be prompted as follows:
     Select from 1..3 [default: 1]: 2
 [?] Please choose a value for "Year" [default: "2015"]:
 [?] Please choose a value for "Author" [default: "Tamer Tas"]:
-[✔] Created /home/tmrts/project/LICENSE
-[✔] Successfully executed the project template license in /home/tmrts/project
+[✔] Created /workspace/tmrts/example-project/LICENSE
+[✔] Successfully executed the project template license in /workspace/tmrts/example-project
 ```
 
 For more information please take a look at [Usage](https://github.com/tmrts/boilr/wiki/Usage) and [Creating Templates](https://github.com/tmrts/boilr/wiki/Creating-Templates) pages in the wiki.
@@ -105,22 +105,22 @@ For more information please take a look at [Usage](https://github.com/tmrts/boil
 Take a look at the [Templates](https://github.com/tmrts/boilr/wiki/Templates) page for an index of project templates, examples, and more information.
 
 # Installation
-Binaries are built automatically by Travis for every release and are binaries available for Linux & OSX. 
+Binaries for Linux & OSX are built automatically by Travis every release.
 You can download them directly or run the installation script. 
 
 Please see [Installation](https://github.com/tmrts/boilr/wiki/Installation) page for more information.
 
 # Contributing
-If you'd like to contribute, share your opinions or learn more, please feel free to open an issue.
+If you'd like to contribute, share your opinions or ask questions, please feel free to open an issue.
 
-Also, edits to the [Wiki](https://github.com/tmrts/boilr/wiki) are much obliged.
+The [Wiki](https://github.com/tmrts/boilr/wiki) is public and edits are open to everyone, feel free to contribute to sections where you feel needs improvement.
 
 At this stage, user feedback is of **utmost importance**, every contribution is welcome however small it may be.
 
 # Need Help? Found a bug?
-You can report issues **directly from the command-line** by using the command, `boilr report`.
+You can report issues **directly from the command-line** by using the `boilr report` command.
 
-A markdown file will be opened where the first line is the issue title and the rest 
-is the issue body. 
+A markdown file will be opened where the first line will be the issue title and
+the rest, the issue body.
 
 After you're done editing the issue, save & exit the editor and your issue will be created.
