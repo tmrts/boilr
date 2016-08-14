@@ -246,7 +246,7 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 			}
 
 			if !t.ShouldUseDefaults {
-				tlog.Success(fmt.Sprintf("Created %s", target))
+				tlog.Success(fmt.Sprintf("Created %s", newName))
 			}
 		}
 
