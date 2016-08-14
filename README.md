@@ -102,6 +102,14 @@ The user will be prompted as follows:
 For more information please take a look at [Usage](https://github.com/tmrts/boilr/wiki/Usage) and [Creating Templates](https://github.com/tmrts/boilr/wiki/Creating-Templates) pages in the wiki.
 
 # List of Templates
+
+<img alt="Electron Logo" height=96 width=96
+src="https://cdn.rawgit.com/tmrts/boilr/master/assets/template-logos/electron.svg" />
+<img alt="Docker Logo" height=96 width=96
+src="https://cdn.rawgit.com/tmrts/boilr/master/assets/template-logos/docker.svg" />
+<img alt="Kubernetes Logo" height=96 width=96
+src="https://cdn.rawgit.com/tmrts/boilr/master/assets/template-logos/kubernetes.svg" />
+
 Take a look at the [Templates](https://github.com/tmrts/boilr/wiki/Templates) page for an index of project templates, examples, and more information.
 
 # Installation
