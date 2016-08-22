@@ -30,6 +30,12 @@ constructs which are very easy to learn and powerful.
 the [license template](https://github.com/tmrts/boilr-license) to see a simple, but very useful template for
 adding licenses to new projects with a single command.
 
+# Installation
+Binaries for Linux & OSX are built automatically by Travis every release.
+You can download them directly or run the installation script. 
+
+Please see [Installation](https://github.com/tmrts/boilr/wiki/Installation) page for more information.
+
 # Getting Started with Boilr
 Use `boilr help` to get the list of available commands.
 
@@ -111,12 +117,6 @@ src="https://cdn.rawgit.com/tmrts/boilr/master/assets/template-logos/docker.svg"
 src="https://cdn.rawgit.com/tmrts/boilr/master/assets/template-logos/kubernetes.svg" />
 
 Take a look at the [Templates](https://github.com/tmrts/boilr/wiki/Templates) page for an index of project templates, examples, and more information.
-
-# Installation
-Binaries for Linux & OSX are built automatically by Travis every release.
-You can download them directly or run the installation script. 
-
-Please see [Installation](https://github.com/tmrts/boilr/wiki/Installation) page for more information.
 
 # Contributing
 If you'd like to contribute, share your opinions or ask questions, please feel free to open an issue.
