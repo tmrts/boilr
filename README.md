@@ -30,6 +30,10 @@ constructs which are very easy to learn and powerful.
 the [license template](https://github.com/tmrts/boilr-license) to see a simple, but very useful template for
 adding licenses to new projects with a single command.
 
+# Installation
+Boilr is available as binary or from source.
+Follow [the guide](https://github.com/tmrts/boilr/wiki/Installation).
+
 # Getting Started with Boilr
 Use `boilr help` to get the list of available commands.
 
