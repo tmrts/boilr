@@ -8,6 +8,7 @@ import (
 	"strings"
 	"text/template"
 	"time"
+	"os/user"
 )
 
 var (
@@ -22,6 +23,7 @@ var (
 		"env":      os.Getenv,
 		"time":     CurrentTimeInFmt,
 		"hostname": func() string { return os.Getenv("HOSTNAME") },
+		"username": UserName,
 
 		"toBinary": func(s string) string {
 			n, err := strconv.Atoi(s)
@@ -101,4 +103,14 @@ func CurrentTimeInFmt(fmt string) string {
 	t := time.Now()
 
 	return t.Format(fmt)
+}
+
+
+// UserName returns the user's name (not the login name).
+func UserName() string {
+    t, err := user.Current();
+    if ( err != nil ) {
+        return "Unknown";
+    }
+    return t.Name;
 }
