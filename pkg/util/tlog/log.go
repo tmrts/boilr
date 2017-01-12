@@ -29,28 +29,50 @@ const (
 	QuestionMark = "?"
 )
 
-const (
-    LevelDebug = 32
-    LevelFatal = 16
-    LevelError = 8
-    LevelWarn = 4
-    LevelInfo = 2
-    LevelSuccess = 1
+var (
+	logLevel Level
 )
 
-var LogLevel uint16
+// Level is a 16-bit set holding the enabled log levels.
+type Level uint16
 
+const (
+	LevelDebug   = 1 << 5
+	LevelFatal   = 1 << 4
+	LevelWarn    = 1 << 3
+	LevelError   = 1 << 2
+	LevelInfo    = 1 << 1
+	LevelSuccess = 1 << 0
+)
+
+// Set enables the levels upto and including the given log level.
+func (lvl *Level) Set(newLvl Level) {
+	*lvl = (newLvl << 1) - 1
+}
+
+// Permits queries whether the given log level is enabled or not.
+func (lvl Level) Permits(queryLvl Level) bool {
+	return lvl&queryLvl > 0
+}
+
+// SetLogLevel sets the global logging level.
 func SetLogLevel(LogLevelString string) {
-    switch strings.ToLower(LogLevelString) {
-    case "debug":
-		LogLevel |= (LevelSuccess | LevelError | LevelFatal | LevelWarn | LevelInfo | LevelDebug)
-	case "info":
-        LogLevel |= (LevelSuccess | LevelError | LevelFatal | LevelWarn | LevelInfo)
-	case "warn":
-        LogLevel |= (LevelSuccess | LevelError | LevelFatal | LevelWarn)
-	default:
-        LogLevel |= (LevelSuccess | LevelError | LevelFatal)
-    }
+	levels := map[string]Level{
+		"debug":   LevelDebug,
+		"fatal":   LevelFatal,
+		"warn":    LevelWarn,
+		"error":   LevelError,
+		"info":    LevelInfo,
+		"success": LevelSuccess,
+	}
+
+	newLevel, ok := levels[strings.ToLower(LogLevelString)]
+	if !ok {
+		Error(fmt.Sprintf("unknown log level %s", LogLevelString))
+		return
+	}
+
+	logLevel.Set(newLevel)
 }
 
 // TODO add log levels
@@ -62,7 +84,7 @@ func coloredPrintMsg(icon string, msg string, iC color.Attribute, mC color.Attri
 
 // Debug logs the given message as a debug message.
 func Debug(msg string) {
-	if 0 == LogLevel & LevelDebug {
+	if !logLevel.Permits(LevelDebug) {
 		return
 	}
 
@@ -71,12 +93,16 @@ func Debug(msg string) {
 
 // Success logs the given message as a success message.
 func Success(msg string) {
+	if !logLevel.Permits(LevelSuccess) {
+		return
+	}
+
 	coloredPrintMsg(CheckMark, msg, color.FgWhite, color.FgGreen)
 }
 
 // Info logs the given message as a info message.
 func Info(msg string) {
-	if 0 == LogLevel & LevelInfo {
+	if !logLevel.Permits(LevelInfo) {
 		return
 	}
 
@@ -85,7 +111,7 @@ func Info(msg string) {
 
 // Warn logs the given message as a warn message.
 func Warn(msg string) {
-	if 0 == LogLevel & LevelWarn {
+	if !logLevel.Permits(LevelWarn) {
 		return
 	}
 
@@ -94,11 +120,16 @@ func Warn(msg string) {
 
 // Error logs the given message as a error message.
 func Error(msg string) {
+	if !logLevel.Permits(LevelError) {
+		return
+	}
+
 	coloredPrintMsg(ErrorMark, msg, color.FgRed, color.FgRed)
 }
 
 // Fatal logs the given message as a fatal message.
 func Fatal(msg string) {
+	// Fatal level is being deprecated
 	Error(msg)
 }
 
@@ -112,3 +143,6 @@ func Prompt(msg string, defval interface{}) {
 }
 
 // TODO use dependency injection wrapper for fmt.Print usage in the code base
+func init() {
+	logLevel.Set(LevelError)
+}
