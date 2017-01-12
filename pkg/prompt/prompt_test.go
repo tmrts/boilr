@@ -90,7 +90,7 @@ func TestMultipleChoicePromptFunc(t *testing.T) {
 
 	msg := slicePrompt.PromptMessage(name)
 
-	expectedPromptMsg := "Please choose an index for \"fieldName\""
+	expectedPromptMsg := "Please choose an option for \"fieldName\""
 	if msg != expectedPromptMsg {
 		t.Errorf("slicePrompt(%q).PromptMessage(%q) expected %q got %q", defval, name, expectedPromptMsg, msg)
 	}

@@ -68,7 +68,7 @@ func (p boolPrompt) EvaluateChoice(c string) (interface{}, error) {
 type multipleChoicePrompt []string
 
 func (p multipleChoicePrompt) PromptMessage(name string) string {
-	return fmt.Sprintf("Please choose an index for %q", name)
+	return fmt.Sprintf("Please choose an option for %q", name)
 }
 
 func (p multipleChoicePrompt) EvaluateChoice(c string) (interface{}, error) {

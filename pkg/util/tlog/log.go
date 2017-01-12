@@ -135,11 +135,27 @@ func Fatal(msg string) {
 
 // Prompt outputs the given message as a question along with a default value.
 func Prompt(msg string, defval interface{}) {
-	fmt.Print(strings.Join([]string{
+	tokens := []string{
 		color.New(color.FgBlue).SprintFunc()("[" + QuestionMark + "]"),
 		color.New(color.Bold, color.FgWhite).SprintFunc()(msg),
-		color.New(color.FgBlue).SprintFunc()(fmt.Sprintf("[default: %#v]: ", defval)),
-	}, " "))
+	}
+
+	// TODO refactor & eliminate duplication
+	switch val := defval.(type) {
+	case []interface{}:
+		tokens = append(tokens, "\n")
+		for i, v := range val {
+			tokens = append(tokens, color.New(color.Bold, color.FgWhite).SprintFunc()(fmt.Sprintf("   %v - %#v\n", i+1, v)))
+		}
+
+		tokens = append(tokens, color.New(color.Bold, color.FgWhite).SprintFunc()(fmt.Sprintf("   Choose from %v..%v", 1, len(val))))
+
+		tokens = append(tokens, color.New(color.Bold, color.FgBlue).SprintFunc()(fmt.Sprintf("[default: %v]: ", 1)))
+	default:
+		tokens = append(tokens, color.New(color.Bold, color.FgBlue).SprintFunc()(fmt.Sprintf("[default: %#v]: ", defval)))
+	}
+
+	fmt.Print(strings.Join(tokens, " "))
 }
 
 // TODO use dependency injection wrapper for fmt.Print usage in the code base
