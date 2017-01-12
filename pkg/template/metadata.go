@@ -25,7 +25,8 @@ func (m Metadata) String() []string {
 type JSONTime time.Time
 
 const (
-	timeFormat = "Mon Jan 2 15:04 -0700 +07 2006"
+	// "Mon, 02 Jan 2006 15:04:05 MST"
+	timeFormat = time.RFC1123
 )
 
 // NewTime returns a new JSONTime containing the current time.
