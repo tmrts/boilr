@@ -74,14 +74,7 @@ func (p multipleChoicePrompt) PromptMessage(name string) string {
 func (p multipleChoicePrompt) EvaluateChoice(c string) (interface{}, error) {
 	if c != "" {
 		index, err := strconv.Atoi(c)
-		if err != nil {
-			tlog.Warn(fmt.Sprintf("Unrecognized choice %v, using the default choice", index))
-
-			return p[0], nil
-		}
-
-		fmt.Println(len(p))
-		if index > len(p) || index < 1 {
+		if err != nil || index < 1 || index > len(p) {
 			tlog.Warn(fmt.Sprintf("Unrecognized choice %v, using the default choice", index))
 
 			return p[0], nil
