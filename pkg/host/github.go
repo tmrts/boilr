@@ -13,14 +13,14 @@ func ZipURL(repo string) string {
 
 	repo = strings.TrimSuffix(strings.TrimPrefix(repo, "/"), "/")
 
-	zipRegex, _ := regexp.Compile(`zip/(\S+)$`)
+	zipRegex := regexp.MustCompile(`zip/(\S+)$`)
 	if zipRegex.MatchString(repo) {
 		return repo
 	}
 
-	// So this could identify a port number, but since we only support github
-	// I don't believe using it as a version modifier is a problem. Though
-	// perhaps we should use something else instead?
+	// FIXME(tmrts): this check could also identify a port number, but since
+	// we only support github I don't believe using it as a version modifier
+	// is a problem. Perhaps we should reconsider?
 	if strings.Contains(repo, ":") {
 		parts := strings.SplitAfter(repo, ":")
 
