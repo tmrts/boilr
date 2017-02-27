@@ -26,13 +26,13 @@ For more details, see [Introduction](https://github.com/tmrts/boilr/wiki/Introdu
 Grab the one that fits your architecture, and you're all set to save time by using templates!
 * **Full Power of [Golang Templates](https://golang.org/pkg/text/template/)** - Golang has powerful templating
 constructs which are very easy to learn and powerful.
-* **Dead-Simple Template Creation** - Creating boilerplate templates are very easy, check out 
+* **Dead-Simple Template Creation** - Creating boilerplate templates are very easy, check out
 the [license template](https://github.com/tmrts/boilr-license) to see a simple, but very useful template for
 adding licenses to new projects with a single command.
 
 # Installation
 Binaries for Linux & OSX are built automatically by Travis every release.
-You can download them directly or run the installation script. 
+You can download them directly or run the installation script.
 
 Please see [Installation](https://github.com/tmrts/boilr/wiki/Installation) page for more information.
 
@@ -42,20 +42,20 @@ Use `boilr help` to get the list of available commands.
 ## Download a Template
 In order to download a template from a github repository, use the following command:
 
-```bash 
+```bash
 boilr template download <github-repo-path> <template-tag>
 boilr template download tmrts/boilr-license license
-``` 
+```
 
 The downloaded template will be saved to local `boilr` registry.
 
 ## Save a Local Template
 In order to save a template from filesystem to the template registry use the following command:
 
-```bash 
+```bash
 boilr template save <template-path> <template-tag>
 boilr template save ~/boilr-license license
-``` 
+```
 
 The saved template will be saved to local `boilr` registry.
 
@@ -86,7 +86,7 @@ And the following `project.json` context file:
 
 When using the template with the following command:
 
-```bash 
+```bash
 boilr template use <template-tag> <target-dir>
 boilr template use license /workspace/tmrts/example-project/
 ```
@@ -120,7 +120,5 @@ Take a look at the [Templates](https://github.com/tmrts/boilr/wiki/Templates) pa
 
 # Need Help? Found a bug? Want a Feature?
 If you'd like to contribute, share your opinions or ask questions, please feel free to open an issue.
-
-The [Wiki](https://github.com/tmrts/boilr/wiki) is public and edits are open to everyone, feel free to contribute to sections where you feel needs improvement.
 
 At this stage, user feedback is of **utmost importance**, every contribution is welcome however small it may be.
