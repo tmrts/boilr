@@ -5,7 +5,10 @@ import (
 	"strings"
 )
 
-const githubStorageURL = "https://codeload.github.com"
+const (
+	githubURL        = "https://github.com"
+	githubStorageURL = "https://codeload.github.com"
+)
 
 // ZipURL returns the URL of the zip archive given a github repository URL.
 func ZipURL(repo string) string {
@@ -33,4 +36,14 @@ func ZipURL(repo string) string {
 	urlTokens := []string{githubStorageURL, repo, "zip", version}
 
 	return strings.Join(urlTokens, "/")
+}
+
+// URL returns the normalized URL of a GitHub repository.
+func URL(repo string) string {
+	githubRegex := regexp.MustCompile(githubURL + `/(\S+)$`)
+	if githubRegex.MatchString(repo) {
+		return repo
+	}
+
+	return strings.Join([]string{githubURL, repo}, "/")
 }
