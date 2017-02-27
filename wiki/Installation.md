@@ -11,7 +11,7 @@ releases [here](https://github.com/tmrts/boilr/releases). Grab the one the suits
 your architecture and operating system and start using it.
 
 # Building from Source
-Make sure you have setup a Go >=1.6 development environment and the `GOPATH`
+Make sure you have setup a Go >= 1.7 development environment and the `GOPATH`
 environment variable is configured
 (see [official docs](https://golang.org/doc/code.html#GOPATH) for instructions)
 and your `PATH` includes `$GOPATH/bin`.

@@ -3,7 +3,7 @@ sudo: false
 matrix:
   include:
   - go: 1.7
-    env: VERSION=0.2.0
+    env: VERSION=0.3.0
 
 before_deploy:
 - GOARCH=amd64 GOOS=linux CGO_ENABLED=0 go build boilr.go  && tar czvf boilr-$VERSION-linux_amd64.tgz boilr
