@@ -15,8 +15,8 @@ var (
 
 // Validate contains the cli-command for validating templates.
 var Validate = &cli.Command{
-	Use:   "validate",
-	Short: "Validate a template",
+	Use:   "validate <template-path>",
+	Short: "Validate a local project template",
 	Run: func(_ *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{
 			{"template-path", validate.UnixPath},
