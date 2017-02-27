@@ -128,12 +128,6 @@ var Download = &cli.Command{
 			}
 		}
 
-		/*
-		 *if !strings.Contains(templateURL, "github.com") {
-		 *    exit.Error(fmt.Errorf("download only supports project templates hosted on github at the moment"))
-		 *}
-		 */
-
 		zipURL := host.ZipURL(templateURL)
 
 		if err := downloadZip(zipURL, targetDir); err != nil {
