@@ -17,7 +17,7 @@ import (
 // Save contains the cli-command for saving templates to template registry.
 var Save = &cli.Command{
 	Use:   "save <template-path> <template-tag>",
-	Short: "Save a project template to local template registry",
+	Short: "Save a local project template to template registry",
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{
 			{"template-path", validate.UnixPath},
