@@ -118,17 +118,9 @@ src="https://cdn.rawgit.com/tmrts/boilr/master/assets/template-logos/kubernetes.
 
 Take a look at the [Templates](https://github.com/tmrts/boilr/wiki/Templates) page for an index of project templates, examples, and more information.
 
-# Contributing
+# Need Help? Found a bug? Want a Feature?
 If you'd like to contribute, share your opinions or ask questions, please feel free to open an issue.
 
 The [Wiki](https://github.com/tmrts/boilr/wiki) is public and edits are open to everyone, feel free to contribute to sections where you feel needs improvement.
 
 At this stage, user feedback is of **utmost importance**, every contribution is welcome however small it may be.
-
-# Need Help? Found a bug?
-You can report issues **directly from the command-line** by using the `boilr report` command.
-
-A markdown file will be opened where the first line will be the issue title and
-the rest, the issue body.
-
-After you're done editing the issue, save & exit the editor and your issue will be created.
