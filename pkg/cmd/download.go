@@ -11,7 +11,6 @@ import (
 	"github.com/tmrts/boilr/pkg/util/exit"
 	"github.com/tmrts/boilr/pkg/util/git"
 	"github.com/tmrts/boilr/pkg/util/osutil"
-	"github.com/tmrts/boilr/pkg/util/tlog"
 	"github.com/tmrts/boilr/pkg/util/validate"
 )
 
@@ -21,8 +20,6 @@ var Download = &cli.Command{
 	Short: "Download a project template from a github repository to template registry",
 	// FIXME Half-Updates leave messy templates
 	Run: func(c *cli.Command, args []string) {
-		tlog.SetLogLevel(GetStringFlag(c, "log-level"))
-
 		MustValidateArgs(args, []validate.Argument{
 			{"template-repo", validate.UnixPath},
 			{"template-tag", validate.AlphanumericExt},
