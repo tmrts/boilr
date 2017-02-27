@@ -16,6 +16,7 @@ import (
 	"github.com/tmrts/boilr/pkg/cmd/util"
 	"github.com/tmrts/boilr/pkg/host"
 	"github.com/tmrts/boilr/pkg/util/exit"
+	"github.com/tmrts/boilr/pkg/util/git"
 	"github.com/tmrts/boilr/pkg/util/osutil"
 	"github.com/tmrts/boilr/pkg/util/tlog"
 	"github.com/tmrts/boilr/pkg/util/validate"
@@ -122,21 +123,21 @@ var Download = &cli.Command{
 			if shouldOverwrite := GetBoolFlag(c, "force"); !shouldOverwrite {
 				exit.OK("Template %v already exists use -f to overwrite the template", templateName)
 			}
-		case !exists:
-			if err := os.MkdirAll(targetDir, 0755); err != nil {
+
+			// TODO(tmrts): extract `template delete` helper and use that one
+			if err := os.RemoveAll(targetDir); err != nil {
 				exit.Error(fmt.Errorf("download: %s", err))
 			}
 		}
 
-		zipURL := host.ZipURL(templateURL)
-
-		if err := downloadZip(zipURL, targetDir); err != nil {
-			// Delete if download transaction fails
-			defer os.RemoveAll(targetDir)
-
+		// TODO(tmrts): allow fetching other branches than 'master'
+		if err := git.Clone(targetDir, git.CloneOptions{
+			URL: host.URL(templateURL),
+		}); err != nil {
 			exit.Error(fmt.Errorf("download: %s", err))
 		}
 
+		// TODO(tmrts): use git-notes as metadata storage or boltdb
 		if err := serializeMetadata(templateName, templateURL, targetDir); err != nil {
 			exit.Error(fmt.Errorf("download: %s", err))
 		}
