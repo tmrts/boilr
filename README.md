@@ -1,7 +1,7 @@
 <h1 align=center>
 Boilr
 <br>
-<img src="/logo.png" height="360">
+<img src="/assets/logo.png" height="360">
 <br>
 <a href="http://travis-ci.org/tmrts/boilr"><img alt="Build Status" src="https://img.shields.io/travis/tmrts/boilr.svg?style=flat-square" /></a>
 <a href="https://github.com/tmrts/boilr/blob/master/LICENSE" ><img alt="License" src="https://img.shields.io/badge/license-Apache%20License%202.0-E91E63.svg?style=flat-square"/></a>
@@ -17,7 +17,7 @@ Boilr
 <em>Boilr is here to help you <b>create projects from boilerplate templates</b>.</em>
 </p>
 
-![Usage Demonstration](usage.gif)
+![Usage Demonstration](assets/usage.gif)
 
 For more details, see [Introduction](https://github.com/tmrts/boilr/wiki/Introduction) page.
 
