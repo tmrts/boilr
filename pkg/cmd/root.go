@@ -33,6 +33,8 @@ func Run() {
 	Save.PersistentFlags().BoolP("force", "f", false, "Overwrite existing template with the same name")
 	Template.AddCommand(Save)
 
+	Template.AddCommand(Update)
+
 	Use.PersistentFlags().BoolP("use-defaults", "f", false, "Uses default values in project.json instead of prompting the user")
 	Use.PersistentFlags().StringP("log-level", "l", "error", "log-level for output")
 	Template.AddCommand(Use)
