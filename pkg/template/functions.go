@@ -79,6 +79,7 @@ var (
 		"toLower": strings.ToLower,
 		"toUpper": strings.ToUpper,
 		"toTitle": strings.ToTitle,
+		"title":   strings.Title,
 
 		"trimSpace": strings.TrimSpace,
 
