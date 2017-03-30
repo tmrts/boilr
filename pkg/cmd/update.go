@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	cli "github.com/spf13/cobra"
 
@@ -37,6 +39,12 @@ var Update = &cli.Command{
 		case !exists:
       exit.OK("Couldn't find '%s' template to update. Have you downloaded it?", templateName)
 		}
+
+    // We don't mind if this fails, as if the file doesn't exist; we can update the repo.
+    // Further work to be carried out with regards to metadata
+    // See: https://github.com/tmrts/boilr/pull/43#issuecomment-289391044<Paste>
+    metadataPath := filepath.Join(targetDir, boilr.TemplateMetadataName)
+    os.Remove(metadataPath)
 
     repository, err := git.Open(targetDir)
     if err != nil {
