@@ -32,20 +32,20 @@ var Download = &cli.Command{
 
 		targetDir, err := boilr.TemplatePath(templateName)
 		if err != nil {
-      exit.Error(fmt.Errorf("%s: %s", strings.ErrDownloadFailedGeneric, err))
+			exit.Error(fmt.Errorf("%s: %s", strings.ErrDownloadFailedGeneric, err))
 		}
 
 		switch exists, err := osutil.DirExists(targetDir); {
 		case err != nil:
-      exit.Error(fmt.Errorf("%s: %s", strings.ErrDownloadFailedGeneric, err))
+			exit.Error(fmt.Errorf("%s: %s", strings.ErrDownloadFailedGeneric, err))
 		case exists:
 			if shouldOverwrite := GetBoolFlag(c, "force"); !shouldOverwrite {
-			  exit.Error(fmt.Errorf("%s", strings.ErrTemplateAlreadyExists(templateName)))
+				exit.Error(fmt.Errorf("%s", strings.ErrTemplateAlreadyExists(templateName)))
 			}
 
 			// TODO(tmrts): extract `template delete` helper and use that one
 			if err := os.RemoveAll(targetDir); err != nil {
-        exit.Error(fmt.Errorf("%s: %s", strings.ErrDownloadFailedGeneric, err))
+				exit.Error(fmt.Errorf("%s: %s", strings.ErrDownloadFailedGeneric, err))
 			}
 		}
 
@@ -53,14 +53,14 @@ var Download = &cli.Command{
 		if err := git.Clone(targetDir, git.CloneOptions{
 			URL: host.URL(templateURL),
 		}); err != nil {
-      exit.Error(fmt.Errorf("%s: %s", strings.ErrDownloadFailedGeneric, err))
+			exit.Error(fmt.Errorf("%s: %s", strings.ErrDownloadFailedGeneric, err))
 		}
 
 		// TODO(tmrts): use git-notes as metadata storage or boltdb
 		if err := serializeMetadata(templateName, templateURL, targetDir); err != nil {
-      exit.Error(fmt.Errorf("%s: %s", strings.ErrDownloadFailedGeneric, err))
+			exit.Error(fmt.Errorf("%s: %s", strings.ErrDownloadFailedGeneric, err))
 		}
 
-    exit.OK("%s: %#v", strings.DownloadSuccessful, templateName)
+		exit.OK("%s: %#v", strings.DownloadSuccessful, templateName)
 	},
 }
