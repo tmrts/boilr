@@ -19,4 +19,3 @@ func main() {
 
   cmd.Run()
 }
-
