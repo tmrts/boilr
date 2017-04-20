@@ -1,0 +1,9 @@
+package: github.com/tmrts/boilr
+import:
+#- package: github.com/src-d/go-git
+- package: github.com/spf13/cobra
+- package: github.com/docker/go-units
+- package: github.com/olekukonko/tablewriter
+- package: github.com/fatih/color
+- package: gopkg.in/src-d/go-git.v4
+- package: github.com/src-d/crypto/ssh/knownhosts

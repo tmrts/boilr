@@ -5,6 +5,7 @@ import (
 	"os"
 
 	cli "github.com/spf13/cobra"
+	//"github.com/src-d/go-git/plumbing/transport/ssh"
 
 	"github.com/tmrts/boilr/pkg/boilr"
 	"github.com/tmrts/boilr/pkg/host"
@@ -21,7 +22,7 @@ var Download = &cli.Command{
 	// FIXME Half-Updates leave messy templates
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{
-			{"template-repo", validate.UnixPath},
+			{"template-repo", validate.RepoURL},
 			{"template-tag", validate.AlphanumericExt},
 		})
 
@@ -50,7 +51,9 @@ var Download = &cli.Command{
 
 		// TODO(tmrts): allow fetching other branches than 'master'
 		if err := git.Clone(targetDir, git.CloneOptions{
-			URL: host.URL(templateURL),
+			URL:      templateURL,
+			Auth:     host.AuthMethodForURL(templateURL),
+			Progress: os.Stdout,
 		}); err != nil {
 			exit.Error(fmt.Errorf("download: %s", err))
 		}
