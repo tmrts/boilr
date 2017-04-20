@@ -5,6 +5,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/tmrts/boilr/pkg/host"
 	"github.com/tmrts/boilr/pkg/util/validate/pattern"
 )
 
@@ -42,4 +43,9 @@ func Alphanumeric(s string) bool {
 // small set of extra characters allowed
 func AlphanumericExt(s string) bool {
 	return pattern.AlphanumericExt.MatchString(s)
+}
+
+// RepoURL validates whether a string is an alphanumeric string.
+func RepoURL(s string) bool {
+	return host.IsRepoURL(s)
 }
