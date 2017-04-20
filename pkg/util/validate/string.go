@@ -2,11 +2,15 @@ package validate
 
 import (
 	"reflect"
+	"regexp"
 	"runtime"
 	"strings"
 
-	"github.com/tmrts/boilr/pkg/host"
 	"github.com/tmrts/boilr/pkg/util/validate/pattern"
+)
+
+var (
+	repoUrlRegExp = regexp.MustCompile("^(ssh://|https://)?(?:(?P<user>[^@]+)(?:@))?(?P<host>[^:|/]+)(?::|/)?(?P<path>.+)$")
 )
 
 // String is the validation function used for checking whether a string is valid or not.
@@ -45,7 +49,28 @@ func AlphanumericExt(s string) bool {
 	return pattern.AlphanumericExt.MatchString(s)
 }
 
-// RepoURL validates whether a string is an alphanumeric string.
+// RepoURL validates whether a string is a valid repo url.
 func RepoURL(s string) bool {
-	return host.IsRepoURL(s)
+	isurl := false
+	if repoUrlRegExp.MatchString(s) {
+		isurl = true
+		m := repoUrlRegExp.FindStringSubmatch(s)
+
+		//bad scheme
+		if m[1] == "http://" {
+			isurl = false
+		}
+
+		//blank host
+		if len(strings.TrimSpace(m[3])) < 1 {
+			isurl = false
+		}
+
+		//blank path
+		if len(strings.TrimSpace(m[4])) < 1 {
+			isurl = false
+		}
+	}
+
+	return isurl
 }
