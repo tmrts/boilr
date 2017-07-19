@@ -3,12 +3,12 @@ package template
 import (
 	"fmt"
 	"os"
+	"os/user"
 	"reflect"
 	"strconv"
 	"strings"
 	"text/template"
 	"time"
-	"os/user"
 )
 
 var (
@@ -23,8 +23,14 @@ var (
 		"env":      os.Getenv,
 		"time":     CurrentTimeInFmt,
 		"hostname": func() string { return os.Getenv("HOSTNAME") },
-		"username": UserName,
+		"username": func() string {
+			t, err := user.Current()
+			if err != nil {
+				return "Unknown"
+			}
 
+			return t.Name
+		},
 		"toBinary": func(s string) string {
 			n, err := strconv.Atoi(s)
 			if err != nil {
@@ -103,14 +109,4 @@ func CurrentTimeInFmt(fmt string) string {
 	t := time.Now()
 
 	return t.Format(fmt)
-}
-
-
-// UserName returns the user's name (not the login name).
-func UserName() string {
-    t, err := user.Current();
-    if ( err != nil ) {
-        return "Unknown";
-    }
-    return t.Name;
 }
