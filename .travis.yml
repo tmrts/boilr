@@ -2,7 +2,7 @@ language: go
 sudo: false
 matrix:
   include:
-  - go: 1.7
+  - go: 1.x
     env: VERSION=0.3.0
 
 before_deploy:
