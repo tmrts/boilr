@@ -63,6 +63,9 @@ func Get(path string) (Interface, error) {
 
 		return metadata, nil
 	}(filepath.Join(absPath, boilr.ContextFileName))
+	if err != nil {
+		return nil, err
+	}
 
 	metadataExists, err := osutil.FileExists(filepath.Join(absPath, boilr.TemplateMetadataName))
 	if err != nil {
