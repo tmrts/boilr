@@ -99,7 +99,8 @@ var (
 		// capitalizing the first character in each part
 		"camel": func(value, sep string) (result string) {
 			parts := strings.Split(value, sep)
-			for _, part := range parts {
+			result = parts[0]
+			for _, part := range parts[1:] {
 				result += strings.Title(part)
 			}
 			return
