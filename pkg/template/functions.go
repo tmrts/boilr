@@ -93,7 +93,19 @@ var (
 		"trimPrefix": strings.TrimPrefix,
 		"trimSuffix": strings.TrimSuffix,
 
-		"repeat": strings.Repeat,
+		"repeat":  strings.Repeat,
+		"replace": strings.Replace,
+
+		// camel splits a string by a separator and recombines while
+		// capitalizing the first character in each part
+		"camel": func(value, sep string) (result string) {
+			parts := strings.Split(value, sep)
+			result = parts[0]
+			for _, part := range parts[1:] {
+				result += strings.Title(part)
+			}
+			return
+		},
 	}
 
 	// Options contain the default options for the template execution.
