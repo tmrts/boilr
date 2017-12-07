@@ -214,7 +214,7 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 				return err
 			}
 
-			f, err := os.OpenFile(target, os.O_CREATE|os.O_WRONLY, fi.Mode())
+			f, err := os.OpenFile(target, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, fi.Mode())
 			if err != nil {
 				return err
 			}

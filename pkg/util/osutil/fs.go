@@ -97,7 +97,7 @@ func CopyRecursively(srcPath, dstPath string) error {
 			}
 			defer srcf.Close()
 
-			dstf, err := os.OpenFile(mirrorPath, os.O_CREATE|os.O_WRONLY, fi.Mode())
+			dstf, err := os.OpenFile(mirrorPath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, fi.Mode())
 			if err != nil {
 				return err
 			}
