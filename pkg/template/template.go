@@ -115,6 +115,9 @@ func (t *dirTemplate) BindPrompts() {
 			advancedMode := prompt.New(s, false)
 
 			for k, v2 := range m {
+				// Shadow  `v2` to avoid capturing the iteration
+				// variable in the closure.
+				v2 := v2
 				if t.ShouldUseDefaults {
 					t.FuncMap[k] = func() interface{} {
 						switch v2 := v2.(type) {
@@ -142,6 +145,9 @@ func (t *dirTemplate) BindPrompts() {
 		}
 
 		if t.ShouldUseDefaults {
+			// Shadow  `v` to avoid capturing the iteration
+			// variable in the closure.
+			v := v
 			t.FuncMap[s] = func() interface{} {
 				switch v := v.(type) {
 				// First is the default value if it's a slice
