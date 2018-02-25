@@ -51,7 +51,7 @@ var Use = &cli.Command{
 		}
 
 		if !templateFound {
-			exit.Fatal(fmt.Errorf("Template %q couldn't be found in the template registry", tmplName))
+			exit.Fatal(fmt.Errorf("template %q couldn't be found in the template registry", tmplName))
 		}
 
 		tmplPath, err := boilr.TemplatePath(tmplName)

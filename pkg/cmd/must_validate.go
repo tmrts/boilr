@@ -47,6 +47,6 @@ func MustValidateTemplateDir() {
 	}
 
 	if !isInitialized {
-		exit.Error(fmt.Errorf("Template registry is not initialized. Please run `init` command to initialize it."))
+		exit.Error(fmt.Errorf("template registry is not initialized. Please run `init` command to initialize it"))
 	}
 }
