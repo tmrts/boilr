@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"strconv"
-	"strings"
 
 	"github.com/tmrts/boilr/pkg/util/tlog"
 )
@@ -110,13 +109,13 @@ func Func(defval interface{}) Interface {
 }
 
 func scanLine() (string, error) {
-	input := bufio.NewReader(os.Stdin)
-	line, err := input.ReadString('\n')
-	if err != nil {
-		return line, err
+	input := bufio.NewScanner(os.Stdin)
+	for input.Scan() {
+		line := input.Text()
+		return line, nil
 	}
 
-	return strings.TrimSuffix(line, "\n"), nil
+	return "", nil
 }
 
 // New returns a prompt closure when executed asks for

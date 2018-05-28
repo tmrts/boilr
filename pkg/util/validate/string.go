@@ -1,6 +1,8 @@
 package validate
 
 import (
+	"io/ioutil"
+	"os"
 	"reflect"
 	"runtime"
 	"strings"
@@ -28,9 +30,21 @@ func URL(url string) bool {
 	return pattern.URL.MatchString(url)
 }
 
-// UnixPath validates whether a string is an unix path string.
-func UnixPath(path string) bool {
-	return pattern.UnixPath.MatchString(path)
+// Path validates whether a string is an unix path string.
+func Path(path string) bool {
+	// Check if file already exists
+	if _, err := os.Stat(path); err == nil {
+		return true
+	}
+
+	// Attempt to create it
+	var d []byte
+	if err := ioutil.WriteFile(path, d, 0644); err == nil {
+		os.Remove(path) // And delete it
+		return true
+	}
+
+	return false
 }
 
 // Alphanumeric validates whether a string is an alphanumeric string.
