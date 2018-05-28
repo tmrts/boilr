@@ -26,8 +26,8 @@ var Rename = &cli.Command{
 	Short:  "Rename a project template",
 	Run: func(c *cli.Command, args []string) {
 		MustValidateArgs(args, []validate.Argument{
-			{"old-template-tag", validate.UnixPath},
-			{"new-template-tag", validate.UnixPath},
+			{"old-template-tag", validate.Path},
+			{"new-template-tag", validate.Path},
 		})
 
 		MustValidateTemplateDir()

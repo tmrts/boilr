@@ -4,7 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"os"
+	"log"
+	"os/user"
 	"path/filepath"
 
 	"github.com/tmrts/boilr/pkg/util/exit"
@@ -62,7 +63,12 @@ func IsTemplateDirInitialized() (bool, error) {
 }
 
 func init() {
-	homeDir := os.Getenv("HOME")
+	usr, err := user.Current()
+	if err != nil {
+		log.Fatal(err)
+	}
+	homeDir := usr.HomeDir
+
 	if homeDir == "" {
 		// FIXME is this really necessary?
 		exit.Error(fmt.Errorf("environment variable ${HOME} should be set"))
