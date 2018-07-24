@@ -150,9 +150,9 @@ func (t *dirTemplate) BindPrompts() {
 						return val[0]
 					}
 
-					return v
+					return val
 				}
-			}(t.Context[s])
+			}(v)
 		} else {
 			t.FuncMap[s] = prompt.New(s, v)
 		}
