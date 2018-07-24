@@ -6,6 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/tmrts/boilr/pkg/util/tlog"
+
 	cli "github.com/spf13/cobra"
 
 	"github.com/tmrts/boilr/pkg/boilr"
@@ -67,6 +69,8 @@ var Use = &cli.Command{
 		if shouldUseDefaults := GetBoolFlag(cmd, "use-defaults"); shouldUseDefaults {
 			tmpl.UseDefaultValues()
 		}
+
+		tlog.SetLogLevel(GetStringFlag(cmd, "log-level"))
 
 		executeTemplate := func() error {
 			parentDir := filepath.Dir(targetDir)
