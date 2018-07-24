@@ -110,31 +110,47 @@ func (t *dirTemplate) UseDefaultValues() {
 }
 
 func (t *dirTemplate) BindPrompts() {
-	for s, v := range t.Context {
-		if m, ok := v.(map[string]interface{}); ok {
-			advancedMode := prompt.New(s, false)
+	for parentKey := range t.Context {
+		if childMap, ok := t.Context[parentKey].(map[string]interface{}); ok {
+			advancedMode := prompt.New(parentKey, false)
 
-			for k, v2 := range m {
+			if len(childMap) > 0 {
 				if t.ShouldUseDefaults {
-					t.FuncMap[k] = func() interface{} {
-						switch v2 := v2.(type) {
-						// First is the default value if it's a slice
-						case []interface{}:
-							return v2[0]
-						}
-
-						return v2
-					}
+					t.FuncMap[parentKey] = func() bool { return false }
 				} else {
-					v, p := v2, prompt.New(k, v2)
-
-					t.FuncMap[k] = func() interface{} {
-						if val := advancedMode().(bool); val {
-							return p()
+					t.FuncMap[parentKey] = func(a func() interface{}) func() interface{} {
+						return func() interface{} {
+							return advancedMode()
 						}
+					}(advancedMode)
+				}
+			}
 
-						return v
-					}
+			for childKey := range childMap {
+				if t.ShouldUseDefaults {
+					t.FuncMap[childKey] = func(val interface{}) func() interface{} {
+						return func() interface{} {
+							switch val := val.(type) {
+							// First is the default value if it's a slice
+							case []interface{}:
+								return val[0]
+							}
+
+							return val
+						}
+					}(childMap[childKey])
+				} else {
+					childPrompt := prompt.New(childKey, childMap[childKey])
+
+					t.FuncMap[childKey] = func(val interface{}, p func() interface{}) func() interface{} {
+						return func() interface{} {
+							if isAdvanced := advancedMode().(bool); isAdvanced {
+								return p()
+							}
+
+							return val
+						}
+					}(t.Context[parentKey], childPrompt)
 				}
 			}
 
@@ -142,7 +158,7 @@ func (t *dirTemplate) BindPrompts() {
 		}
 
 		if t.ShouldUseDefaults {
-			t.FuncMap[s] = func(val interface{}) func() interface{} {
+			t.FuncMap[parentKey] = func(val interface{}) func() interface{} {
 				return func() interface{} {
 					switch val := val.(type) {
 					// First is the default value if it's a slice
@@ -152,9 +168,9 @@ func (t *dirTemplate) BindPrompts() {
 
 					return val
 				}
-			}(v)
+			}(t.Context[parentKey])
 		} else {
-			t.FuncMap[s] = prompt.New(s, v)
+			t.FuncMap[parentKey] = prompt.New(parentKey, t.Context[parentKey])
 		}
 	}
 }
