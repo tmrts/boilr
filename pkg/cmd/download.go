@@ -27,12 +27,14 @@ var Download = &cli.Command{
 
 		MustValidateTemplateDir()
 
-		templateURL, templateName := args[0], args[1]
+		templateURL, templateName, templateSubFolder := args[0], args[1], GetStringFlag(c, "sub-path")
 
 		targetDir, err := boilr.TemplatePath(templateName)
 		if err != nil {
 			exit.Error(fmt.Errorf("download: %s", err))
 		}
+
+		targetTmpDir := targetDir
 
 		switch exists, err := osutil.DirExists(targetDir); {
 		case err != nil:
@@ -47,14 +49,56 @@ var Download = &cli.Command{
 				exit.Error(fmt.Errorf("download: %s", err))
 			}
 		}
+		// In case if we are copying template from repository sub-folder, clone repo to temp folder
+		if templateSubFolder != "" {
+			targetTmpDir, err = boilr.TemplateTempPath(templateName)
+			if err != nil {
+				exit.Error(fmt.Errorf("download: %s", err))
+			}
+			exists, err := osutil.DirExists(targetTmpDir)
+			if exists || (!exists && err != nil) {
+				if err := os.RemoveAll(targetTmpDir); err != nil {
+					exit.Error(fmt.Errorf("download: %s", err))
+				}
+			}
+		}
 
 		// TODO(tmrts): allow fetching other branches than 'master'
-		if err := git.Clone(targetDir, git.CloneOptions{
+		if err := git.Clone(targetTmpDir, git.CloneOptions{
 			URL: host.URL(templateURL),
 		}); err != nil {
 			exit.Error(fmt.Errorf("download: %s", err))
 		}
 
+		// Copy content from sub-folder to target folder
+		if templateSubFolder != "" {
+			// Ensure sub-folder exists
+			templateTmpDir := osutil.JoinPaths(targetTmpDir, templateSubFolder)
+			exists, err := osutil.DirExists(templateTmpDir)
+			if err != nil {
+				exit.Error(fmt.Errorf("download: %s", err))
+			}
+			if !exists {
+				exit.Error(fmt.Errorf("download: sub-folder doesn't exist"))
+			}
+			// Check target folder exists, and copy contents
+			if exists, err = osutil.DirExists(targetDir); err != nil {
+				exit.Error(fmt.Errorf("download: %s", err))
+			}
+			if !exists {
+				if err = osutil.CreateDirs(targetDir); err != nil {
+					exit.Error(fmt.Errorf("download: %s", err))
+
+				}
+			}
+			if err = osutil.CopyRecursively(templateTmpDir, targetDir); err != nil {
+				exit.Error(fmt.Errorf("download: Error copying files from temp %s", err))
+			}
+			// Delete all temp files
+			if err := os.RemoveAll(targetTmpDir); err != nil {
+				exit.Error(fmt.Errorf("download: Error deleting temp files %s", err))
+			}
+		}
 		// TODO(tmrts): use git-notes as metadata storage or boltdb
 		if err := serializeMetadata(templateName, templateURL, targetDir); err != nil {
 			exit.Error(fmt.Errorf("download: %s", err))
