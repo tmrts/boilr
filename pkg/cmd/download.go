@@ -29,16 +29,15 @@ var Download = &cli.Command{
 
 		MustValidateTemplateDir()
 
-		templateURL, templateName := args[0], args[1]
 		templateSubFolder := GetStringFlag(c, "sub-path")
 		templateRemoteBranch := GetStringFlag(c, "branch")
+		templateURL, templateName := args[0], args[1]
 		targetDir, err := boilr.TemplatePath(templateName)
+		targetTmpDir := targetDir
 
 		if err != nil {
 			exit.Error(fmt.Errorf("download: %s", err))
 		}
-
-		targetTmpDir := targetDir
 
 		switch exists, err := osutil.DirExists(targetDir); {
 		case err != nil:
@@ -73,8 +72,8 @@ var Download = &cli.Command{
 		}
 		if templateRemoteBranch != "" {
 			gitCloneOptions.ReferenceName = plumbing.NewBranchReferenceName(templateRemoteBranch)
+			gitCloneOptions.SingleBranch = true
 		}
-		fmt.Println(gitCloneOptions)
 		if err := git.Clone(targetTmpDir, gitCloneOptions); err != nil {
 			exit.Error(fmt.Errorf("download: Cloning repo - %s", err))
 		}
@@ -107,6 +106,14 @@ var Download = &cli.Command{
 			if err := os.RemoveAll(targetTmpDir); err != nil {
 				exit.Error(fmt.Errorf("download: Error deleting temp files %s", err))
 			}
+		}
+		// Ensure that a 'template' folder exists inside the repo before registering template
+		exists, err := osutil.DirExists(osutil.JoinPaths(targetDir, boilr.TemplateDirName))
+		if err != nil {
+			exit.Error(fmt.Errorf("download: Template error - %s", err))
+		}
+		if !exists {
+			exit.Error(fmt.Errorf("download: Invalid template. Folder '%s' - doesn't exist at %s", boilr.TemplateDirName, targetDir))
 		}
 		// TODO(tmrts): use git-notes as metadata storage or boltdb
 		if err := serializeMetadata(templateName, templateURL, targetDir); err != nil {

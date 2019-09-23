@@ -28,7 +28,7 @@ const (
 	TemplateDir = "templates"
 
 	// TemplateTempDir is the directory that is used for temporary storage
-	TemplateTempDir = "tmp"
+	TemplateTempDir = "../tmp"
 
 	// ContextFileName is the name of the file that contains the context values for the template
 	ContextFileName = "project.json"

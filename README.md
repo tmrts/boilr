@@ -47,6 +47,12 @@ boilr template download <github-repo-path> <template-tag>
 boilr template download tmrts/boilr-license license
 ```
 
+An example for multi template, multi branch forced repo clone
+
+```
+boilr template download -p template2/templates/sample -b multi-branch -f https://github.com/jasimmk/boilr-test.git sample
+```
+
 The downloaded template will be saved to local `boilr` registry.
 
 ## Save a Local Template
