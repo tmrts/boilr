@@ -23,6 +23,7 @@ func Run() {
 
 	Download.PersistentFlags().BoolP("force", "f", false, "Overwrite existing template with the same name")
 	Download.PersistentFlags().StringP("log-level", "l", "error", "log-level for output")
+	Download.PersistentFlags().StringP("branch", "b", "", "Branch, Commit Id, Tag or other reference to checkout")
 	Download.PersistentFlags().StringP("sub-path", "p", "", "Path inside the git repo where 'template' folder.")
 	Template.AddCommand(Download)
 

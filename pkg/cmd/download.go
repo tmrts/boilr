@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"gopkg.in/src-d/go-git.v4/plumbing"
+
 	cli "github.com/spf13/cobra"
 
 	"github.com/tmrts/boilr/pkg/boilr"
@@ -27,9 +29,11 @@ var Download = &cli.Command{
 
 		MustValidateTemplateDir()
 
-		templateURL, templateName, templateSubFolder := args[0], args[1], GetStringFlag(c, "sub-path")
-
+		templateURL, templateName := args[0], args[1]
+		templateSubFolder := GetStringFlag(c, "sub-path")
+		templateRemoteBranch := GetStringFlag(c, "branch")
 		targetDir, err := boilr.TemplatePath(templateName)
+
 		if err != nil {
 			exit.Error(fmt.Errorf("download: %s", err))
 		}
@@ -64,10 +68,15 @@ var Download = &cli.Command{
 		}
 
 		// TODO(tmrts): allow fetching other branches than 'master'
-		if err := git.Clone(targetTmpDir, git.CloneOptions{
+		gitCloneOptions := git.CloneOptions{
 			URL: host.URL(templateURL),
-		}); err != nil {
-			exit.Error(fmt.Errorf("download: %s", err))
+		}
+		if templateRemoteBranch != "" {
+			gitCloneOptions.ReferenceName = plumbing.NewBranchReferenceName(templateRemoteBranch)
+		}
+		fmt.Println(gitCloneOptions)
+		if err := git.Clone(targetTmpDir, gitCloneOptions); err != nil {
+			exit.Error(fmt.Errorf("download: Cloning repo - %s", err))
 		}
 
 		// Copy content from sub-folder to target folder
