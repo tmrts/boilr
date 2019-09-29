@@ -49,7 +49,7 @@ func TestNewBooleanPromptFunc(t *testing.T) {
 
 	expectedPromptMsg := "Please choose a value for \"fieldName\""
 	if msg != expectedPromptMsg {
-		t.Errorf("boolPrompt(%q).PromptMessage(%q) expected %q got %q", defval, name, expectedPromptMsg, msg)
+		t.Errorf("boolPrompt((%v).PromptMessage(%q) expected %q got %q", defval, name, expectedPromptMsg, msg)
 	}
 
 	choiceCases := []struct {
@@ -73,7 +73,7 @@ func TestNewBooleanPromptFunc(t *testing.T) {
 	for _, c := range choiceCases {
 		val, err := boolPrompt.EvaluateChoice(c.choice)
 		if err != nil {
-			t.Errorf("boolPrompt(%q).EvaluateChoice(%q) got error %q", defval, c.choice, err)
+			t.Errorf("boolPrompt(%v).EvaluateChoice(%q) got error %q", defval, c.choice, err)
 			continue
 		}
 
