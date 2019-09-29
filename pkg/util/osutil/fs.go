@@ -7,11 +7,6 @@ import (
 	"path/filepath"
 )
 
-// JoinPaths joins multiple paths together
-func JoinPaths(paths ...string) string {
-	return filepath.Join(paths...)
-}
-
 // FileExists checks whether the given path exists and belongs to a file.
 func FileExists(path string) (bool, error) {
 	info, err := os.Stat(path)
