@@ -27,6 +27,9 @@ const (
 	// TemplateDir is the directory that contains the template registry
 	TemplateDir = "templates"
 
+	// TemplateTempDir is the directory that is used for temporary storage
+	TemplateTempDir = "../tmp"
+
 	// ContextFileName is the name of the file that contains the context values for the template
 	ContextFileName = "project.json"
 
@@ -57,6 +60,12 @@ func TemplatePath(name string) (string, error) {
 	return filepath.Join(Configuration.TemplateDirPath, name), nil
 }
 
+// TemplateTempPath returns absolute path of template temporary directory given name of template.
+func TemplateTempPath(name string) (string, error) {
+	return filepath.Join(Configuration.TemplateDirPath, TemplateTempDir, name), nil
+}
+
+// IsTemplateDirInitialized Checks if template directory is initialized
 func IsTemplateDirInitialized() (bool, error) {
 	return osutil.DirExists(Configuration.TemplateDirPath)
 }
