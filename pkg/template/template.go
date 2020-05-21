@@ -142,6 +142,7 @@ func (t *dirTemplate) BindPrompts() {
 		}
 
 		if t.ShouldUseDefaults {
+			v := v
 			t.FuncMap[s] = func() interface{} {
 				switch v := v.(type) {
 				// First is the default value if it's a slice
