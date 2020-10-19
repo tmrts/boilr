@@ -198,7 +198,7 @@ func (t *dirTemplate) Execute(dirPrefix string) error {
 		target := filepath.Join(dirPrefix, newName)
 
 		if info.IsDir() {
-			if err := os.Mkdir(target, 0755); err != nil {
+			if err := os.MkdirAll(target, 0755); err != nil {
 				if !os.IsExist(err) {
 					return err
 				}
