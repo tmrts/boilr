@@ -89,6 +89,8 @@ var (
 		"toTitle": strings.ToTitle,
 		"title":   strings.Title,
 
+		"replaceAll": strings.ReplaceAll,
+
 		"trimSpace":  strings.TrimSpace,
 		"trimPrefix": strings.TrimPrefix,
 		"trimSuffix": strings.TrimSuffix,
