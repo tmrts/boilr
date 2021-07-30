@@ -110,11 +110,13 @@ func (t *dirTemplate) UseDefaultValues() {
 }
 
 func (t *dirTemplate) BindPrompts() {
-	for s, v := range t.Context {
+	for s, ov := range t.Context {
+		var v = ov
 		if m, ok := v.(map[string]interface{}); ok {
 			advancedMode := prompt.New(s, false)
 
-			for k, v2 := range m {
+			for k, ov2 := range m {
+				var v2 = ov2
 				if t.ShouldUseDefaults {
 					t.FuncMap[k] = func() interface{} {
 						switch v2 := v2.(type) {
