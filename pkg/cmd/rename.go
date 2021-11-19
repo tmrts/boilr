@@ -6,9 +6,9 @@ import (
 
 	cli "github.com/spf13/cobra"
 
-	"github.com/tmrts/boilr/pkg/boilr"
-	"github.com/tmrts/boilr/pkg/util/exit"
-	"github.com/tmrts/boilr/pkg/util/validate"
+	"github.com/solaegis/boilr/pkg/boilr"
+	"github.com/solaegis/boilr/pkg/util/exit"
+	"github.com/solaegis/boilr/pkg/util/validate"
 )
 
 func renameTemplate(oldPath, newPath string) error {

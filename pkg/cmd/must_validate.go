@@ -3,10 +3,10 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/tmrts/boilr/pkg/boilr"
-	"github.com/tmrts/boilr/pkg/cmd/util"
-	"github.com/tmrts/boilr/pkg/util/exit"
-	"github.com/tmrts/boilr/pkg/util/validate"
+	"github.com/solaegis/boilr/pkg/boilr"
+	"github.com/solaegis/boilr/pkg/cmd/util"
+	"github.com/solaegis/boilr/pkg/util/exit"
+	"github.com/solaegis/boilr/pkg/util/validate"
 )
 
 // MustValidateVarArgs validates given variadic arguments with the supplied validation function.

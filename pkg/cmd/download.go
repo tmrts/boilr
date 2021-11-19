@@ -6,12 +6,12 @@ import (
 
 	cli "github.com/spf13/cobra"
 
-	"github.com/tmrts/boilr/pkg/boilr"
-	"github.com/tmrts/boilr/pkg/host"
-	"github.com/tmrts/boilr/pkg/util/exit"
-	"github.com/tmrts/boilr/pkg/util/git"
-	"github.com/tmrts/boilr/pkg/util/osutil"
-	"github.com/tmrts/boilr/pkg/util/validate"
+	"github.com/solaegis/boilr/pkg/boilr"
+	"github.com/solaegis/boilr/pkg/host"
+	"github.com/solaegis/boilr/pkg/util/exit"
+	"github.com/solaegis/boilr/pkg/util/git"
+	"github.com/solaegis/boilr/pkg/util/osutil"
+	"github.com/solaegis/boilr/pkg/util/validate"
 )
 
 // Download contains the cli-command for downloading templates from github.
@@ -42,20 +42,20 @@ var Download = &cli.Command{
 				exit.OK("Template %v already exists use -f to overwrite the template", templateName)
 			}
 
-			// TODO(tmrts): extract `template delete` helper and use that one
+			// TODO(solaegis): extract `template delete` helper and use that one
 			if err := os.RemoveAll(targetDir); err != nil {
 				exit.Error(fmt.Errorf("download: %s", err))
 			}
 		}
 
-		// TODO(tmrts): allow fetching other branches than 'master'
+		// TODO(solaegis): allow fetching other branches than 'master'
 		if err := git.Clone(targetDir, git.CloneOptions{
 			URL: host.URL(templateURL),
 		}); err != nil {
 			exit.Error(fmt.Errorf("download: %s", err))
 		}
 
-		// TODO(tmrts): use git-notes as metadata storage or boltdb
+		// TODO(solaegis): use git-notes as metadata storage or boltdb
 		if err := serializeMetadata(templateName, templateURL, targetDir); err != nil {
 			exit.Error(fmt.Errorf("download: %s", err))
 		}

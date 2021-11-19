@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/tmrts/boilr/pkg/util/exit"
-	"github.com/tmrts/boilr/pkg/util/osutil"
+	"github.com/solaegis/boilr/pkg/util/exit"
+	"github.com/solaegis/boilr/pkg/util/osutil"
 )
 
 const (
@@ -37,7 +37,7 @@ const (
 	TemplateMetadataName = "__metadata.json"
 
 	// GithubOwner is the owner of the github repository
-	GithubOwner = "tmrts"
+	GithubOwner = "solaegis"
 
 	// GithubRepo is the name of the github repository
 	GithubRepo = "boilr"
