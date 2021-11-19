@@ -93,7 +93,9 @@ var (
 		"trimPrefix": strings.TrimPrefix,
 		"trimSuffix": strings.TrimSuffix,
 
-		"repeat": strings.Repeat,
+		"repeat":     strings.Repeat,
+		"replace":    strings.Replace,
+		"replaceAll": strings.ReplaceAll,
 	}
 
 	// Options contain the default options for the template execution.
