@@ -9,9 +9,17 @@ import (
 	"strings"
 	"text/template"
 	"time"
+
+	"crypto/rand"
+	"encoding/base64"
+
+	"github.com/sethvargo/go-password/password"
 )
 
 var (
+	// custom symbols: removed \ and "
+	customSymbols = "~!@#$%^&*()_+`-={}|[]:<>?,./"
+
 	// FuncMap contains the functions exposed to templating engine.
 	FuncMap = template.FuncMap{
 		// TODO confirmation prompt
@@ -82,6 +90,31 @@ var (
 
 			return result
 		},
+		"password": func(length, numDigits, numSymbols int, noUpper, allowRepeat bool) string {
+			generator, err := password.NewGenerator(&password.GeneratorInput{Symbols: customSymbols})
+
+			if err != nil {
+				return fmt.Sprintf("failed to generate password generator: %s", err)
+			}
+
+			res, err := generator.Generate(length, numDigits, numSymbols, noUpper, allowRepeat)
+			if err != nil {
+				return fmt.Sprintf("failed to generate password: %s", err)
+			}
+
+			return res
+		},
+		// generate a random base64 string based on random bytes of length n
+		"randomBase64": func(length int) string {
+			b := make([]byte, length)
+			_, err := rand.Read(b)
+
+			if err != nil {
+				return fmt.Sprintf("failed to generate randomBase64: %s", err)
+			}
+
+			return base64.StdEncoding.EncodeToString(b)
+		},
 
 		// String utilities
 		"toLower": strings.ToLower,
@@ -96,6 +129,13 @@ var (
 		"repeat":     strings.Repeat,
 		"replace":    strings.Replace,
 		"replaceAll": strings.ReplaceAll,
+
+		"kebabCase": func(str string) string {
+			return strings.ReplaceAll(str, "_", "-")
+		},
+		"snakeCase": func(str string) string {
+			return strings.ReplaceAll(str, "-", "_")
+		},
 	}
 
 	// Options contain the default options for the template execution.
