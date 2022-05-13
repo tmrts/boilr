@@ -5,8 +5,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/tmrts/boilr/pkg/boilr"
-	"github.com/tmrts/boilr/pkg/template"
+	"boilr/pkg/boilr"
+	"boilr/pkg/template"
 )
 
 func serializeMetadata(tag string, repo string, targetDir string) error {

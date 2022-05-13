@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/tmrts/boilr/pkg/util/exit"
-	"github.com/tmrts/boilr/pkg/util/osutil"
+	"boilr/pkg/util/exit"
+	"boilr/pkg/util/osutil"
 )
 
 const (
@@ -16,7 +16,7 @@ const (
 	AppName = "boilr"
 
 	// Version of the application
-	Version = "0.3.0"
+	Version = "0.3.1"
 
 	// ConfigDirPath is the configuration directory of the application
 	ConfigDirPath = ".config/boilr"
