@@ -5,7 +5,7 @@ Boilr
 <br>
 <a href="http://travis-ci.org/tmrts/boilr"><img alt="Build Status" src="https://img.shields.io/travis/tmrts/boilr.svg?style=flat-square" /></a>
 <a href="https://github.com/tmrts/boilr/blob/master/LICENSE" ><img alt="License" src="https://img.shields.io/badge/license-Apache%20License%202.0-E91E63.svg?style=flat-square"/></a>
-<a href="https://github.com/tmrts/boilr/releases" ><img alt="Release Version" src="https://img.shields.io/badge/release-v0.3.0-blue.svg?style=flat-square"/></a>
+<a href="https://github.com/tmrts/boilr/releases" ><img alt="Release Version" src="https://img.shields.io/badge/release-v0.3.1-blue.svg?style=flat-square"/></a>
 <a href="http://goreportcard.com/report/tmrts/boilr" ><img alt="Code Quality" src="https://img.shields.io/badge/report%20card-A%2B-F44336.svg?style=flat-square"/></a>
 <a href="https://godoc.org/github.com/tmrts/boilr" ><img alt="Documentation" src="https://img.shields.io/badge/godoc-reference-5272B4.svg?style=flat-square"/></a>
 <a href="https://gitter.im/tmrts/boilr" ><img alt="Chat Room" src="https://img.shields.io/badge/chat-on%20gitter-00BCD4.svg?style=flat-square"/></a>
@@ -20,6 +20,9 @@ Boilr
 ![Usage Demonstration](assets/usage.gif)
 
 For more details, see [Introduction](https://github.com/tmrts/boilr/wiki/Introduction) page.
+
+# Notes
+this is a fork of the original project, to get a build that works for `arm64` (M1 macs)
 
 # Features
 * **No dependencies (NodeJS, Python Interpreter etc.)** - Boilr is a single statically linked binary.

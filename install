@@ -2,8 +2,8 @@
 
 set -u
 
-[[ "$@" =~ --pre ]] && version=0.3.0 pre=1 ||
-                       version=0.3.0 pre=0
+[[ "$@" =~ --pre ]] && version=0.3.1 pre=1 ||
+                       version=0.3.1 pre=0
 
 # If stdin is a tty, we are "interactive".
 interactive=
@@ -90,7 +90,9 @@ download() {
     return
   fi
 
-  local url=https://github.com/tmrts/boilr/releases/download/$version/${1}.tgz
+  local url=https://github.com/Wattpad/boilr/releases/download/$version/${1}.tar.gz
+  echo "Downloading file from: " $url
+
   if which curl > /dev/null; then
     curl -fL $url | tar -xz
   elif which wget > /dev/null; then
@@ -114,10 +116,12 @@ archi=$(uname -sm)
 binary_available=1
 binary_error=""
 case "$archi" in
-  Darwin\ x86_64) download boilr-$version-darwin_${binary_arch:-amd64}   ;;
-  Darwin\ i*86)   download boilr-$version-darwin_${binary_arch:-386}     ;;
-  Linux\ x86_64)  download boilr-$version-linux_${binary_arch:-amd64}  ;;
-  Linux\ i*86)    download boilr-$version-linux_${binary_arch:-386}    ;;
+  Darwin\ x86_64) download boilr-$version-darwin-${binary_arch:-amd64}   ;;
+  Darwin\ arm64)  download boilr-$version-darwin-${binary_arch:-arm64}   ;;
+  Darwin\ i*86)   download boilr-$version-darwin-${binary_arch:-386}     ;;
+  Linux\ x86_64)  download boilr-$version-linux-${binary_arch:-amd64}  ;;
+  Linux\ arm64)   download boilr-$version-linux-${binary_arch:-arm64}  ;;
+  Linux\ i*86)    download boilr-$version-linux-${binary_arch:-386}    ;;
   *)              binary_available=0 binary_error=1  ;;
 esac
 
@@ -126,5 +130,5 @@ Completed installation
 
 Boilr executable is installed to ~/bin/boilr
 
-For more information, see: https://github.com/tmrts/boilr
+For more information, see: https://github.com/Wattpad/boilr
 EOF

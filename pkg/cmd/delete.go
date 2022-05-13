@@ -7,10 +7,10 @@ import (
 
 	cli "github.com/spf13/cobra"
 
-	"github.com/tmrts/boilr/pkg/boilr"
-	"github.com/tmrts/boilr/pkg/util/osutil"
-	"github.com/tmrts/boilr/pkg/util/tlog"
-	"github.com/tmrts/boilr/pkg/util/validate"
+	"boilr/pkg/boilr"
+	"boilr/pkg/util/osutil"
+	"boilr/pkg/util/tlog"
+	"boilr/pkg/util/validate"
 )
 
 // Delete contains the cli-command for deleting templates.
