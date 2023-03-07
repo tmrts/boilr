@@ -3,7 +3,7 @@ package pattern_test
 import (
 	"testing"
 
-	"boilr/pkg/util/validate/pattern"
+	"github.com/Wattpad/boilr/pkg/util/validate/pattern"
 )
 
 func TestUnixPathPattern(t *testing.T) {

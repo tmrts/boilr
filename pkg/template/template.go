@@ -9,11 +9,11 @@ import (
 	"regexp"
 	"text/template"
 
-	"boilr/pkg/boilr"
-	"boilr/pkg/prompt"
-	"boilr/pkg/util/osutil"
-	"boilr/pkg/util/stringutil"
-	"boilr/pkg/util/tlog"
+	"github.com/Wattpad/boilr/pkg/boilr"
+	"github.com/Wattpad/boilr/pkg/prompt"
+	"github.com/Wattpad/boilr/pkg/util/osutil"
+	"github.com/Wattpad/boilr/pkg/util/stringutil"
+	"github.com/Wattpad/boilr/pkg/util/tlog"
 )
 
 // Interface is contains the behavior of boilr templates.

@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"boilr/pkg/cmd"
+	"github.com/Wattpad/boilr/pkg/cmd"
 )
 
 func TestUseExecutesProjectTemplate(t *testing.T) {

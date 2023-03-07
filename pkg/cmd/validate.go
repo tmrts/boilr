@@ -3,8 +3,8 @@ package cmd
 import (
 	"errors"
 
-	"boilr/pkg/util/exit"
-	"boilr/pkg/util/validate"
+	"github.com/Wattpad/boilr/pkg/util/exit"
+	"github.com/Wattpad/boilr/pkg/util/validate"
 	cli "github.com/spf13/cobra"
 )
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"boilr/pkg/util/tlog"
+	"github.com/Wattpad/boilr/pkg/util/tlog"
 )
 
 const (

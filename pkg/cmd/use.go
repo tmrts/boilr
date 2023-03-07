@@ -8,11 +8,11 @@ import (
 
 	cli "github.com/spf13/cobra"
 
-	"boilr/pkg/boilr"
-	"boilr/pkg/template"
-	"boilr/pkg/util/exit"
-	"boilr/pkg/util/osutil"
-	"boilr/pkg/util/validate"
+	"github.com/Wattpad/boilr/pkg/boilr"
+	"github.com/Wattpad/boilr/pkg/template"
+	"github.com/Wattpad/boilr/pkg/util/exit"
+	"github.com/Wattpad/boilr/pkg/util/osutil"
+	"github.com/Wattpad/boilr/pkg/util/validate"
 )
 
 // TemplateInRegistry checks whether the given name exists in the template registry.

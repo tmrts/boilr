@@ -5,9 +5,9 @@ import (
 
 	cli "github.com/spf13/cobra"
 
-	"boilr/pkg/boilr"
-	"boilr/pkg/util/tlog"
-	"boilr/pkg/util/validate"
+	"github.com/Wattpad/boilr/pkg/boilr"
+	"github.com/Wattpad/boilr/pkg/util/tlog"
+	"github.com/Wattpad/boilr/pkg/util/validate"
 )
 
 // Version contains the cli-command for printing the current version of the tool.

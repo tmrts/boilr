@@ -7,7 +7,7 @@ import (
 	"strconv"
 	"strings"
 
-	"boilr/pkg/util/tlog"
+	"github.com/Wattpad/boilr/pkg/util/tlog"
 )
 
 type templateFunc func() interface{}

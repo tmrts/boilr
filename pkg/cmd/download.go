@@ -6,12 +6,12 @@ import (
 
 	cli "github.com/spf13/cobra"
 
-	"boilr/pkg/boilr"
-	"boilr/pkg/host"
-	"boilr/pkg/util/exit"
-	"boilr/pkg/util/git"
-	"boilr/pkg/util/osutil"
-	"boilr/pkg/util/validate"
+	"github.com/Wattpad/boilr/pkg/boilr"
+	"github.com/Wattpad/boilr/pkg/host"
+	"github.com/Wattpad/boilr/pkg/util/exit"
+	"github.com/Wattpad/boilr/pkg/util/git"
+	"github.com/Wattpad/boilr/pkg/util/osutil"
+	"github.com/Wattpad/boilr/pkg/util/validate"
 )
 
 // Download contains the cli-command for downloading templates from github.

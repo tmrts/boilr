@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	"boilr/pkg/boilr"
-	"boilr/pkg/cmd"
-	"boilr/pkg/util/exit"
-	"boilr/pkg/util/osutil"
+	"github.com/Wattpad/boilr/pkg/boilr"
+	"github.com/Wattpad/boilr/pkg/cmd"
+	"github.com/Wattpad/boilr/pkg/util/exit"
+	"github.com/Wattpad/boilr/pkg/util/osutil"
 )
 
 func main() {

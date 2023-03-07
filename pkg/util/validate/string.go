@@ -5,7 +5,7 @@ import (
 	"runtime"
 	"strings"
 
-	"boilr/pkg/util/validate/pattern"
+	"github.com/Wattpad/boilr/pkg/util/validate/pattern"
 )
 
 // String is the validation function used for checking whether a string is valid or not.

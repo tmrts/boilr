@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"boilr/pkg/boilr"
-	"boilr/pkg/util/exit"
-	"boilr/pkg/util/osutil"
+	"github.com/Wattpad/boilr/pkg/boilr"
+	"github.com/Wattpad/boilr/pkg/util/exit"
+	"github.com/Wattpad/boilr/pkg/util/osutil"
 	cli "github.com/spf13/cobra"
 )
 

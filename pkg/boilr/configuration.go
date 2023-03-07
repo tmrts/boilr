@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"boilr/pkg/util/exit"
-	"boilr/pkg/util/osutil"
+	"github.com/Wattpad/boilr/pkg/util/exit"
+	"github.com/Wattpad/boilr/pkg/util/osutil"
 )
 
 const (
