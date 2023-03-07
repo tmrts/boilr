@@ -29,3 +29,5 @@ require (
 	gopkg.in/src-d/go-billy.v4 v4.3.2 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )
+
+replace github.com/tmrts/boilr v0.0.0-20170719132028-8f51ad7884c5 => github.com/Wattpad/boilr v0.0.0-20230307191008-cfa4a93d2019
