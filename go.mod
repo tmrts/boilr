@@ -1,4 +1,4 @@
-module boilr
+module github.com/Wattpad/boilr
 
 go 1.18
 
